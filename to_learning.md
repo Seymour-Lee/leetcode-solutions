@@ -11,7 +11,7 @@
 * LeetCode - cpp（18 Summer）
 * cc150
 * 剑指Offer
-* Princeton 公开课
+* Princeton 公开课（18 Summer）
 * 挑战程序设计竞赛
 
 ## OS
@@ -39,4 +39,8 @@
 ## Tools
 
 * 第一本Docker书
-* 
+* 重构
+* 设计模式
+
+
+
