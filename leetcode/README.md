@@ -2,13 +2,9 @@
 
 
 
-
-
-
-
 ## 1. Two Sum
 
-### 题目描述
+**题目描述**
 
 Given an array of integers, return **indices** of the two numbers such that they add up to a specific target.
 
@@ -25,7 +21,7 @@ return [0, 1].
 
 
 
-### 解题思路
+**解题思路**
 
 用map做映射，index -> target - value
 
@@ -33,7 +29,7 @@ return [0, 1].
 
 ## 2. Add Two Numbers
 
-### 题目描述
+**题目描述**
 
 You are given two **non-empty** linked lists representing two non-negative integers. The digits are stored in **reverse order** and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
 
@@ -49,11 +45,45 @@ Explanation: 342 + 465 = 807.
 
 
 
-### 解题思路
+**解题思路**
 
 双指针分别跟着两个List，一个工作指针负责构建新的List，根据双指针是否为空决定给该位的value赋值0或pointer->val。最后根据carry位来决定是否new一个最高位的节点。
 
 链表类题目需要返回链表时，可new一个名为dummyHead的头节点，最后return dummyHead->next。
+
+
+
+
+
+## 3. Longest Substring Without Repeating Characters
+
+**题目描述**
+
+Given a string, find the length of the **longest substring** without repeating characters.
+
+**Examples:**
+
+Given `"abcabcbb"`, the answer is `"abc"`, which the length is 3.
+
+Given `"bbbbb"`, the answer is `"b"`, with the length of 1.
+
+Given `"pwwkew"`, the answer is `"wke"`, with the length of 3. Note that the answer must be a **substring**, `"pwke"`is a *subsequence* and not a substring.
+
+
+
+**解题思路**
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
