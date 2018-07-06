@@ -109,7 +109,7 @@ Assume we are dealing with an environment which could only store integers within
 
 **解题思路**
 
-
+对原数模10，除10。对result乘10，加模10的结果。加之前判断result和模10结果与INT上下界的大小关系。
 
 
 
