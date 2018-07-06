@@ -1,8 +1,8 @@
-![sequence containers](/Users/SeymourLee/Documents/projects/learning-notes/notes/images/cpp_stl_sequence_containers.png)
+![sequence containers](/Users/SeymourLee/Documents/projects/learning-notes/cplusplus/images/cpp_stl_sequence_containers.png)
 
 
 
-![associative containers](/Users/SeymourLee/Documents/projects/learning-notes/notes/images/cpp_stl_associative_containers.png)
+![associative containers](/Users/SeymourLee/Documents/projects/learning-notes/cplusplus/images/cpp_stl_associative_containers.png)
 
 
 
@@ -123,6 +123,21 @@
   - cend
   - crbegin
   - crend
+- Capacity
+  - size
+  - length
+  - max_size
+  - resize
+  - capacity
+  - reserve
+  - clear
+  - empty
+  - shrink_to_fit
+- Element access
+  - operator[]
+  - at
+  - back
+  - front
 - 
 
 
