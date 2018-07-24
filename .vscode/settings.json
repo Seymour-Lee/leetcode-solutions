@@ -2,6 +2,8 @@
     "files.associations": {
         "__locale": "cpp",
         "string": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "iosfwd": "cpp",
+        "iterator": "cpp"
     }
 }
