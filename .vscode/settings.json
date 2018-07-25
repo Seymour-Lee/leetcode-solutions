@@ -4,6 +4,7 @@
         "string": "cpp",
         "algorithm": "cpp",
         "iosfwd": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "bitset": "cpp"
     }
 }
