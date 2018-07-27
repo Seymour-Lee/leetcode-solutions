@@ -6,6 +6,7 @@
         "iosfwd": "cpp",
         "iterator": "cpp",
         "bitset": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "ios": "cpp"
     }
 }
