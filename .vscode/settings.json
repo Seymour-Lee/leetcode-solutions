@@ -11,6 +11,8 @@
         "__bit_reference": "cpp",
         "__string": "cpp",
         "string_view": "cpp",
-        "initializer_list": "cpp"
+        "initializer_list": "cpp",
+        "__config": "cpp",
+        "__nullptr": "cpp"
     }
 }
