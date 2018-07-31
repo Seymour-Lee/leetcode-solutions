@@ -13,6 +13,7 @@
         "string_view": "cpp",
         "initializer_list": "cpp",
         "__config": "cpp",
-        "__nullptr": "cpp"
+        "__nullptr": "cpp",
+        "limits": "cpp"
     }
 }
