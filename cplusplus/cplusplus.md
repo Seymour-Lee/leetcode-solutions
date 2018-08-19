@@ -47,6 +47,32 @@ $ echo $?
 
 
 
+# Part II C++ Standard Library
+
+## Chapter 8 IO库
+
+* C++通过标准库中的类型来处理IO。
+* istream为输入流类型，ostream为输出流类型，cin、cout、cerr均为对象。
+
+### 8.1 IO类
+
+* * iostream定义了读写流：
+    * 
+  * 
+  * 
+
+
+
+### 8.2 文件输入输出
+
+
+
+
+
+### 8.3 string流
+
+
+
 
 
 
