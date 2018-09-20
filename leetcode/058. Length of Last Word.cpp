@@ -14,3 +14,16 @@ public:
         return s.size();
     }
 };
+
+class Solution {
+public:
+    int lengthOfLastWord(string s) {        
+        istringstream is(s);
+        string str;
+        string ans;
+        while(getline(is, str, ' ')){
+            if(str != "") ans = str;
+        }
+        return ans.size();
+    }
+};
