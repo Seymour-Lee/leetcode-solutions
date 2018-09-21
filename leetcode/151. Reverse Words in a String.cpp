@@ -22,3 +22,18 @@ public:
         s = result.substr(1, result.size()-1);
     }
 };
+
+class Solution {
+public:
+    void reverseWords(string &s) {
+        if(s == "") return;
+        string result = "";
+        istringstream is(s);
+        string str = "";
+        while(getline(is, str, ' ')){
+            if(str == "") continue;
+            result = " " + str + result;
+        }
+        s = result == ""? "": result.substr(1);
+    }
+};

@@ -18,3 +18,31 @@ public:
         return 0;
     }
 };
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        int ans = nums[0];
+        int counter = 1;
+        for(int i = 1; i < nums.size(); i++){
+            if(nums[i] == ans) counter++;
+            else{
+                counter--;
+                if(counter == 0){
+                    ans = nums[i];
+                    counter++;
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        return nums[nums.size()/2];
+    }
+};

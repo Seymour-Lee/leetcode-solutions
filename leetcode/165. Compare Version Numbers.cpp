@@ -27,3 +27,22 @@ private:
         return i == str.size()? str: str.substr(0, i);
     }
 };
+
+class Solution {
+public:
+    int compareVersion(string version1, string version2) {
+        vector<int> vec1, vec2;
+        istringstream is(version1);
+        string str = "";
+        while(getline(is, str, '.')) vec1.push_back(stoi(str));
+        is = istringstream(version2);
+        while(getline(is, str, '.')) vec2.push_back(stoi(str));
+        for(int i = 0; i < vec1.size() || i < vec2.size(); i++){
+            int one = i < vec1.size()? vec1[i]: 0;
+            int two = i < vec2.size()? vec2[i]: 0;
+            if(one > two) return 1;
+            if(one < two) return -1;
+        }
+        return 0;
+    }
+};
