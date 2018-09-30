@@ -2,12 +2,13 @@
 
 
 ### 001. Two Sum
-
-
+hash table
 
 ### 002. Add Two Numbers
+list with while(a || b)
 
 ### 003. Longest Substring Without Repeating Characters
+
 
 ### 004. Median of Two Sorted Arrays
 
