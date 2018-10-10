@@ -84,6 +84,8 @@
 
 ### 043. Multiply Strings
 
+### 044. Wildcard Matching
+
 ### 045. Jump Game II
 
 ### 046. Permutations
@@ -160,9 +162,13 @@
 
 ### 083. Remove Duplicates from Sorted List
 
+### 084. Largest Rectangle in Histogram
+
 ### 085. Maximal Rectangle
 
 ### 086. Partition List
+
+### 087. Scramble String
 
 ### 088. Merge Sorted Array
 
@@ -294,9 +300,17 @@
 
 ### 155. Min Stack
 
+### 156. Binary Tree Upside Down
+
+### 157. Read N Characters Given Read4
+
 ### 160. Intersection of Two Linked Lists
 
+### 161. One Edit Distance
+
 ### 162. Find Peak Element
+
+### 163. Missing Ranges
 
 ### 164. Maximum Gap
 
@@ -310,6 +324,8 @@
 
 ### 169. Majority Element
 
+### 170. Two Sum III - Data structure design
+
 ### 171. Excel Sheet Column Number
 
 ### 172. Factorial Trailing Zeroes
@@ -317,6 +333,8 @@
 ### 173. Binary Search Tree Iterator
 
 ### 179. Largest Number
+
+### 186. Reverse Words in a String II
 
 ### 187. Repeated DNA Sequences
 
@@ -406,29 +424,63 @@
 
 ### 242. Valid Anagram
 
+### 243. Shortest Word Distance
+
+### 246. Strobogrammatic Number
+
+### 247. Strobogrammatic Number II
+
+### 250. Count Univalue Subtrees
+
+### 252. Meeting Rooms
+
+### 253. Meeting Rooms II
+
+### 255. Verify Preorder Sequence in Binary Search Tree
+
+### 256. Paint House
+
 ### 257. Binary Tree Paths
 
 ### 258. Add Digits
 
 ### 260. Single Number III
 
+### 261. Graph Valid Tree
+
 ### 263. Ugly Number
 
 ### 264. Ugly Number II
 
+### 266. Palindrome Permutation
+
 ### 268. Missing Number
+
+### 270. Closest Binary Search Tree Value
 
 ### 274. H-Index
 
 ### 275. H-Index II
 
+### 276. Paint Fence
+
+### 277. Find the Celebrity
+
 ### 278. First Bad Version
 
 ### 279. Perfect Squares
 
+### 280. Wiggle Sort
+
+### 281. Zigzag Iterator
+
 ### 283. Move Zeroes
 
 ### 284. Peeking Iterator
+
+### 285. Inorder Successor in BST
+
+### 286. Walls and Gates
 
 ### 287. Find the Duplicate Number
 
@@ -438,7 +490,11 @@
 
 ### 292. Nim Game
 
+### 293. Flip Game
+
 ### 297. Serialize and Deserialize Binary Tree
+
+### 298. Binary Tree Longest Consecutive Sequence
 
 ### 299. Bulls and Cows
 
@@ -458,9 +514,13 @@
 
 ### 310. Minimum Height Trees
 
+### 311. Sparse Matrix Multiplication
+
 ### 312. Burst Balloons
 
 ### 313. Super Ugly Number
+
+### 314. Binary Tree Vertical Order Traversal
 
 ### 318. Maximum Product of Word Lengths
 
@@ -468,7 +528,11 @@
 
 ### 322. Coin Change
 
+### 323. Number of Connected Components in an Undirected Graph
+
 ### 324. Wiggle Sort II
+
+### 325. Maximum Size Subarray Sum Equals k
 
 ### 326. Power of Three
 
@@ -480,11 +544,15 @@
 
 ### 332. Reconstruct Itinerary
 
+### 333. Largest BST Subtree
+
 ### 334. Increasing Triplet Subsequence
 
 ### 337. House Robber III
 
 ### 338. Counting Bits
+
+### 339. Nested List Weight Sum
 
 ### 341. Flatten Nested List Iterator
 
@@ -496,7 +564,11 @@
 
 ### 345. Reverse Vowels of a String
 
+### 346. Moving Average from Data Stream
+
 ### 347. Top K Frequent Elements
+
+### 348. Design Tic-Tac-Toe
 
 ### 349. Intersection of Two Arrays
 
@@ -504,13 +576,29 @@
 
 ### 355. Design Twitter
 
+### 356. Line Reflection
+
 ### 357. Count Numbers with Unique Digits
 
+### 359. Logger Rate Limiter
+
+### 360. Sort Transformed Array
+
+### 362. Design Hit Counter
+
+### 364. Nested List Weight Sum II
+
 ### 365. Water and Jug Problem
+
+### 366. Find Leaves of Binary Tree
 
 ### 367. Valid Perfect Square
 
 ### 368. Largest Divisible Subset
+
+### 369. Plus One Linked List
+
+### 370. Range Addition
 
 ### 371. Sum of Two Integers
 
@@ -527,6 +615,8 @@
 ### 377. Combination Sum IV
 
 ### 378. Kth Smallest Element in a Sorted Matrix
+
+### 379. Design Phone Directory
 
 ### 380. Insert Delete GetRandom O(1)
 
@@ -576,6 +666,8 @@
 
 ### 406. Queue Reconstruction by Height
 
+### 408. Valid Word Abbreviation
+
 ### 409. Longest Palindrome
 
 ### 412. Fizz Buzz
@@ -594,9 +686,13 @@
 
 ### 421. Maximum XOR of Two Numbers in an Array
 
+### 422. Valid Word Square
+
 ### 423. Reconstruct Original Digits from English
 
 ### 424. Longest Repeating Character Replacement
+
+### 426. Convert Binary Search Tree to Sorted Doubly Linked List
 
 ### 427. Construct Quad Tree
 
@@ -615,6 +711,8 @@
 ### 437. Path Sum III
 
 ### 438. Find All Anagrams in a String
+
+### 439. Ternary Expression Parser
 
 ### 441. Arranging Coins
 
@@ -650,6 +748,8 @@
 
 ### 459. Repeated Substring Pattern
 
+### 460. LFU Cache
+
 ### 461. Hamming Distance
 
 ### 462. Minimum Moves to Equal Array Elements II
@@ -661,6 +761,8 @@
 ### 467. Unique Substrings in Wraparound String
 
 ### 468. Validate IP Address
+
+### 469. Convex Polygon
 
 ### 470. Implement Rand10() Using Rand7()
 
@@ -686,6 +788,8 @@
 
 ### 486. Predict the Winner
 
+### 490. The Maze
+
 ### 491. Increasing Subsequences
 
 ### 492. Construct the Rectangle
@@ -707,6 +811,8 @@
 ### 503. Next Greater Element II
 
 ### 504. Base 7
+
+### 505. The Maze II
 
 ### 506. Relative Ranks
 
@@ -744,9 +850,15 @@
 
 ### 530. Minimum Absolute Difference in BST
 
+### 531. Lonely Pixel I
+
 ### 532. K-diff Pairs in an Array
 
+### 533. Lonely Pixel II
+
 ### 535. Encode and Decode TinyURL
+
+### 536. Construct Binary Tree from String
 
 ### 537. Complex Number Multiplication
 
@@ -762,7 +874,13 @@
 
 ### 543. Diameter of Binary Tree
 
+### 544. Output Contest Matches
+
+### 545. Boundary of Binary Tree
+
 ### 547. Friend Circles
+
+### 549. Binary Tree Longest Consecutive Sequence II
 
 ### 551. Student Attendance Record I
 
@@ -792,11 +910,15 @@
 
 ### 572. Subtree of Another Tree
 
+### 573. Squirrel Simulation
+
 ### 575. Distribute Candies
 
 ### 576. Out of Boundary Paths
 
 ### 581. Shortest Unsorted Continuous Subarray
+
+### 582. Kill Process
 
 ### 583. Delete Operation for Two Strings
 
@@ -814,6 +936,8 @@
 
 ### 599. Minimum Index Sum of Two Lists
 
+### 604. Design Compressed String Iterator
+
 ### 605. Can Place Flowers
 
 ### 606. Construct String from Binary Tree
@@ -830,9 +954,15 @@
 
 ### 623. Add One Row to Tree
 
+### 624. Maximum Distance in Arrays
+
+### 625. Minimum Factorization
+
 ### 628. Maximum Product of Three Numbers
 
 ### 633. Sum of Square Numbers
+
+### 634. Find the Derangement of An Array
 
 ### 636. Exclusive Time of Functions
 
@@ -858,6 +988,8 @@
 
 ### 650. 2 Keys Keyboard
 
+### 651. 4 Keys Keyboard
+
 ### 652. Find Duplicate Subtrees
 
 ### 653. Two Sum IV - Input is a BST
@@ -876,7 +1008,11 @@
 
 ### 662. Maximum Width of Binary Tree
 
+### 663. Equal Tree Partition
+
 ### 665. Non-decreasing Array
+
+### 666. Path Sum IV
 
 ### 667. Beautiful Arrangement II
 
@@ -900,6 +1036,8 @@
 
 ### 680. Valid Palindrome II
 
+### 681. Next Closest Time
+
 ### 682. Baseball Game
 
 ### 684. Redundant Connection
@@ -915,6 +1053,8 @@
 ### 692. Top K Frequent Words
 
 ### 693. Binary Number with Alternating Bits
+
+### 694. Number of Distinct Islands
 
 ### 695. Max Area of Island
 
@@ -938,6 +1078,8 @@
 
 ### 707. Design Linked List
 
+### 708. Insert into a Cyclic Sorted List
+
 ### 709. To Lower Case
 
 ### 712. Minimum ASCII Delete Sum for Two Strings
@@ -956,6 +1098,8 @@
 
 ### 722. Remove Comments
 
+### 723. Candy Crush
+
 ### 724. Find Pivot Index
 
 ### 725. Split Linked List in Parts
@@ -964,15 +1108,23 @@
 
 ### 729. My Calendar I
 
+### 732. My Calendar III
+
 ### 733. Flood Fill
 
+### 734. Sentence Similarity
+
 ### 735. Asteroid Collision
+
+### 737. Sentence Similarity II
 
 ### 738. Monotone Increasing Digits
 
 ### 739. Daily Temperatures
 
 ### 740. Delete and Earn
+
+### 742. Closest Leaf in a Binary Tree
 
 ### 743. Network Delay Time
 
@@ -984,6 +1136,10 @@
 
 ### 748. Shortest Completing Word
 
+### 750. Number Of Corner Rectangles
+
+### 751. IP to CIDR
+
 ### 752. Open the Lock
 
 ### 753. Cracking the Safe
@@ -992,11 +1148,17 @@
 
 ### 756. Pyramid Transition Matrix
 
+### 758. Bold Words in String
+
+### 760. Find Anagram Mappings
+
 ### 762. Prime Number of Set Bits in Binary Representation
 
 ### 763. Partition Labels
 
 ### 764. Largest Plus Sign
+
+### 765. Couples Holding Hands
 
 ### 766. Toeplitz Matrix
 
@@ -1006,7 +1168,11 @@
 
 ### 771. Jewels and Stones
 
+### 773. Sliding Puzzle
+
 ### 775. Global and Local Inversions
+
+### 776. Split BST
 
 ### 777. Swap Adjacent in LR String
 
@@ -1043,6 +1209,8 @@
 ### 797. All Paths From Source to Target
 
 ### 799. Champagne Tower
+
+### 800. Similar RGB Color
 
 ### 801. Minimum Swaps To Make Sequences Increasing
 
@@ -1217,4 +1385,14 @@
 ### 910. Smallest Range II
 
 ### 911. Online Election
+
+### 914. X of a Kind in a Deck of Cards
+
+### 915. Partition Array into Disjoint Intervals
+
+### 916. Word Subsets
+
+### 917. Reverse Only Letters
+
+### 919. Complete Binary Tree Inserter
 
