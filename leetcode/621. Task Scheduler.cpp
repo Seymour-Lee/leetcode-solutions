@@ -18,3 +18,21 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int ans = 0;
+        vector<int> stat(26, 0);
+        for(auto t: tasks) stat[t-'A']++;
+        auto f = [](int a, int b){return a > b;}; // can not be >=, which will raise runtime error
+        sort(stat.begin(), stat.end(), f);
+        while(stat.front() > 0){
+            for(int i = 0; i <= n && stat.front() != 0; i++, ans++) 
+                if(i < 26 && stat[i] > 0) 
+                    stat[i]--; 
+            sort(stat.begin(), stat.end(), f);
+        }
+        return ans;
+    }
+};
