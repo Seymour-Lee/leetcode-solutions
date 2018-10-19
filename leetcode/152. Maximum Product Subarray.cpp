@@ -14,3 +14,19 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        int ans = nums[0];
+        int vmax = nums[0], vmin = nums[0];
+        for(decltype(nums.size()) i = 1; i < nums.size(); i++){
+            auto lmax = vmax;
+            vmax = max(max(lmax*nums[i], vmin*nums[i]), nums[i]);
+            vmin = min(min(lmax*nums[i], vmin*nums[i]), nums[i]);
+            ans = max(ans, vmax);
+        }
+        return ans;
+    }
+};
