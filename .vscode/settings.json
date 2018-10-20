@@ -15,6 +15,7 @@
         "__config": "cpp",
         "__nullptr": "cpp",
         "limits": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "vector": "cpp"
     }
 }
