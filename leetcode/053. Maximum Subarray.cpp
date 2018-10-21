@@ -27,3 +27,18 @@ public:
         return *max_element(dp.begin(), dp.end());
     }
 };
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        int cur, prev = nums[0];
+        int ans = nums[0];
+        for(decltype(nums.size()) i = 1; i < nums.size(); i++){
+            cur =  max(nums[i], prev+nums[i]);
+            ans = max(cur, ans);
+            prev = cur;
+        }
+        return ans;
+    }
+};
