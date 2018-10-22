@@ -24,3 +24,22 @@ private:
         return true;
     }
 };
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+        if(s.size() <= 1) return s.size();
+        int ans = 0;
+        vector<vector<bool>> dp(s.size(), vector<bool>(s.size(), false));
+        for(int i = 0; i < s.size(); i++) dp[i][i] = true, ans++;
+        for(int i = 0; i < s.size()-1; i++) if(s[i] == s[i+1]) dp[i][i+1] = true, ans++;
+        for(int len = 3; len <= s.size(); len++){
+            for(int i = 0; i+len <= s.size(); i++){
+                int j = i+len-1;
+                if(s[i] == s[j] && dp[i+1][j-1] == true)
+                    dp[i][j] = true, ans++;
+            }
+        }
+        return ans;
+    }
+};
