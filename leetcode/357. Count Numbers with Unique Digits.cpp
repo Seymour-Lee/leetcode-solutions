@@ -13,3 +13,16 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int countNumbersWithUniqueDigits(int n) {
+        int ans = 0;
+        vector<int> dp(n+1, 0);
+        dp[0] = 1, dp[1] = 9;
+        for(int i = 2, have = 9; i <= n && have > 0; i++, have--){
+            dp[i] = dp[i-1]*have;
+        }
+        return accumulate(dp.begin(), dp.end(), 0);
+    }
+};
