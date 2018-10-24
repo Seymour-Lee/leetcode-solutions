@@ -19,3 +19,19 @@ private:
         return dp1;
     }
 };
+
+class Solution {
+public:
+    int deleteAndEarn(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        const int maxval = *max_element(nums.begin(), nums.end());
+        vector<int> houses(maxval+1, 0);
+        for(auto num: nums) houses[num] += num;
+        vector<int> dp(maxval+1, 0);
+        dp[0] = houses[0], dp[1] = houses[1];
+        for(int i = 2; i < houses.size(); i++){
+            dp[i] = max(dp[i-1], dp[i-2]+houses[i]);
+        }
+        return max(dp.back(), dp[maxval+1-2]);
+    }
+};
