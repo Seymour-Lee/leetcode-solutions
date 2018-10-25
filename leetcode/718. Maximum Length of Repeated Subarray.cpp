@@ -18,3 +18,19 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int findLength(vector<int>& A, vector<int>& B) {
+        int ans = 0;
+        vector<vector<int>> dp(A.size(), vector<int>(B.size(), 0));
+        for(int j = 0; j < B.size(); j++) if(A[0] == B[j]) dp[0][j] = 1, ans = 1;
+        for(int i = 0; i < A.size(); i++) if(A[i] == B[0]) dp[i][0] = 1, ans = 1;
+        for(int i = 1; i < A.size(); i++){
+            for(int j = 1; j < B.size(); j++){
+                if(A[i] == B[j]) dp[i][j] = dp[i-1][j-1]+1, ans = max(dp[i][j], ans);
+            }
+        }
+        return ans;
+    }
+};
