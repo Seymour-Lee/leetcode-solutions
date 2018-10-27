@@ -12,3 +12,19 @@ public:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        if(num == 1 || num == 4) return true;
+        int l = 1, r = num/2+1;
+        while(l <= r){
+            int m = l + (r - l) / 2;
+            long temp = (long)m*m;
+            if(temp == num) return true;
+            else if(temp < num) l = m+1;
+            else r = m-1;
+        }
+        return false;
+    }
+};
