@@ -9,3 +9,17 @@ public:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        int a = 0, b = sqrt(c);
+        while(a <= b){
+            int m = a*a + b*b;
+            if(m == c)return true;
+            if(m < c) a++;
+            else b--;
+        }
+        return false;
+    }
+};
