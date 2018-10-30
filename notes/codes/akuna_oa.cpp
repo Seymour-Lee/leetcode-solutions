@@ -12,16 +12,16 @@ long countSubarrays(int numbers_count, int* numbers, int k) {
     return ans;
 }
 
-int fastPow(int x, int n){
+unsigned long long fastPow(int x, int n){
     if(n == 0) return 1;
-    const long mod = 1000000000+7;
+    const unsigned int mod = 1000000000+7;
     if(n % 2 == 1){
-        int half = fastPow(x, n/2) % mod;
+        unsigned long long half = fastPow(x, n/2) % mod;
         //double half = binaryPow(x, n/2);
-        return (half * half * x) % mod;
+        return (((half * half) % mod) * x) % mod;
     }
     else{
-        int half = fastPow(x, n/2) % mod;
+        unsigned long long half = fastPow(x, n/2) % mod;
         // double half = binaryPow(x, n/2);
         return (half*half) % mod;
     }
@@ -29,8 +29,8 @@ int fastPow(int x, int n){
 
 int three(int rotorCount, int minRotorValue, int maxRotorValue){
     cout<<"Input is "<<rotorCount<<" "<<minRotorValue<<" "<<maxRotorValue<<endl;
-    const long mod = 1000000000+7;
-    long ans = 0;
+    const int mod = 1000000000+7;
+    unsigned long long ans = 0;
     unordered_map<int, int> num2primes;
     for(int i = minRotorValue; i <= maxRotorValue; i++){
         if(__gcd(i, i) == 1) num2primes[i]++;
@@ -43,8 +43,9 @@ int three(int rotorCount, int minRotorValue, int maxRotorValue){
     for(auto p: num2primes){
         // cout<<p.first<<" "<<p.second<<endl;
         // cout<<pow(p.second, rotorCount-1)<<endl;
-        ans = (long)(ans + (long)fastPow(p.second, rotorCount-1)) % mod;
+        // ans = (ans + fastPow(p.second, rotorCount-1)) % mod;
         // ans = (long)(ans + ((long)pow(p.second, rotorCount-1) % mod)) % mod;
+        ans = (ans + fastPow(p.second, rotorCount-1) % mod) % mod;
     }
     return (int)ans;
 }
@@ -86,11 +87,11 @@ int main() {
 //     // // ans should be 32
 //     auto ans = countSubarrays(count, nums, k);
 //     cout<<ans;
-    // auto ans = three(78, 4729, 5773); 
+    auto ans = three(78, 4729, 5773); // 493396273
     // auto ans = three(3, 2, 6); // 34
     // auto ans = three(2, 1230, 1836); // 223466
     // auto ans = three(2, 1, 3); // 7
-    auto ans = three(3, 2, 4); // 6
+    // auto ans = three(3, 2, 4); // 6
     cout<<ans;
     return 0;
 }
