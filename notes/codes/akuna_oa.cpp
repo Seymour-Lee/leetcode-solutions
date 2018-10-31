@@ -12,6 +12,26 @@ long countSubarrays(int numbers_count, int* numbers, int k) {
     return ans;
 }
 
+// https://lemire.me/blog/2013/12/26/fastest-way-to-compute-the-greatest-common-divisor/
+unsigned int gcd(unsigned int u, unsigned int v)
+{
+    int shift;
+    if (u == 0) return v;
+    if (v == 0) return u;
+    shift = __builtin_ctz(u | v);
+    u >>= __builtin_ctz(u);
+    do {
+        v >>= __builtin_ctz(v);
+        if (u > v) {
+            unsigned int t = v;
+            v = u;
+            u = t;
+        }  
+        v = v - u;
+    } while (v != 0);
+    return u << shift;
+}
+
 unsigned long long fastPow(int x, int n){
     if(n == 0) return 1;
     const unsigned int mod = 1000000000+7;
@@ -76,17 +96,17 @@ int phi(int n)
 } 
 
 int main() {
-//     int count = 3;
-//     int nums[count] = {1, 2, 3};
-//     int k = 4;
-//     // ans should be 4
+    // int count = 3;
+    // int nums[count] = {1, 2, 3};
+    // int k = 4;
+    // // ans should be 4
     
-//     // int count = 11;
-//     // int nums[count] = {4, 13, 20, 32, 44, 59, 61, 71, 75, 86, 88};
-//     // int k = 567601;
-//     // // ans should be 32
-//     auto ans = countSubarrays(count, nums, k);
-//     cout<<ans;
+    // int count = 11;
+    // int nums[count] = {4, 13, 20, 32, 44, 59, 61, 71, 75, 86, 88};
+    // int k = 567601;
+    // // ans should be 32
+    // auto ans = countSubarrays(count, nums, k);
+    // cout<<ans;
     auto ans = three(78, 4729, 5773); // 493396273
     // auto ans = three(3, 2, 6); // 34
     // auto ans = three(2, 1230, 1836); // 223466
