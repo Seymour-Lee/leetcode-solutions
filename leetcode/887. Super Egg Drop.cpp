@@ -1,4 +1,18 @@
-// TLE
+class Solution {
+public:
+    int superEggDrop(int K, int N) {
+        vector<vector<int>> dp(N+1, vector<int>(K+1, 0));
+        int ans = 0;
+        while(dp[ans][K] < N){
+            ans++;
+            for(int k = 1; k <= K; k++)
+                dp[ans][k] = dp[ans-1][k-1]+dp[ans-1][k]+1;
+        }
+        return ans;
+    }
+};
+
+// TLE O(kN^2)
 class Solution {
 public:
     int superEggDrop(int K, int N) {
