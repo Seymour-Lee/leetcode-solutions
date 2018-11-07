@@ -112,6 +112,6 @@ int main() {
     // auto ans = three(2, 1230, 1836); // 223466
     // auto ans = three(2, 1, 3); // 7
     // auto ans = three(3, 2, 4); // 6
-    cout<<ans;
+    // cout<<ans;
     return 0;
 }

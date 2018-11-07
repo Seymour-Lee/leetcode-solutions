@@ -23,3 +23,17 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int numSubarraysWithSum(vector<int>& A, int S) {
+        unordered_map<int, int> sum2freq = {{0, 1}};
+        int sum = 0, ans = 0;
+        for(auto a: A){
+            sum += a;
+            ans += sum2freq[sum-S];
+            sum2freq[sum]++;
+        }
+        return ans;
+    }
+};
