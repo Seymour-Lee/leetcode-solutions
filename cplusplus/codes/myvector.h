@@ -2,6 +2,9 @@
 
 template <class T> class myvector{
 public:
+    typedef T *iterator;
+
+
     myvector(){
         vArr = nullptr;
         vCapacity = 0;
@@ -16,8 +19,20 @@ public:
             vArr[i] = _val;
     }
 
+    myvector<T> &operator = (const myvector<T> &vec){
+        delete vArr;
+        this->vCapacity = vec.capacity();
+        this->vSize = vec.size();
+        vArr = new T[this->vCapacity];
+        for(int i = 0; i < vSize; i++) this->vArr[i] = vec[i];
+        return *this;
+    }
+
     myvector(const myvector<T> &vec){
-        this = vec;
+        vSize = vec.size();
+        vCapacity = vec.capacity();
+        vArr = new T[vCapacity];
+        for(int i = 0; i < vSize; i++) vArr[i] = vec.vArr[i];
     }
 
     ~myvector(){
@@ -29,9 +44,7 @@ public:
         return vArr[i];
     }
 
-    myvector<T> &operator =(myvector<T> vec){
-
-    }
+    
 
     void push_back(const T &item){
         expand();
@@ -45,11 +58,11 @@ public:
         shrink();
     }
 
-    unsigned int size(){
+    unsigned int size() const{
         return vSize;
     }
 
-    unsigned int capacity(){
+    unsigned int capacity() const{
         return vCapacity;
     }
 
