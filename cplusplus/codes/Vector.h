@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 template <class T> class Vector{
 public:
     typedef T * iterator;
