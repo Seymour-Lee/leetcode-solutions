@@ -5,6 +5,7 @@
 #include "myvector.h"
 #include "Vector.h"
 #include "String.h"
+#include "round_robin.h"
 
 using namespace std;
 
@@ -72,21 +73,34 @@ void test_vector(){
    cout << "SUCCESS\n";
 }
 
+class A{
+
+private:
+    A(int a){};
+};
+
+int strcmp2(const char *p1, const char *p2)
+{
+    const unsigned char *s1 = (const unsigned char *) p1;
+    const unsigned char *s2 = (const unsigned char *) p2;
+    unsigned char c1, c2;
+    do{
+        c1 = (unsigned char) *s1++;
+        c2 = (unsigned char) *s2++;
+        if (c1 == '\0') return c1 - c2;
+    }
+    while (c1 == c2);
+    return c1 - c2;
+}
+
+int strcmp1(const char *s1, const char *s2){
+    while(*s1 && (*s1 == *s2)) s1++, s2++;
+    return *(const unsigned char*)s1 - *(const unsigned char*)s2;
+}
+
 
 int main(){
-    test_vector();
-    vector<int> a;
-    // cout<<"hello world\n";
-    // // assert(0 > 1);
-    // myvector<int> vec(10, 1);
-    // myvector<int> vec1(vec);
-    // cout<<vec1.size()<<endl;
-    // cout<<vec1.front()<<endl;
-    // for(int i = 0; i < vec1.size(); i++) cout<<vec1[i]<<" ";
-    // // for(auto a: vec) cout<<a<<" ";
-    // cout<<endl;
-    // cout<<getMax<int>(1, 2)<<endl;
-    // cout<<getMax<char>('a', 'c')<<endl;
-    // cout<<getMax<double>(3.0, 2.9)<<endl;
+    cout<<(int)'\0'<<endl;;
+    test_round_robin();
     return 0;
 }

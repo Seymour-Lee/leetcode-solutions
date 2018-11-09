@@ -4,7 +4,16 @@ using namespace std;
 
 class String{
 public:
+    typedef char value_type;
     typedef char* iterator;
+
+    // constructor
+    // destructor();
+    // =
+    // +
+    // substr
+    // push_back();
+    
 
     String();
     String(const String &s);

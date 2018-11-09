@@ -4,8 +4,21 @@ using namespace std;
 
 template <class T> class Vector{
 public:
+    typedef T value_type;
     typedef T * iterator;
     typedef size_t size_type;
+
+    // new delete[] throw???
+    // remember to include <iostream> or include <cstddef>
+    // Vector(std::size_t count, const T& value);
+    // Vector(Vector<T> &&rhs);
+    // Vector& opeartor=(const Vector<T>& rhs);
+    // ~Vector();
+    // void push_back(const T& value);
+    // std::size_t size();
+    // insert
+    // at
+    // operator[]
 
     Vector();
     Vector(size_type _s);
