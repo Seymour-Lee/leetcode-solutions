@@ -133,7 +133,7 @@ struct Job{
 	// turnaround = completion - arrival
 	// waittime = turnaround - burst
 	int wait_time; // remember to update this
-	int execution_time; //remaining time for the current job?
+	int execution_time; //remaining time for the current job? Maybe! > time_quantum -> running_queue
 	int turnaround_time; // = wait_time + execution_time
 
 	void print(){
@@ -173,15 +173,21 @@ private:
 	// int time_quantum;
 };
 
+// Find some test cases online
 void test_scheduler(){
 	Scheduler scheduler;
 	Job a = {1, 10, 0, 0, 0, 0};
 	Job b = {2, 5, 0, 0, 0, 0};
 	Job c = {3, 8, 0, 0, 0, 0};
+	// Job a = {1, 10, 0, 0, 0, 0};
+	// Job b = {2, 4, 1, 0, 0, 0};
+	// Job c = {3, 5, 2, 0, 0, 0};
+	// Job d = {4, 3, 3, 0, 0, 0};
 	deque<Job> running_queue;
 	running_queue.push_back(a);
 	running_queue.push_back(b);
 	running_queue.push_back(c);
+	// running_queue.push_back(d);
 	deque<Job> done_queue;
 	const int time_quantum = 2;
 	int current_time = 0;

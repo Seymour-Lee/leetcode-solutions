@@ -13,3 +13,14 @@ public:
         return stoi(str);
     }
 };
+
+class Solution {
+public:
+    int monotoneIncreasingDigits(int N) {
+        string num = to_string(N);
+        int pos = num.size();
+        for(int i = num.size()-1; i > 0; i--)
+            if(num[i-1] > num[i]) num[i-1]--, pos = i;
+        return stoi(num.substr(0, pos) + string(num.size()-pos, '9'));
+    }
+};
