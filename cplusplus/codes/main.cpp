@@ -100,7 +100,8 @@ int strcmp1(const char *s1, const char *s2){
 
 
 int main(){
-    cout<<(int)'\0'<<endl;;
-    test_round_robin();
+    // cout<<(int)'\0'<<endl;;
+    // test_round_robin();
+    test_scheduler();
     return 0;
 }

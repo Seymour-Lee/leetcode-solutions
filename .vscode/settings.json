@@ -16,6 +16,7 @@
         "__nullptr": "cpp",
         "limits": "cpp",
         "chrono": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "iostream": "cpp"
     }
 }

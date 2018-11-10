@@ -1,5 +1,7 @@
 // C++ program for implementation of RR scheduling 
-#include<iostream> 
+#include <iostream> 
+#include <deque>
+
 using namespace std; 
 
 // Function to find the waiting time for all 
@@ -124,17 +126,76 @@ void test_round_robin()
 }
 
 struct Job{
+	int pid;
+	int job_time;
+	int arrive_time;
+	// update the following variables
+	// turnaround = completion - arrival
+	// waittime = turnaround - burst
+	int wait_time; // remember to update this
+	int execution_time; //remaining time for the current job?
+	int turnaround_time; // = wait_time + execution_time
 
+	void print(){
+		cout<<pid<<"--"<<job_time<<" "<<arrive_time<<" "<<wait_time<<" "<<execution_time<<" "<<turnaround_time<<endl;
+	}
 };
 
-class RoundRobin{
+// If many Jobs arrive at time t, I only need to deal with the top() Job of the queue, right?
+class Scheduler{
 public:
+	// 把run_queue里面的Job一个个pop出来，在时间片内完成就push到done queue里面，否则更新一下job time、execution time，再push进入run queue
+	// Is it possible that o job's arrive_time is later than current_time?
+	void process_run_queue(deque<Job> &running_queue, deque<Job> &done_queue, int time_quantum, int current_time){
+		int size = running_queue.size();
+		while(size--){
+			auto job = running_queue.front(); running_queue.pop_front();
+			// How to update wait_time?
+			if(job.execution_time+time_quantum >= job.job_time){ // finish
+				int remain_time = job.job_time - job.execution_time;
+				current_time += remain_time;
+				job.execution_time += remain_time;
+				job.wait_time = current_time - job.arrive_time - job.job_time;
+				job.turnaround_time = current_time - job.arrive_time;
+				done_queue.push_back(job);
+			}
+			else{ // push back to running_queue
+				job.execution_time += time_quantum;
+				running_queue.push_back(job);
+			}
+		}
+	}
 
 private:
-
-
-
+	// deque<Job> running_jobs;
+	// deque<Job> done_jobs;
+	// int time_quantum;
 };
 
+void test_scheduler(){
+	Scheduler scheduler;
+	Job a = {1, 10, 0, 0, 0, 0};
+	Job b = {2, 5, 0, 0, 0, 0};
+	Job c = {3, 8, 0, 0, 0, 0};
+	deque<Job> running_queue;
+	running_queue.push_back(a);
+	running_queue.push_back(b);
+	running_queue.push_back(c);
+	deque<Job> done_queue;
+	const int time_quantum = 2;
+	int current_time = 0;
+	int round = 5;
+	while(round--){
+		scheduler.process_run_queue(running_queue, done_queue, time_quantum, current_time);
+		cout<<round<<endl;
+		for(auto p: running_queue) p.print();
+		cout<<endl;
+	}
+		
+	
+	
+	
+
+}
 
 
