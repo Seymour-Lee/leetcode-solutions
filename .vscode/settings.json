@@ -18,5 +18,8 @@
         "chrono": "cpp",
         "vector": "cpp",
         "iostream": "cpp"
-    }
+    },
+    "clang.cxxflags": [
+        "-std=c++11"
+    ]
 }

@@ -146,7 +146,7 @@ class Scheduler{
 public:
 	// 把run_queue里面的Job一个个pop出来，在时间片内完成就push到done queue里面，否则更新一下job time、execution time，再push进入run queue
 	// Is it possible that o job's arrive_time is later than current_time?
-	void process_run_queue(deque<Job> &running_queue, deque<Job> &done_queue, int time_quantum, int current_time){
+	void process_run_queue(deque<Job> &running_queue, deque<Job> &done_queue, int time_quantum, int& current_time){
 		int size = running_queue.size();
 		while(size--){
 			auto job = running_queue.front(); running_queue.pop_front();
@@ -161,6 +161,7 @@ public:
 			}
 			else{ // push back to running_queue
 				job.execution_time += time_quantum;
+				current_time += time_quantum;
 				running_queue.push_back(job);
 			}
 		}
@@ -191,8 +192,15 @@ void test_scheduler(){
 		for(auto p: running_queue) p.print();
 		cout<<endl;
 	}
-		
-	
+	double total_wait_time = 0;
+	double total_turnaround_time = 0;
+	for(auto p: done_queue){
+		p.print();
+		total_wait_time += p.wait_time;
+		total_turnaround_time += p.turnaround_time;
+	}
+	cout<<"Average waiting time:     "<<total_wait_time / done_queue.size()<<endl;
+	cout<<"Average turn around time: "<<total_turnaround_time / done_queue.size()<<endl;
 	
 	
 
