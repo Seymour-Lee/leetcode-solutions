@@ -1,11 +1,13 @@
 #include <iostream>
 #include <vector>
+#include <deque>
 
 #include "template.h"
 #include "myvector.h"
 #include "Vector.h"
 #include "String.h"
 #include "round_robin.h"
+#include "rrscheduler.h"
 
 using namespace std;
 
@@ -102,6 +104,10 @@ int strcmp1(const char *s1, const char *s2){
 int main(){
     // cout<<(int)'\0'<<endl;;
     // test_round_robin();
-    test_scheduler();
+    // test_scheduler();
+    // deque<int> dq = {1, 2, 3, 4, 5};
+    // for(auto it = dq.begin(); it != dq.end(); it++) cout<<*it<<" ";
+
+
     return 0;
 }

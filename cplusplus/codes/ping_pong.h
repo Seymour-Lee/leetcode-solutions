@@ -10,4 +10,43 @@
 //       pong(): receive req, return data
 
 
+#include <stdio.h>
+#include <stdlib.h>
 
+struct Request;
+
+extern char *msgError;
+
+
+
+int Send(const void *buf, size_t size, int destination, Request *r);
+
+int Recv(void *buf, size_t size, int source, Request *r);
+
+int Wait(Request *r, size_t size);
+
+double GetTimeNS();
+
+int Rank();
+
+int Size();
+
+void ping(const int destination){
+
+}
+
+void pong(const int destination){
+
+}
+
+int main(int, char *[]){
+    int size = Size();
+    int rank = Rank();
+    if(size < 2){
+        fprintf(stderr, "Fatal error: need at least two hosts\n");
+    }
+    if(rank == 0)
+
+
+    return 0;
+}
