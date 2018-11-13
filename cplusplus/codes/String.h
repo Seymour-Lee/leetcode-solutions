@@ -1,6 +1,8 @@
 #include <iostream>
+#include <memory>
 
 using namespace std;
+
 
 class String{
 public:
@@ -37,7 +39,9 @@ public:
     bool operator == (const String& a);
 
     friend ostream& operator << (ostream& os, const String& str);
-    friend istream& operator >> (istream& is, const String& str);
+    friend istream& operator >> (istream& is, const String& str){
+        
+    }
 
 private:
     size_t _size;

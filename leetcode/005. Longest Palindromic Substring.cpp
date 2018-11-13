@@ -31,3 +31,29 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if(s.size() <= 1) return s;
+        string ans = string(1, s[0]);
+        vector<vector<int>> dp(s.size(), vector<int>(s.size(), 0));
+        for(int i = 0; i < dp.size(); i++) dp[i][i] = 1;
+        for(int i = 0; i < dp.size()-1; i++){
+            if(s[i] == s[i+1]){
+                dp[i][i+1] = 2;
+                ans = s.substr(i, 2);
+            }
+        }
+        for(int len = 3; len <= s.size(); len++){
+            for(int i = 0; i+len-1 < s.size(); i++){
+                int j = i+len-1;
+                if(s[i] == s[j] && dp[i+1][j-1] != 0){
+                    dp[i][j] = dp[i+1][j-1]+2;
+                    if(dp[i][j] > ans.size()) ans = s.substr(i, len);
+                }
+            }
+        }
+        return ans;
+    }
+};

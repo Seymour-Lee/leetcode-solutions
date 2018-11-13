@@ -32,6 +32,16 @@ int Rank();
 int Size();
 
 void ping(const int destination){
+    Request r;
+    char buf[8];
+    int flag;
+    double start_time = GetTimeNS();
+    if(Send(&buf, sizeof(buf), destination, &r) != 0){
+        throw "send error";
+    }
+    if(Wait(&r, sizeof(buf)) != 0){
+        throw "";
+    }
 
 }
 
@@ -45,7 +55,7 @@ int main(int, char *[]){
     if(size < 2){
         fprintf(stderr, "Fatal error: need at least two hosts\n");
     }
-    if(rank == 0)
+    if(rank == 0);
 
 
     return 0;

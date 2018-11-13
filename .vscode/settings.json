@@ -17,7 +17,14 @@
         "limits": "cpp",
         "chrono": "cpp",
         "vector": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "new": "cpp",
+        "memory": "cpp",
+        "cstddef": "cpp",
+        "exception": "cpp",
+        "stdexcept": "cpp",
+        "type_traits": "cpp",
+        "typeinfo": "cpp"
     },
     "clang.cxxflags": [
         "-std=c++11"
