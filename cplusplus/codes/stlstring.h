@@ -51,8 +51,8 @@ public:
 
     void push_back(value_type __value){
         iterator __new_buffer = new value_type[_size+1];
-        std::uninitialized_copy(_buffer, _buffer+_size, __new_buffer);
-        *(__new_buffer+_size+1) = __value;
+        std::copy(_buffer, _buffer+_size, __new_buffer);
+        *(__new_buffer+_size) = __value;
         delete[] _buffer;
         _size++;
         _buffer = __new_buffer;
@@ -76,6 +76,7 @@ public:
     
 
     friend std::ostream& operator << (std::ostream &os, const stl_basic_string& __val){
+        std::cout<<__val.size()<<std::endl;
         for(size_type i = 0; i < __val.size(); i++) os.put(__val._buffer[i]);
         return os;
     }
@@ -104,8 +105,10 @@ typedef stl_basic_string<char> stlstring;
 
 void test_stlstring(){
     stlstring a("abcdef"), b("ghijk");
+    a.push_back('a');
     std::cout<<a<<std::endl;
-    std::cout<<a.substr(1, 2)<<std::endl;
+    // std::cout<<(*a.end())<<std::endl;
+    std::cout<<a.substr(1, 6)<<std::endl;
     stlstring c = a+b;
     std::cout<<c<<std::endl;
 }
