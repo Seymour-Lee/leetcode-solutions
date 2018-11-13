@@ -17,7 +17,8 @@ struct job{
 
 int process_run_queue(std::deque<job> &run_queue,
                       std::deque<job> &done_queue,
-                      int time_quantum)
+                      int time_quantum,
+                      int current_time)
 {
     int time_consumed = 0;
     job proc = run_queue.front();
@@ -39,8 +40,10 @@ int process_run_queue(std::deque<job> &run_queue,
 
     if(finish) done_queue.push_back(proc);
     else run_queue.push_back(proc);
+
+    // cout<<"current_time "<<current_time<<", "
     
-    return time_quantum;
+    return time_consumed;
 }
 
 void calculate_round_robin(std::deque<job> &global_queue,
@@ -64,8 +67,10 @@ void calculate_round_robin(std::deque<job> &global_queue,
                 global_queue.pop_front();
             }
         }
-        current_time += process_run_queue(run_queue, done_queue, time_quantum);
+        current_time += process_run_queue(run_queue, done_queue, time_quantum, current_time);
     }
+    cout<<"current_time is "<<current_time<<endl;
+
 }
 
 void test_rrschedual(){
@@ -82,6 +87,9 @@ void test_rrschedual(){
     //     {3, 2, 5, 0, 0, 0},
     //     {4, 3, 3, 0, 0, 0},
     // };
+
+    // t = 0, 0 comes, [0].exe = 2, [0].wait = 0,
+    // t = 2
     std::deque<job> done_queue;
     calculate_round_robin(jobs, done_queue, 2);
     fprintf(stdout, "pid\t arrival_time\t job_time\t execution_time\t turnaround\t waiting_time\n");

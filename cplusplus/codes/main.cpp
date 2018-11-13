@@ -167,7 +167,7 @@ int main(){
     // test_scheduler();
     // deque<int> dq = {1, 2, 3, 4, 5};
     // for(auto it = dq.begin(); it != dq.end(); it++) cout<<*it<<" ";
-    // test_rrschedual();
+    test_rrschedual();
     // test_vector();
     // test_vector_destructor();
     // test_stlvector();
@@ -176,7 +176,7 @@ int main(){
     // stlstring a(b.subvec(0));
     // for(auto ch: a) cout<<ch;
     // test_mystring();
-     test_stlstring();
+    // test_stlstring();
     // int buf[19];
     // cout<<sizeof(buf)<<endl;
     // cout<<sizeof(int)<<endl;
