@@ -17,3 +17,28 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int largestOverlap(vector<vector<int>>& A, vector<vector<int>>& B) {
+        vector<int> apos;
+        vector<int> bpos;
+        for(int i = 0; i < A.size(); i++){
+            for(int j = 0; j < A[i].size(); j++){
+                if(A[i][j] == 1){
+                    apos.push_back(i*100+j);
+                }
+                if(B[i][j] == 1){
+                    bpos.push_back(i*100+j);
+                }
+            }
+        }
+        map<int, int> delta2num;
+        for(auto a: apos) for(auto b: bpos){
+            delta2num[a-b]++;
+        }
+        int ans = 0;
+        for(auto p: delta2num) ans = max(ans, p.second);
+        return ans;
+    }
+};
