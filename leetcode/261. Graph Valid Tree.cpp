@@ -33,3 +33,28 @@ private:
         updateRoot(roots, right, root);
     }
 };
+
+class Solution {
+public:
+    bool validTree(int n, vector<pair<int, int>>& edges) {
+        vector<int> p(n, -1);
+        for(auto e: edges){
+            if(u(p, e.first, e.second) == false) return false;
+        }
+        return count(p.begin(), p.end(), -1) == 1;
+    }
+    
+private:
+    int f(vector<int> &p, int x){
+        if(p[x] == -1) return x;
+        return f(p, p[x]);
+    }
+    
+    bool u(vector<int> &p, int x, int y){
+        int xp = f(p, x);
+        int yp = f(p, y);
+        if(xp == yp) return false;
+        p[xp] = yp;
+        return true;
+    }
+};

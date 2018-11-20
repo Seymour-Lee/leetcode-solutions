@@ -32,3 +32,39 @@ private:
         bool operator< (const triple &tri) const {return t > tri.t;}
     };
 };
+
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size();
+        vector<int> p(n*n, -2);
+        vector<pair<int, int>> poss(n*n);
+        int front = grid.front().front();
+        int back = grid.back().back();
+        for(int i = 0; i < n; i++) for(int j = 0; j < n; j++) poss[grid[i][j]] = {i, j};
+        for(int k = 0; k < n*n; k++){
+            auto pos = poss[k];
+            int i = pos.first;
+            int j = pos.second;
+            p[grid[i][j]] = -1;
+            if(i-1 >= 0 && p[grid[i-1][j]] != -2) u(p, grid[i][j], grid[i-1][j]);
+            if(i+1 < n && p[grid[i+1][j]] != -2) u(p, grid[i][j], grid[i+1][j]);
+            if(j-1 >= 0 && p[grid[i][j-1]] != -2) u(p, grid[i][j], grid[i][j-1]);
+            if(j+1 < n && p[grid[i][j+1]] != -2) u(p, grid[i][j], grid[i][j+1]);
+            if(p[front] != -2 && p[back] != -2 && f(p, front) == f(p, back)) return k;
+        }
+        return n*n-1;
+    }
+    
+private:
+    int f(vector<int> &p, int x){
+        if(p[x] == -1) return x;
+        return f(p, p[x]);
+    }
+    
+    void u(vector<int> &p, int x, int y){
+        int xp = f(p, x);
+        int yp = f(p, y);
+        if(xp != yp) p[xp] = yp;
+    }
+};

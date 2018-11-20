@@ -25,3 +25,24 @@ private:
         }
     }
 };
+
+class Solution {
+public:
+    int countComponents(int n, vector<pair<int, int>>& edges) {
+        vector<int> p(n, -1);
+        for(auto e: edges) u(p, e.first, e.second);
+        return count(p.begin(), p.end(), -1);
+    }
+    
+private:
+    int f(vector<int> &p, int x){
+        if(p[x] == -1) return x;
+        return f(p, p[x]);
+    }
+    
+    void u(vector<int> &p, int x, int y){
+        int xp = f(p, x);
+        int yp = f(p, y);
+        if(xp != yp) p[xp] = yp;
+    }
+};

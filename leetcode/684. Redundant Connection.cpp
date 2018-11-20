@@ -14,3 +14,30 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        vector<int> p(edges.size(), -1);
+        for(auto e: edges){
+            if(u(p, e[0]-1, e[1]-1) == false) return e;
+        }
+        return edges.back();
+    }
+    
+private:
+    int f(vector<int> &p, int x){
+        if(p[x] == -1) return x;
+        return f(p, p[x]);
+    }
+    
+    bool u(vector<int> &p, int x, int y){
+        int xp = f(p, x);
+        int yp = f(p, y);
+        if(xp != yp){
+            p[xp] = yp;
+            return true;
+        }
+        return false;
+    }
+};
