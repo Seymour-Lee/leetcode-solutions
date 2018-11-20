@@ -1,12 +1,22 @@
 # Solutions of Leetcode
 
-单调栈？？？
+## Chapter 1 Array
 
-### 001. Two Sum
 
-**Description**
 
-Given an array of integers and a target value, find two indices of the array such that nums[i] + nums[j] == target.
 
-**Solution One - Brute Force**
+
+## Chapter 2 List
+
+
+
+
+
+## Chapter 3 Union-Find
+
+
+
+## Chapter 4 Trie
+
+
 

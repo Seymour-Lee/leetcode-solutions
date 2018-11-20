@@ -19,3 +19,29 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int minSwapsCouples(vector<int>& row) {
+        int n = row.size()/2;
+        count = n;
+        p = vector<int>(n, -1);
+        for(int i = 0; i < n; i++) u(row[2*i]/2, row[2*i+1]/2);
+        return n-count;
+    }
+    
+private:
+    int count;
+    vector<int> p;
+    
+    int f(int x){
+        if(p[x] == -1) return x;
+        return f(p[x]);
+    }
+    
+    void u(int x, int y){
+        int xp = f(x);
+        int yp = f(y);
+        if(xp != yp) p[xp] = yp, count--;
+    }
+};
