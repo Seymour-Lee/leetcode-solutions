@@ -38,3 +38,26 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<string> letterCasePermutation(string S) {
+        vector<string> ans;
+        backtracking(S, 0, ans);
+        return ans;
+    }
+    
+private:
+    void backtracking(string str, int pos, vector<string> &ans){
+        if(pos == str.size()){
+            ans.push_back(str);
+            return;
+        }
+        if(isdigit(str[pos])) backtracking(str, pos+1, ans);
+        else{
+            backtracking(str, pos+1, ans);
+            str[pos] = ('a' <= str[pos] && str[pos] <= 'z'? str[pos] + 'A'-'a': str[pos] + 'a'-'A');
+            backtracking(str, pos+1, ans);
+        }
+    }
+};
