@@ -13,3 +13,18 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        int diff = 0;
+        for(auto num: nums) diff = diff ^ num;
+        diff = diff & (-diff);
+        vector<int> ans = {0, 0};
+        for(auto num: nums){
+            if((num & diff) == 0) ans[0] = ans[0] ^ num;
+            else ans[1] = ans[1] ^ num;
+        }
+        return ans;
+    }
+};
