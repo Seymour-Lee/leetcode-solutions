@@ -1,6 +1,24 @@
 class Solution {
 public:
     int jump(vector<int>& nums) {
+        if(nums.size() <= 1) return 0;
+        vector<int> dp(nums.size(), INT_MAX);
+        dp[0] = 0;
+        int farest = 0;
+        for(int i = 0; i < nums.size(); i++){
+            if(i+nums[i] >= nums.size()-1) return dp[i]+1;
+            for(int j = farest+1; j <= nums[i]+i; j++){
+                dp[j] = dp[i]+1;
+            }
+            farest = max(farest, i+nums[i]);
+        }
+        return dp.back();
+    }
+};
+
+class Solution {
+public:
+    int jump(vector<int>& nums) {
         if (nums.size() <= 1) return 0;
         int reach = nums[0];
         int from = 0;
