@@ -54,3 +54,49 @@ private:
         return root;
     }
 };
+
+class Trie{
+public:
+    Trie(){
+        children = vector<Trie *>(2, nullptr);
+    }
+    
+    void insert(int num){
+        Trie *node = this;
+        for(int pos = 31; pos >= 0; pos--){
+            int i = 1 & (num >> pos);
+            if(node->children[i] == nullptr) node->children[i] = new Trie();
+            node = node->children[i];
+        }
+    }
+    
+    int maxdiff(int num){
+        Trie *node = this;
+        int ans = 0;
+        for(int pos = 31; pos >= 0; pos--){
+            int i = 1 & (num >> pos);
+            if(node->children[i^1] != nullptr) i = i^1;
+            if(node->children[i] == nullptr){
+                ans = ans | ((~0) >> (31-pos));
+                break;
+            }
+            ans = ans | (i << pos);
+            node = node->children[i];
+        }
+        return ans ^ num;
+    }
+    
+private:
+    vector<Trie *> children;
+};
+
+class Solution {
+public:
+    int findMaximumXOR(vector<int>& nums) {
+        Trie *trie = new Trie();
+        for(auto num: nums) trie->insert(num);
+        int ans = 0;
+        for(auto num: nums) ans = max(ans, trie->maxdiff(num));
+        return ans;
+    }
+};

@@ -113,3 +113,75 @@ private:
  * obj.addWord(word);
  * bool param_2 = obj.search(word);
  */
+
+
+class Trie {
+public:
+    Trie(){
+        children = vector<Trie *>(26, nullptr);
+        end = false;
+    }
+    
+    void insert(string str){
+        Trie *node = this;
+        for(auto c: str){
+            int i = c-'a';
+            if(node->children[i] == nullptr) node->children[i] = new Trie();
+            node = node->children[i];
+        }
+        node->end = true;
+    }
+    
+    bool search(string str){
+        queue<Trie *> q;
+        q.push(this);
+        for(auto c: str){
+            int size = q.size();
+            while(size--){
+                auto node = q.front(); q.pop();
+                if(c == '.'){
+                    for(auto kid: node->children) if(kid) q.push(kid);
+                }
+                else{
+                    if(node->children[c-'a']) q.push(node->children[c-'a']);
+                }
+            }
+        }
+        while(q.empty() == false){
+            if(q.front()->end) return true;
+            q.pop();
+        }
+        return false;
+    }
+private:
+    vector<Trie *> children;
+    bool end;
+};
+
+class WordDictionary {
+public:
+    /** Initialize your data structure here. */
+    WordDictionary() {
+        trie = new Trie();
+    }
+    
+    /** Adds a word into the data structure. */
+    void addWord(string word) {
+        trie->insert(word);
+    }
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    bool search(string word) {
+        return trie->search(word);
+    }
+    
+private:
+    Trie *trie;
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * bool param_2 = obj.search(word);
+ */
