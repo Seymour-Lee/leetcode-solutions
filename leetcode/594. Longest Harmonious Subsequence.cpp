@@ -17,3 +17,19 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int findLHS(vector<int>& nums) {
+        map<int, int> num2freq;
+        for(auto num: nums) num2freq[num]++;
+        int ans = 0;
+        for(auto p: num2freq){
+            auto prev = num2freq.find(p.first-1);
+            auto next = num2freq.find(p.first+1);
+            if(prev != num2freq.end()) ans = max(ans, p.second + prev->second);
+            if(next != num2freq.end()) ans = max(ans, p.second + next->second);
+        }
+        return ans;
+    }
+};
