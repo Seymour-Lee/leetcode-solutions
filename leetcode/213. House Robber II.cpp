@@ -28,3 +28,26 @@ public:
         return max(max0, max1);
     }
 };
+
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        if(nums.size() == 1) return nums[0];
+        // do not rob [n-1]
+        int odd = 0, even = 0;
+        for(int i = 0; i < nums.size()-1; i++){
+            if(i % 2 == 1) odd = max(odd+nums[i], even);
+            else even = max(even+nums[i], odd);
+        }
+        int max0 = max(odd, even);
+        // do not rob [0]
+        odd = 0, even = 0;
+        for(int i = 1; i < nums.size(); i++){
+            if(i % 2 == 1) odd = max(odd+nums[i], even);
+            else even = max(even+nums[i], odd);
+        }
+        int max1 = max(odd, even);
+        return max(max0, max1);
+    }
+};

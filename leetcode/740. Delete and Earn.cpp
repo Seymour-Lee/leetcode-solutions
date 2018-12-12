@@ -35,3 +35,19 @@ public:
         return max(dp.back(), dp[maxval+1-2]);
     }
 };
+
+class Solution {
+public:
+    int deleteAndEarn(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        int maxval = *max_element(nums.begin(), nums.end());
+        vector<int> houses(maxval+1, 0);
+        for(auto num: nums) houses[num] += num;
+        int odd = 0, even = 0;
+        for(int i = 0; i < houses.size(); i++){
+            if(i % 2 == 0) even = max(even+houses[i], odd);
+            else odd = max(odd+houses[i], even);
+        }
+        return max(odd, even);
+    }
+};

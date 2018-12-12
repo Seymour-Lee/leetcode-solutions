@@ -30,3 +30,32 @@ public:
         return ans;
     }
 };
+
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public:
+    int minMeetingRooms(vector<Interval>& intervals) {
+        vector<pair<int, bool>> itvs;
+        for(auto e: intervals){
+            itvs.push_back({e.start, true});
+            itvs.push_back({e.end, false});
+        }
+        auto f = [](pair<int, bool> a, pair<int, bool> b){return a.first < b.first;};
+        sort(itvs.begin(), itvs.end());
+        int ans = 0;
+        int counter = 0;
+        for(auto itv: itvs){
+            counter += itv.second? 1: -1;
+            ans = max(ans, counter);
+        }
+        return ans;
+    }
+};
