@@ -19,3 +19,20 @@ private:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int tallestBillboard(vector<int>& rods) {
+        unordered_map<int, int> dp;
+        dp[0] = 0;
+        for(auto r: rods){
+            unordered_map<int, int> prev(dp);
+            for(auto p: prev){
+                int len = p.first;
+                dp[len+r] = max(dp[len+r], prev[len]);
+                dp[abs(len-r)] = max(dp[abs(len-r)], prev[len]+min(r, len));
+            }
+        }
+        return dp[0];
+    }
+};
