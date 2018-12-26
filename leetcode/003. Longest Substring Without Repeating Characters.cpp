@@ -21,3 +21,25 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s.size() <= 1) return s.size();
+        int ans = 1;
+        unordered_set<char> seen;
+        seen.insert(s[0]);
+        int i = 0, j = 1;
+        while(i < s.size() && j < s.size()){
+            if(seen.find(s[j]) == seen.end()){
+                seen.insert(s[j++]);
+                ans = max(ans, j-i);
+            }
+            else{
+                if(s[i] == s[j]) i++, j++;
+                else seen.erase(s[i++]);
+            }
+        }
+        return ans;
+    }
+};

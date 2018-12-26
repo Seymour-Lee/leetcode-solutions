@@ -21,3 +21,21 @@ public:
         return stk.top() == '$';
     }
 };
+
+class Solution {
+public:
+    bool isValid(string s) {
+        unordered_map<char, char> r2l = {{')', '('},
+                                         {']', '['},
+                                         {'}', '{'}};
+        stack<char> stk;
+        for(auto c: s){
+            if(c == '(' || c == '[' || c == '{') stk.push(c);
+            if(c == ')' || c == ']' || c == '}'){
+                if(stk.empty() == false && r2l[c] == stk.top()) stk.pop();
+                else return false;
+            }
+        }
+        return stk.empty();
+    }
+};

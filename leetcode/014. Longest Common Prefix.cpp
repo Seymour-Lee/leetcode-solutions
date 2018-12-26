@@ -76,3 +76,17 @@ public:
         return trie->longestPrefix();
     }
 };
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if(strs.size() == 0) return "";
+        string ans = strs.back(); strs.pop_back();
+        for(auto str: strs){
+            int i = 0;
+            while(i < min(ans.size(), str.size()) && ans[i] == str[i]) i++;
+            ans = ans.substr(0, i);
+        }
+        return ans;
+    }
+};
