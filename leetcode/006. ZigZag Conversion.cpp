@@ -15,3 +15,26 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        string ans = "";
+        if(numRows == 1) return s;
+        vector<string> rows(min((int)s.size(), numRows), "");
+        bool down = true;
+        int r = 0;
+        for(auto c: s){
+            if(down){
+                if(r < numRows) rows[r++] += c;
+                else down = false, r = r-2, rows[r--] += c;
+            }
+            else{
+                if(r >= 0) rows[r--] += c;
+                else down = true, r = r+2, rows[r++] += c;
+            }
+        }
+        for(auto str: rows) ans += str;
+        return ans;
+    }
+};
