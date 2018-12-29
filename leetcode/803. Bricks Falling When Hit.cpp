@@ -75,3 +75,73 @@ private:
         return x >= 0 && x < n && y >= 0 && y < m;
     }
 };
+
+class Solution {
+public:
+    vector<int> hitBricks(vector<vector<int>>& g, vector<vector<int>>& hits) {
+        m = g.size();
+        n = g[0].size();
+        p = vector<int>(m*n, -1);
+        r = vector<bool>(m*n, false);
+        cnt = vector<int>(m*n, 1);
+        for(auto &h: hits){
+            if(g[h[0]][h[1]]) g[h[0]][h[1]] = 0;
+            else h[0] = -1;
+        }
+        for(int j = 0; j < g[0].size(); j++) r[idx(0, j)] = true;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(g[i][j] == 0) continue;
+                if(v(i+1, j) && g[i+1][j]) u(idx(i, j), idx(i+1, j));
+                if(v(i, j+1) && g[i][j+1]) u(idx(i, j), idx(i, j+1));
+            }
+        }
+        vector<int> ans(hits.size(), 0);
+        for(int i = hits.size()-1; i >= 0; i--){
+            auto h = hits[i];
+            if(h[0] == -1) continue;
+            int x = h[0], y = h[1];
+            int num = 0;
+            for(auto d: dir){
+                int nx = x + d[0];
+                int ny = y + d[1];
+                if(v(nx, ny) && g[nx][ny]){
+                    num += u(idx(x, y), idx(nx, ny));
+                }
+            }
+            g[x][y] = 1;
+            if(r[idx(x, y)]) ans[i] = num;
+        }
+        return ans;
+    }
+    
+private:
+    int m;
+    int n;
+    vector<int> p;
+    vector<bool> r;
+    vector<int> cnt;
+    vector<vector<int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    
+    bool v(int i, int j){
+        return 0 <= i && i < m && 0 <= j && j < n;
+    }
+    
+    int idx(int i, int j){return i * n + j;};
+    
+    int f(int x){
+        if(p[x] == -1) return x;
+        return p[x] = f(p[x]);
+    }
+    
+    int u(int x, int y){
+        int px = f(x);
+        int py = f(y);
+        if(px == py) return 0;
+        int cnty = r[py]? 0: cnt[py];
+        cnt[px] += cnt[py];
+        r[px] = r[py] = r[px] || r[py];
+        p[py] = px;
+        return cnty;
+    }
+};
