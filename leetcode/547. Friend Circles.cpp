@@ -53,3 +53,32 @@ private:
         }
     }
 };
+
+
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& M) {
+        int n = M.size();
+        vector<int> p(n, -1);
+        for(int i = 0; i < n; i++){
+            for(int j = i+1; j < n; j++){
+                if(M[i][j] == 1) u(p, i, j);
+            }
+        }
+        int ans = 0;
+        for(auto e: p) ans += e == -1? 1: 0;
+        return ans;
+    }
+    
+private:
+    void u(vector<int> &p, int x, int y){
+        int px = f(p, x);
+        int py = f(p, y);
+        if(px != py) p[px] = py;
+    }
+    
+    int f(vector<int> &p, int x){
+        if(p[x] == -1) return x;
+        return p[x] = f(p, p[x]);
+    }
+};
