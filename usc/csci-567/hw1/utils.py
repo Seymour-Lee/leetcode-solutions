@@ -1,11 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import List
 
 #TODO: Information Gain function
 def Information_Gain(S, branches):
     # S: float
     # branches: List[List[any]]
     # return: float
+    pass
 
 
 # TODO: implement reduced error pruning
@@ -13,6 +15,7 @@ def reduced_error_pruning(decisionTree, X_test, y_test):
     # decisionTree
     # X_test: List[List[any]]
     # y_test: List[any]
+    pass
 
 
 # print current tree
@@ -40,31 +43,54 @@ def print_tree(decisionTree, node=None, name='branch 0', indent='', deep=0):
 #KNN Utils
 
 #TODO: implement F1 score
-def f1_score(real_labels: List[int], predicted_labels: List[int]) -> float:
+def f1_score(real_labels, predicted_labels) -> float:
     """
     f1 score: https://en.wikipedia.org/wiki/F1_score
     """
     assert len(real_labels) == len(predicted_labels)
-
-    raise NotImplementedError
-    
+    # print(len(real_labels), len(predicted_labels))
+    tp = sum([x == 1.0 and y == 1.0 for x, y in zip(real_labels, predicted_labels)])# 0.0
+    fn = sum([x == 1.0 and y == 0.0 for x, y in zip(real_labels, predicted_labels)])# 0.0
+    fp = sum([x == 0.0 and y == 1.0 for x, y in zip(real_labels, predicted_labels)])# 0.0
+    tn = sum([x == 0.0 and y == 0.0 for x, y in zip(real_labels, predicted_labels)])# 0.0
+    # for i in range(len(real_labels)):
+    #     print(int(real_labels[i]), int(np.float64(predicted_labels[i])))
+    #     if int(real_labels[i]) is int(np.float64(predicted_labels[i])):
+    #         print(int(real_labels[i]) == 1, '-----------------')
+    #         if int(real_labels[i]) is 1:
+    #             tp += 1.0
+    #         else:
+    #             tn += 1.0
+    #     else:
+    #         if int(real_labels[i]) is 1:
+    #             fn += 1.0
+    #         else:
+    #             fp += 1.0
+    # print(tp, fn, fp, tn)
+    precision = tp / (tp + fp + np.finfo(float).eps)
+    recall = tp / (tp + fn + np.finfo(float).eps)
+    # print(precision, recall)
+    return 2.0 * precision * recall / (precision + recall + np.finfo(float).eps)
+    # raise NotImplementedError
     
 #TODO: Euclidean distance, inner product distance, gaussian kernel distance and cosine similarity distance
 
 def euclidean_distance(point1: List[float], point2: List[float]) -> float:
-    raise NotImplementedError
-
+    return np.sqrt(np.inner(np.subtract(point1, point2), np.subtract(point1, point2)))
+    # raise NotImplementedError
 
 def inner_product_distance(point1: List[float], point2: List[float]) -> float:
-    raise NotImplementedError
-
+    return np.inner(point1, point2)
+    # raise NotImplementedError
 
 def gaussian_kernel_distance(point1: List[float], point2: List[float]) -> float:
-    raise NotImplementedError
-
+    one_minus_two = np.subtract(point1, point2)
+    return -np.exp(-(1/2)*np.inner(one_minus_two, one_minus_two))
+    # raise NotImplementedError
 
 def cosine_sim_distance(point1: List[float], point2: List[float]) -> float:
-    raise NotImplementedError
+    return np.dot(point1, point2)/(np.linalg.norm(point1)*(np.linalg.norm(point2)))
+    # raise NotImplementedError
     
 class NormalizationScaler:
     def __init__(self):
@@ -76,7 +102,10 @@ class NormalizationScaler:
         if the input features = [[3, 4], [1, -1], [0, 0]],
         the output should be [[0.6, 0.8], [0.707107, -0.707107], [0, 0]]
         """
-        raise NotImplementedError
+        inners = []
+        for f in features:
+            inners.append(np.sqrt(np.inner(f, f)))
+        return np.divide(features, f)
 
 
 class MinMaxScaler:
