@@ -117,13 +117,17 @@ class KNN:
         best_scaler = None
         best_scaler_name = None
 
+        scaling_objects = {}
+        for scaling_name, scaler in scaling_classes.items():
+            scaling_objects[scaling_name] = scaler()
+
         # find k and dis_func
         for i in range(int(len(model.xs)/2)):
             k = i * 2 + 1
             model.k = k
             for name, func in distance_funcs.items():
                 model.distance_function = func
-                for scaling_name, scaler in scaling_classes.items():
+                for scaling_name, scaler in scaling_objects.items():
                     # valid set
                     scaled = scaler(Xval)
                     v_labels = model.predict(scaled)
