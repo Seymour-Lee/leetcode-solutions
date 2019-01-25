@@ -38,3 +38,27 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows <= 1) return s;
+        vector<string> strs(numRows, "");
+        bool down = true;
+        int row = 0;
+        for(int i = 0; i < s.size(); i++){
+            strs[row] += s[i];
+            if(down){
+                if(row+1 == numRows) down = false, row--;
+                else row++;
+            }
+            else{
+                if(row == 0) down = true, row++;
+                else row--;
+            }
+        }
+        string ans = "";
+        for(auto str: strs) ans += str;
+        return ans;
+    }
+};

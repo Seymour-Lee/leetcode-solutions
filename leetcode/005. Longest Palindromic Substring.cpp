@@ -75,3 +75,21 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if(s.size() <= 1) return s;
+        vector<vector<int>> dp(s.size(), vector<int>(s.size(), 0));
+        string ans = string(1, s[0]);
+        for(int i = 0; i < s.size(); i++) dp[i][i] = 1;
+        for(int i = 0; i < s.size()-1; i++) if(s[i] == s[i+1]) ans = s.substr(i, 2), dp[i][i+1] = 2;
+        for(int len = 3; len <= s.size(); len++){
+            for(int i = 0, j = i+len-1; j < s.size(); i++, j++) if(dp[i+1][j-1] != 0){
+                dp[i][j] = s[i] == s[j]? dp[i+1][j-1]+2: 0;
+                if(dp[i][j] != 0) ans = s.substr(i, len);
+            }
+        }
+        return ans;
+    }
+};

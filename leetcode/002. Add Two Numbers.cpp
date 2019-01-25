@@ -61,3 +61,32 @@ public:
         return dummy->next;
     }
 };
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *dummy = new ListNode(-1);
+        int c = 0;
+        ListNode *cur = dummy;
+        while(l1 || l2){
+            int a = l1? l1->val: 0;
+            int b = l2? l2->val: 0;
+            int val = (a+b+c)%10;
+            c = (a+b+c)/10;
+            cur->next = new ListNode(val);
+            cur = cur->next;
+            l1 = l1? l1->next: l1;
+            l2 = l2? l2->next: l2;
+        }
+        if(c) cur->next = new ListNode(c);
+        return dummy->next;
+    }
+};

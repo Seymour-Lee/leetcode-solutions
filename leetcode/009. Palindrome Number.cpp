@@ -23,3 +23,27 @@ public:
         return a == b;
     }
 };
+
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x <= 0) return x == 0;
+        string num = to_string(x);
+        return num == string(num.rbegin(), num.rend());
+    }
+};
+
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x <= 0) return x == 0;
+        int ans = 0;
+        int cur = x;
+        while(cur){
+            if(ans*10/5 != ans+ans) return false;
+            ans = ans * 10 + cur % 10;
+            cur = cur / 10;
+        }
+        return ans == x;
+    }
+};

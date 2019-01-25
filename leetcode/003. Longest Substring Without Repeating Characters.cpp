@@ -43,3 +43,17 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int i = 0, j = 0;
+        unordered_set<char> chars;
+        int ans = 0;
+        while(i <= j && j < s.size()){
+            if(chars.find(s[j]) == chars.end()) chars.insert(s[j++]), ans = max(ans, j-i);
+            else chars.erase(s[i++]);
+        }
+        return ans;
+    }
+};
