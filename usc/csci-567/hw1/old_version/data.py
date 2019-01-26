@@ -1,5 +1,6 @@
-import numpy as np
-import pandas as pd
+import math
+from typing import List, Tuple
+import numpy
 
 
 # ''' All data utilities are here'''
@@ -17,6 +18,7 @@ def sample_decision_tree_test():
 
 
 def load_decision_tree_data():
+    import numpy as np
     f = open('car.data', 'r')
     white = [[int(num) for num in line.split(',')] for line in f]
     white = np.asarray(white)
@@ -35,6 +37,8 @@ def load_decision_tree_data():
 
 
 def data_processing():
+    import pandas as pd
+    import numpy as np
     white = pd.read_csv('heart_disease.csv', low_memory=False, sep=',', na_values='?').values
 
     [N, d] = white.shape
@@ -52,8 +56,21 @@ def data_processing():
     yval = white[ntr:ntr + nval].T[-1].T
     Xtest = np.append([np.ones(ntest)], white[-ntest:].T[:-1], axis=0).T
     ytest = white[-ntest:].T[-1].T
-    # print(Xtrain.shape, ytrain.shape, Xval.shape, yval.shape, Xtest.shape, ytest.shape)
+
+    #     print(Xtrain.shape, ytrain.shape, Xval.shape, yval.shape, Xtest.shape, ytest.shape)
+
     return Xtrain, ytrain, Xval, yval, Xtest, ytest
+
+
+def test_processing():
+    import pandas as pd
+    import numpy as np
+    test = pd.read_csv('test.csv', low_memory=False, sep=',', na_values='?', header=0).values
+    # prepare data
+    # spliting training, validation, and test
+    Xtest = np.append([np.ones(test.shape[0])], test.T, axis=0).T
+
+    return Xtest
 
 
 def most_common(lst):
