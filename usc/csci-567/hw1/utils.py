@@ -43,25 +43,37 @@ def print_tree(decisionTree, node=None, name='branch 0', indent='', deep=0):
 #TODO: implement F1 score
 def f1_score(real_labels: List[int], predicted_labels: List[int]) -> float:
     assert len(real_labels) == len(predicted_labels)
+    tp = sum([x == 1.0 and y == 1.0 for x, y in zip(real_labels, predicted_labels)])# 0.0
+    fn = sum([x == 1.0 and y == 0.0 for x, y in zip(real_labels, predicted_labels)])# 0.0
+    fp = sum([x == 0.0 and y == 1.0 for x, y in zip(real_labels, predicted_labels)])# 0.0
+    tn = sum([x == 0.0 and y == 0.0 for x, y in zip(real_labels, predicted_labels)])# 0.0
+    precision = tp / (tp + fp + np.finfo(float).eps)
+    recall = tp / (tp + fn + np.finfo(float).eps)
+    return 2.0 * precision * recall / (precision + recall + np.finfo(float).eps)
     raise NotImplementedError
 
 #TODO:
 def euclidean_distance(point1: List[float], point2: List[float]) -> float:
+    return np.sqrt(np.inner(np.subtract(point1, point2), np.subtract(point1, point2)))
     raise NotImplementedError
 
 
 #TODO:
 def inner_product_distance(point1: List[float], point2: List[float]) -> float:
+    return np.inner(point1, point2)
     raise NotImplementedError
 
 
 #TODO:
 def gaussian_kernel_distance(point1: List[float], point2: List[float]) -> float:
+    one_minus_two = np.subtract(point1, point2)
+    return -np.exp(-(1/2)*np.inner(one_minus_two, one_minus_two))
     raise NotImplementedError
 
 
 #TODO:
 def cosine_sim_distance(point1: List[float], point2: List[float]) -> float:
+    return np.dot(point1, point2)/(np.linalg.norm(point1)*(np.linalg.norm(point2)))
     raise NotImplementedError
 
 
