@@ -58,6 +58,20 @@ class TreeNode(object):
 
     #TODO: try to split current node
     def split(self):
+        root_entropy = 0.0
+        for label in np.unique(self.labels):
+            root_entropy = root_entropy - float(self.labels.count(label)) / float(len(self.labels))
+        max_info_gain = -1.0
+        best_dim = None
+        for dim in range(len(self.features)):
+            values = []
+            for p in self.features:
+                values.append(p[dim])
+            values = np.unique(values)
+            values.sort()
+            
+
+
         raise NotImplementedError
 
     # TODO: predict the branch or the class

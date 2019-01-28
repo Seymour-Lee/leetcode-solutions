@@ -7,19 +7,19 @@ def Information_Gain(S, branches):
     # S: float
     # branches: List[List[int]] num_branches * num_cls
     # return: float
-    base = 0
+    total = 0.0
     num_hsa = []
     for l in branches:
-        num = sum(l)
-        base = base + sum
+        counter = float(sum(l))
+        total = total + counter
         hsa = 0.0
         for e in l:
-            hsa = hsa - float(e)/num * np.log2(float(e)/num)
-        num_hsa.append([num, hsa])
+            hsa = hsa - float(e)/counter * np.log2(float(e)/counter)
+        num_hsa.append([counter, hsa])
     ans = 0.0
     for p in num_hsa:
-        ans = ans - p[0]/base * p[1]
-    return S - ans
+        ans = ans - p[0]/total * p[1]
+    return S + ans
     raise NotImplementedError
 
 
