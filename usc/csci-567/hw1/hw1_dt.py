@@ -32,6 +32,9 @@ class DecisionTree():
             # print ("pred: ", pred)
         return y_pred
 
+    def prune(self, features, labels):
+        self.root_node.prune(list(features), list(labels))
+
 
 class TreeNode(object):
     def __init__(self, features, labels, num_cls):
@@ -138,7 +141,7 @@ class TreeNode(object):
             return self.cls_max
         if len(self.features) == 0:
             return self.cls_max
-        
+
         dim_val = feature[self.dim_split]
         for i in range(len(self.feature_uniq_split)):
             if self.feature_uniq_split[i] == dim_val:
@@ -150,3 +153,53 @@ class TreeNode(object):
                     return self.cls_max
                 return ans
         return -1
+
+    def prune(self, features, labels):
+        if (len(self.children) == 0) or self.split is False:
+            # return {right_count, worry_count}
+            right_count = labels.count(self.cls_max)
+            worry_count = len(labels) - right_count
+            return right_count, worry_count
+
+        # iterate each child, get {right_count, worry_count}
+        # for each child, consider prune or not
+        from copy import deepcopy
+        copied_f = list(deepcopy(features))
+        copied_l = list(deepcopy(labels))
+        val_to_fs = {}
+        val_to_ls = {}
+        for i in range(len(copied_f)):
+            if copied_f[i][self.dim_split] in val_to_fs:
+                val_to_fs[copied_f[i][self.dim_split]].append(list(copied_f[i]))
+            else:
+                val_to_fs[copied_f[i][self.dim_split]] = [list(copied_f[i])]
+            if copied_f[i][self.dim_split] in val_to_ls:
+                val_to_ls[copied_f[i][self.dim_split]].append(copied_l[i])
+            else:
+                val_to_ls[copied_f[i][self.dim_split]] = [copied_l[i]]
+        kids_right_count = 0.0
+        kids_worry_count = 0.0
+        for k in val_to_fs.keys():
+            for i in range(len(val_to_fs[k])):
+                val_to_fs[k][i].pop(self.dim_split)
+            # what if key not in self.feature_uniq_split
+            if k not in self.feature_uniq_split:
+                right = val_to_ls[k].count(self.cls_max)
+                wrong = len(val_to_ls[k]) - right
+            else:
+                next_node_index = self.feature_uniq_split.index(k)
+                right, wrong = self.children[next_node_index].prune(val_to_fs[k], val_to_ls[k])
+            kids_right_count = kids_right_count + right
+            kids_worry_count = kids_worry_count + wrong
+
+        # after prunning, return {right_count, worry_count}
+        if kids_right_count + kids_worry_count != len(labels):
+            print('kids_right_count + kids_worry_count !== len(labels)')
+        
+        if kids_right_count < labels.count(self.cls_max):
+            self.children = []
+            self.splittable = False
+            return labels.count(self.cls_max), len(labels)-labels.count(self.cls_max)
+        
+        return kids_right_count, kids_worry_count
+

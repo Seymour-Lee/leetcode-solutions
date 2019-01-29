@@ -30,9 +30,7 @@ def reduced_error_prunning(decisionTree, X_test, y_test):
     # decisionTree
     # X_test: List[List[any]]
     # y_test: List
-
-    raise NotImplementedError
-
+    decisionTree.prune(X_test, y_test)
 
 # print current tree
 def print_tree(decisionTree, node=None, name='branch 0', indent='', deep=0):
