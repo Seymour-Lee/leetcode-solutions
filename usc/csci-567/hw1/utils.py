@@ -156,11 +156,13 @@ def model_selection_with_transformation(distance_funcs, scaling_classes, Xtrain,
     best_scaler_name = None
     best_f1 = -1.0
 
+    from copy import deepcopy
+
     for scaler_name, scaler_class in scaling_classes.items():
-        Xtrain_scaled = list(Xtrain)
+        Xtrain_scaled = list(deepcopy(Xtrain))
         scaler = scaler_class()
         Xtrain_scaled = scaler(Xtrain_scaled)
-        Xval_scaled = list(Xval)
+        Xval_scaled = list(deepcopy(Xval))
         Xval_scaled = scaler(Xval_scaled)
         for name, func in distance_funcs.items():
             for k in range(1, min(30, len(Xtrain)), 2):
