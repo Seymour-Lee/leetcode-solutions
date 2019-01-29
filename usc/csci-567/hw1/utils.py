@@ -14,7 +14,9 @@ def Information_Gain(S, branches):
         total = total + counter
         hsa = 0.0
         for e in l:
-            hsa = hsa - float(e)/counter * np.log2(float(e)/counter)
+            if e == 0:
+                continue
+            hsa = hsa - (float(e)/counter) * np.log2(float(e)/counter)
         num_hsa.append([counter, hsa])
     ans = 0.0
     for p in num_hsa:
@@ -28,6 +30,7 @@ def reduced_error_prunning(decisionTree, X_test, y_test):
     # decisionTree
     # X_test: List[List[any]]
     # y_test: List
+
     raise NotImplementedError
 
 

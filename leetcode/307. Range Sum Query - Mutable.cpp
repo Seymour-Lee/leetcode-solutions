@@ -176,3 +176,59 @@ private:
  * obj.update(i,val);
  * int param_2 = obj.sumRange(i,j);
  */
+
+class zkw{
+public:
+    zkw(vector<int> nums){
+        n = nums.size();
+        t = vector<int>(2*n, 0);
+        for(int i = 0; i < nums.size(); i++) t[n+i] = nums[i];
+        for(int i = n-1; i > 0; --i) t[i] = t[i*2] + t[i*2+1];
+        // for(auto e: t) cout<<e<<" "; cout<<endl;
+    }
+    
+    void u(int p, int val){
+        for(t[p+=n] = val; p > 1; p >>= 1) t[p>>1] = t[p] + t[p^1];
+        // for(auto e: t) cout<<e<<" "; cout<<endl;
+    }
+    
+    int q(int l, int r){
+        int ans = 0;
+        for(l += n, r += n; l <= r; l >>= 1, r >>= 1){
+            // cout<<l<<" "<<r-1<<endl;
+            if(l&1) ans += t[l++];
+            if((r&1) == 0) ans += t[r--];
+        }
+        return ans;
+    }
+    
+private:
+    vector<int> t;
+    int n;
+    int N = 1e5;
+};
+
+class NumArray {
+public:
+    NumArray(vector<int> nums) {
+        tree = new zkw(nums);
+    }
+    
+    void update(int i, int val) {
+        tree->u(i, val);
+    }
+    
+    int sumRange(int i, int j) {
+        return tree->q(i, j);
+    }
+    
+private:
+    zkw *tree = nullptr;
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(i,val);
+ * int param_2 = obj.sumRange(i,j);
+ */
