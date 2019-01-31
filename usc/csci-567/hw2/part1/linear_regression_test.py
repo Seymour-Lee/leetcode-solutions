@@ -1,4 +1,4 @@
-from linear_regression_sol import linear_regression_noreg,linear_regression_invertible, regularized_linear_regression, tune_lambda, mean_square_error,mapping_data
+from linear_regression import linear_regression_noreg,linear_regression_invertible, regularized_linear_regression, tune_lambda, mean_square_error,mapping_data
 from data_loader import data_processing_linear_regression
 import numpy as np
 import pandas as pd

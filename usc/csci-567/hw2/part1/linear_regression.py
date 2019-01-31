@@ -23,7 +23,8 @@ def mean_square_error(w, X, y):
     #####################################################
     # TODO 1: Fill in your code here #
     #####################################################
-    err = None
+    # err = np.square(np.dot(X.T, w) - y).mean()
+    err = np.mean(np.square(np.dot(X, w) - y))
     return err
 
 ###### Q1.2 ######
@@ -40,6 +41,7 @@ def linear_regression_noreg(X, y):
   #	TODO 2: Fill in your code here #
   #####################################################		
   w = None
+  w = np.linalg.solve(np.dot(X.T, X), np.dot(X.T, y))
   return w
 
 ###### Q1.3 ######
@@ -56,6 +58,10 @@ def linear_regression_invertible(X, y):
     # TODO 3: Fill in your code here #
     #####################################################
     w = None
+    i = 0
+    while min(np.absolute(np.linalg.eigvals(np.add(np.dot(X.T, X), 1e-1*i*np.identity(X.shape[1]))))) < 1e-5:
+      i = i+1
+    w = np.dot(np.linalg.inv(np.add(np.dot(X.T, X), 1e-1*i*np.identity(X.shape[1]))), np.dot(X.T, y))
     return w
 
 
@@ -73,7 +79,10 @@ def regularized_linear_regression(X, y, lambd):
   #####################################################
   # TODO 4: Fill in your code here #
   #####################################################		
-    w = None
+    inverse = np.linalg.inv(np.add(np.dot(X.T, X), lambd*np.identity(X.shape[1])))
+    right = np.dot(X.T, y)
+    w = np.dot(inverse, right)
+    # w = np.linalg.solve(np.add(np.dot(X.T, X), lambd*np.identity(X.shape[1])), np.dot(X.T, y))
     return w
 
 ###### Q1.5 ######
@@ -92,6 +101,16 @@ def tune_lambda(Xtrain, ytrain, Xval, yval):
     # TODO 5: Fill in your code here #
     #####################################################		
     bestlambda = None
+    besterr = float('inf')
+    lambd = 1e-19
+    while lambd <= 1e19:
+      w = regularized_linear_regression(Xtrain, ytrain, lambd)
+      err = mean_square_error(w, Xval, yval)
+      if err < besterr:
+        print(lambd, err, besterr)
+        bestlambda = lambd
+        besterr = err
+      lambd = lambd * 10
     return bestlambda
     
 
@@ -108,7 +127,11 @@ def mapping_data(X, power):
     #####################################################
     # TODO 6: Fill in your code here #
     #####################################################		
-    
-    return X
+    ans = np.copy(X)
+    for i in range(2, power+1):
+      # ans = np.hstack((ans, np.power(X, i)))
+      p = np.power(X, i)
+      ans = np.insert(ans, len(ans[0]), p.T, axis=1)
+    return ans
 
 
