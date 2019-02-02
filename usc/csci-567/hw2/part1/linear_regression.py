@@ -40,9 +40,7 @@ def linear_regression_noreg(X, y):
   #####################################################
   #	TODO 2: Fill in your code here #
   #####################################################		
-  w = None
-  w = np.linalg.solve(np.dot(X.T, X), np.dot(X.T, y))
-  return w
+  return np.matmul(np.matmul(np.linalg.inv(np.matmul(X.T, X)), X.T), y)
 
 ###### Q1.3 ######
 def linear_regression_invertible(X, y):
@@ -103,14 +101,15 @@ def tune_lambda(Xtrain, ytrain, Xval, yval):
     bestlambda = None
     besterr = float('inf')
     lambd = 1e-19
-    while lambd <= 1e19:
+    for i in range(-19, 20, 1):
+      lambd = 10 ** i
       w = regularized_linear_regression(Xtrain, ytrain, lambd)
       err = mean_square_error(w, Xval, yval)
+      # print(i, err)
       if err < besterr:
-        print(lambd, err, besterr)
+        # print(lambd, err, besterr)
         bestlambda = lambd
         besterr = err
-      lambd = lambd * 10
     return bestlambda
     
 

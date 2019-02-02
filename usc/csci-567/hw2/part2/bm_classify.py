@@ -30,12 +30,31 @@ def binary_train(X, y, loss="perceptron", w0=None, b0=None, step_size=0.5, max_i
     if b0 is not None:
         b = b0
 
+    def predict(data, w, b):
+        activation = b
+        for i in range(len(data)):
+            activation += w[i] * data[i]
+        return 1.0 if activation >= 0.0 else 0.0
+
     if loss == "perceptron":
         ############################################
         # TODO 1 : Edit this if part               #
         #          Compute w and b here            #
         w = np.zeros(D)
         b = 0
+        
+        for epoch in range(max_iterations):
+            sum_err_w = [0.0] * len(X[0])
+            sum_err_b = 0.0
+            for i in range(len(X)):
+                prediction = predict(X[i], w, b)
+                error = y[i] - prediction # -1 or 1 or 0
+                sum_err_b += error
+                sum_err_w += error * X[i]
+            b = b + step_size * sum_err_b / len(X)
+            for i in range(len(w)):
+                w[i] = w[i] + step_size * (sum_err_w[i] / len(X))
+
         ############################################
         
 
@@ -45,6 +64,14 @@ def binary_train(X, y, loss="perceptron", w0=None, b0=None, step_size=0.5, max_i
         #          Compute w and b here            #
         w = np.zeros(D)
         b = 0
+
+        for i in range(max_iterations):
+            error = sigmoid(w.dot(X.T) + b) - y
+            w_gradient = error.dot(X) / N
+            b_gradient = np.sum(error) / N
+            w -= step_size * w_gradient
+            b -= step_size * b_gradient
+
         ############################################
         
 
@@ -69,7 +96,7 @@ def sigmoid(z):
     #          Compute value                   #
     value = z
     ############################################
-    
+    value = 1.0 / (1.0 + np.exp(-z))
     return value
 
 def binary_predict(X, w, b, loss="perceptron"):
@@ -92,6 +119,8 @@ def binary_predict(X, w, b, loss="perceptron"):
         # TODO 4 : Edit this if part               #
         #          Compute preds                   #
         preds = np.zeros(N)
+        preds = w.dot(X.T) + b
+        preds = np.array([1.0 if i >= 0.0 else 0.0 for i in preds])
         ############################################
         
 
@@ -100,6 +129,8 @@ def binary_predict(X, w, b, loss="perceptron"):
         # TODO 5 : Edit this if part               #
         #          Compute preds                   #
         preds = np.zeros(N)
+        preds = sigmoid(w.dot(X.T) + b)
+        preds = np.array([1 if i >= 0.5 else 0 for i in preds])
         ############################################
         
 
@@ -193,6 +224,13 @@ def multiclass_predict(X, w, b):
     # TODO 8 : Edit this part to               #
     #          Compute preds                   #
     preds = np.zeros(N)
+    def softmax(x):
+        x = np.exp(x - np.amax(x))
+        denom = np.sum(x, axis=1)
+        return (x.T / denom).T
+    
+    preds = softmax((w.dot(X.T)).T + b)
+    preds = np.argmax(preds, axis=1)
     ############################################
 
     assert preds.shape == (N,)
