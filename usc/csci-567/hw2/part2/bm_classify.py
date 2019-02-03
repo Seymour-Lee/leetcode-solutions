@@ -44,16 +44,21 @@ def binary_train(X, y, loss="perceptron", w0=None, b0=None, step_size=0.5, max_i
         b = 0
         
         for epoch in range(max_iterations):
-            sum_err_w = [0.0] * len(X[0])
-            sum_err_b = 0.0
-            for i in range(len(X)):
-                prediction = predict(X[i], w, b)
-                error = y[i] - prediction # -1 or 1 or 0
-                sum_err_b += error
-                sum_err_w += error * X[i]
-            b = b + step_size * sum_err_b / len(X)
-            for i in range(len(w)):
-                w[i] = w[i] + step_size * (sum_err_w[i] / len(X))
+            error = w.dot(X.T) + b - y
+            w_gradient = error.dot(X) / N
+            b_gradient = np.sum(error) / N
+            w -= step_size * w_gradient
+            b -= step_size * b_gradient
+            # sum_err_w = [0.0] * len(X[0])
+            # sum_err_b = 0.0
+            # for i in range(len(X)):
+            #     prediction = binary_predict(X[i], w, b, "perceptron")
+            #     error = y[i] - prediction # -1 or 1 or 0
+            #     sum_err_b += error
+            #     sum_err_w += error * X[i]
+            # b = b + step_size * sum_err_b / len(X)
+            # for i in range(len(w)):
+            #     w[i] = w[i] + step_size * (sum_err_w[i] / len(X))
 
         ############################################
         
@@ -95,8 +100,8 @@ def sigmoid(z):
     # TODO 3 : Edit this part to               #
     #          Compute value                   #
     value = z
-    ############################################
     value = 1.0 / (1.0 + np.exp(-z))
+    ############################################
     return value
 
 def binary_predict(X, w, b, loss="perceptron"):
@@ -178,12 +183,25 @@ def multiclass_train(X, y, C,
         b = b0
 
     np.random.seed(42)
+
+    def softmax(x):
+        x = np.exp(x - np.amax(x))
+        denom = np.sum(x, axis=1)
+        return (x.T / denom).T
+    
     if gd_type == "sgd":
         ############################################
         # TODO 6 : Edit this if part               #
         #          Compute w and b                 #
         w = np.zeros((C, D))
         b = np.zeros(C)
+        y = np.eye(C)[y]
+        for i in range(max_iterations):
+            error = softmax((w.dot(X.T)).T + b) - y
+            w_gradient = error.T.dot(X) / N
+            b_gradient = np.sum(error, axis=0) / N
+            w -= step_size * w_gradient
+            b -= step_size * b_gradient
         ############################################
         
 
@@ -193,6 +211,13 @@ def multiclass_train(X, y, C,
         #          Compute w and b                 #
         w = np.zeros((C, D))
         b = np.zeros(C)
+        y = np.eye(C)[y]
+        for i in range(max_iterations):
+            error = softmax((w.dot(X.T)).T + b) - y
+            w_gradient = error.T.dot(X) / N
+            b_gradient = np.sum(error, axis=0) / N
+            w -= step_size * w_gradient
+            b -= step_size * b_gradient
         ############################################
         
 
