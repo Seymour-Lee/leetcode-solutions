@@ -1,5 +1,7 @@
-build/release/main.o: main.cpp headers.h utils.h
+build/release/main.o: main.cpp shares.h utils.h router.h
 
-headers.h:
+shares.h:
 
 utils.h:
+
+router.h:
