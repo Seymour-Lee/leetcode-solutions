@@ -7,8 +7,7 @@
 #include <string>
 #include <exception>
 
-#include <csignal>
-
+#include <signal.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
@@ -16,9 +15,15 @@
 
 using namespace std;
 
+#define BUF_SIZE 128
+#define MAXSIZE 2048
+#define MAXPATHLENGTH 256
+#define IPV4_OFFSET 20
+
 namespace global{
     // process related
     const char* ip_address = "127.0.0.1";
+    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
     pid_t pid;
     // FILE *logfd;
 

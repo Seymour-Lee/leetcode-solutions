@@ -24,9 +24,9 @@ int main(int argc, char const *argv[]){
         cout<<"after fork(), global::pid is "<<global::pid<<endl;
         // run self or child
         Router *router = nullptr;
-        if(global::pid == 0) router = new Secondary();
-        else router = new Primary();
-        router->run(global::stage);
+        if(global::pid == 0) router = new Secondary(s, global::stage);
+        else router = new Primary(s, global::stage);
+        router->run();
     }
     catch(exception& e){
         cout<<"in catch"<<endl;
