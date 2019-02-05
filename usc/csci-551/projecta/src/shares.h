@@ -11,7 +11,10 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <netdb.h>
 
 using namespace std;
 
@@ -36,6 +39,7 @@ namespace global{
     // socket related
     // short unsigned int upd_port; // use sin.sin_port
     struct sockaddr_in sin;
+    short unsigned int primary_port;
 
     
 

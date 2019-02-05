@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "iostream": "cpp",
-        "__mutex_base": "cpp"
+        "__mutex_base": "cpp",
+        "iosfwd": "cpp",
+        "functional": "cpp"
     }
 }

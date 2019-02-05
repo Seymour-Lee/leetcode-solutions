@@ -16,8 +16,9 @@ int main(int argc, char const *argv[]){
 
         // set socket
         int s = utils::initSocket();
-        cout<<"init socket s is "<<s<<endl;
+        cout<<"init socket port is "<<global::sin.sin_port<<endl;
         if(s < 0) throw "an error occured while initializing socket";
+        global::primary_port = global::sin.sin_port;
 
         // fork child process
         global::pid = fork();

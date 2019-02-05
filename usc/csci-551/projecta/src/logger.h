@@ -3,7 +3,7 @@
 
 #include "shares.h"
 
-#define logger Logger::getInstance()
+// #define logger Logger::getInstance()
 
 class Logger{
 public:
@@ -25,7 +25,8 @@ public:
     }
     
 private:
-    Logger();
+    Logger() : stream(std::cout.rdbuf()) {}
+    
     
     int tabCounter;
     

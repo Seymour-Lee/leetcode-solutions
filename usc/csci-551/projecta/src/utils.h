@@ -38,16 +38,17 @@ namespace utils{
 
     int initSocket(){
         // alloc socket
-        int s = socket(AF_INET, SOCK_DGRAM, 0);
+        int listen = socket(AF_INET, SOCK_DGRAM, 0);
         socklen_t addr_len = sizeof(struct sockaddr_in);
 
         memset(&global::sin, 0, sizeof(struct sockaddr_in));
         global::sin.sin_family = AF_INET;
         global::sin.sin_addr.s_addr = inet_addr(global::ip_address);
         global::sin.sin_port = htons(0);
-        bind(s, (struct sockaddr*) &global::sin, addr_len);
-        getsockname(s, (struct sockaddr*) &global::sin, &addr_len);
-        return s;
+        ::bind(listen, (struct sockaddr*) &global::sin, addr_len);
+        getsockname(listen, (struct sockaddr*) &global::sin, &addr_len);
+        cout<<global::sin.sin_port<<endl;
+        return listen;
     }
 }
 
