@@ -55,8 +55,7 @@ namespace utils{
         int fd, err;
         char *clonedev = (char*)"/dev/net/tun";
 
-        if( (fd = open(clonedev , O_RDWR)) < 0 )
-        {
+        if( (fd = open(clonedev , O_RDWR)) < 0 ){
             perror("Opening /dev/net/tun");
             return fd;
         }
@@ -65,20 +64,44 @@ namespace utils{
 
         ifr.ifr_flags = flags;
 
-        if (*dev)
-        {
+        if (*dev){
             strncpy(ifr.ifr_name, dev, IFNAMSIZ);
         }
 
-        if( (err = ioctl(fd, TUNSETIFF, (void *)&ifr)) < 0 )
-        {
+        if( (err = ioctl(fd, TUNSETIFF, (void *)&ifr)) < 0 ){
             perror("ioctl(TUNSETIFF)");
             close(fd);
             return err;
         }
-
         strcpy(dev, ifr.ifr_name);
         return fd;
+    }
+
+    unsigned short checksum(char *addr, short count)
+    {
+        /* Compute Internet Checksum for "count" bytes
+            *         beginning at location "addr".
+            */
+        long sum = 0;
+
+            while( count > 1 )  {
+            /*  This is the inner loop */
+                sum += *(unsigned short *) addr;
+                cout<<*(unsigned short *)addr<<" ";
+                // printf("%c%c\n", addr[0], addr[1]);
+            addr += 2;
+                count -= 2;
+        }cout<<endl;
+
+            /*  Add left-over byte, if any */
+        if( count > 0 )
+                sum += * (unsigned char *) addr;
+
+            /*  Fold 32-bit sum to 16 bits */
+        while (sum>>16)
+            sum = (sum & 0xffff) + (sum >> 16);
+        cout<<sum<<endl;
+        return (unsigned short) ~sum;
     }
 }
 

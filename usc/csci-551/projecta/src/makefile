@@ -1,4 +1,4 @@
-TARGET = proja
+BIN_NAME = proja
 
 CPP = g++
 CPPFLAGS = -std=c++11 -g -c -o
@@ -11,8 +11,7 @@ DEPS = $(addsuffix .d, $(addprefix dep/,$(BASE)))
 DEPFLAGS = -MM
 DEPFILE = $@.$$$$
 
-INCLUDEDIR := -I.\
-              -I../include\
+INCLUDEDIR := -I.
 
 ifeq ("$(wildcard $(DIR_DEPS))", "")
 	DEP_DIR_DEPS:=dep
@@ -20,9 +19,9 @@ endif
 
 -include $(DEPS)
 
-$(TARGET):$(OBJS)
+$(BIN_NAME):$(OBJS)
 		-rm -f $@
-		$(CPP) -o $(TARGET) $(OBJS) -lpthread
+		$(CPP) -o $(BIN_NAME) $(OBJS) -lpthread
 
 obj/%.o: %.cpp
 		@if test ! -d "obj"; then mkdir -p obj; else : ; fi
@@ -37,9 +36,9 @@ dep/%.d: $(DEP_DIR_DEPS) %.cpp
 
 
 
-all: $(SRCS) $(TARGET)
+all: $(SRCS) $(BIN_NAME)
 
 .PHONY:clean
 clean:
-	-rm -f $(TARGET) obj/*.o dep/*.d
+	-rm -f $(BIN_NAME) obj/*.o dep/*.d
 	-rm -rf obj dep

@@ -22,6 +22,8 @@
 #include <string.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
+#include <pthread.h>
+#include <sys/time.h>
 
 using namespace std;
 
@@ -35,29 +37,18 @@ namespace global{
     const char* ip_address = "127.0.0.1";
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
     pid_t pid;
-    // FILE *logfd;
-
 
     // config inf
     string config_file_name = "";
     int stage = -1;
     int num_routers = 0;
 
-    // socket related
-    // short unsigned int upd_port; // use sin.sin_port
     struct sockaddr_in sin;
     short unsigned int primary_port;
-
-    
-
     sigset_t signal_set;
-    // pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-    // pthread_t proxy_thread, monitor_thread;
-
-    // /* -------------- Global Variables for Proxy Only --------------- */
-    // int sock;
+    pthread_t proxy_thread, monitor_thread;
     int tun_fd;
-
+    int service;
 }
 
 #endif
