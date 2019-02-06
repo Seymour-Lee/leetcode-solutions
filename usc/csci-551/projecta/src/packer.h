@@ -63,45 +63,12 @@ public:
         return 0;
     }
 
-    int printPacket(){
-        char converted[len*2 + 1];
-        for(size_t i=0; i<len; i++){
-            sprintf(&converted[i*2], "%02X", *(packet+i));
-        }
-
-        for (size_t i = 0; i < len/8; ++i)
-        {
-            printf("%c%c : %c%c : %c%c : %c%c\n",
-                converted[8*i+0],converted[8*i+1],converted[8*i+2],converted[8*i+3],
-                converted[8*i+4],converted[8*i+5],converted[8*i+6],converted[8*i+7]);
-        }
-        return 0;
-    }
-    int printICMP(){
-        char converted[BUF_SIZE];
-        for(size_t i=0; i<8; i++){
-            sprintf(&converted[i*2], "%02X", *(packet+i+IPV4_OFFSET));
-        }
-
-        for (size_t i = 0; i < 2; ++i)
-        {
-            if (i==0)
-                printf("Type : Code :  Checksum\n");
-            else
-                printf(" Identifier : Sequence #\n");
-
-            printf("%c%c : %c%c : %c%c : %c%c\n",
-                converted[8*i+0],converted[8*i+1],converted[8*i+2],converted[8*i+3],
-                converted[8*i+4],converted[8*i+5],converted[8*i+6],converted[8*i+7]);
-        }
-        return 0;
-    }
     void setchecksum(){
-        cout<<*(unsigned short *) (packet+IPV4_OFFSET+2)<<endl;
+        // cout<<*(unsigned short *) (packet+IPV4_OFFSET+2)<<endl;
         *(packet+IPV4_OFFSET+2) = 0;
         *(packet+IPV4_OFFSET+3) = 0;
         unsigned short chksum = utils::checksum(packet+IPV4_OFFSET, len-IPV4_OFFSET);
-        cout<<chksum<<" "<<(chksum >> 8)<<" "<<(chksum & 0x00ff)<<endl;
+        // cout<<chksum<<" "<<(chksum >> 8)<<" "<<(chksum & 0x00ff)<<endl;
         *(unsigned short *) (packet+IPV4_OFFSET+2) = chksum;
     }
     void check(){

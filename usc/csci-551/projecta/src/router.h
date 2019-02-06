@@ -18,10 +18,14 @@ public:
         this->stage = _stage;
     }
 
-    ~Primary() {}
+    ~Primary() {
+        ostream& logger = Logger::getInstance();
+        logger<<"router 0 closed"<<endl;
+    }
 
     void run(){
         log_file = "stage" + to_string(stage) + ".primary.out";
+        global::log_file_name = log_file;
         std::ofstream fout;
         fout.open(log_file);
         Logger::getInstance().rdbuf(fout.rdbuf());
@@ -40,7 +44,7 @@ private:
     unsigned char rbuf[BUF_SIZE];
     int stelen;
     int nsize;
-    struct sockaddr_in routerAddr;
+    struct sockaddr_in router_addr;
 
     void stage1(){
         cout<<"Primary:: get into stage1 "<<this->s<<endl;
@@ -52,12 +56,12 @@ private:
 
         /* Stage 1 */
         cout<<"Primary:: Primary router is waiting for I am up message"<<endl;
-        stelen = recvfrom(s, buff, BUF_SIZE, 0, (struct sockaddr*) &routerAddr, (socklen_t*) &nsize);
+        stelen = recvfrom(s, buff, BUF_SIZE, 0, (struct sockaddr*) &router_addr, (socklen_t*) &nsize);
         cout<<"Primary:: got an the up message from Secondary"<<endl;
 
         pthread_mutex_lock(&global::mutex);
         global::pid = atoi(buff);
-        logger<<"router: "<<global::num_routers<<", pid: "<<global::pid<<", port: "<<global::sin.sin_port<<endl;
+        logger<<"router: "<<global::num_routers<<", pid: "<<global::pid<<", port: "<<router_addr.sin_port<<endl;
         pthread_mutex_unlock(&global::mutex);
     }
 
@@ -92,21 +96,22 @@ private:
             if(select_ans == -1) cout<<"Primary:: select error"<<endl;
             else if(select_ans == 0){
                 cout<<"Primary:: time out"<<endl;
+                logger<<"router 0 closed"<<endl;
                 int status;
                 kill(global::pid, SIGTERM);
                 wait(&status);
                 if (WIFSIGNALED(status))printf("Child process received singal %d\n", WTERMSIG(status));
                 close(global::service);
-                raise(SIGTERM);            
+                raise(SIGTERM);
             }
             else{
                 if(FD_ISSET(s, &readset)){
-                    stelen = recvfrom(s, buff, BUF_SIZE, 0, (struct sockaddr*) &routerAddr, (socklen_t*) &nsize);
+                    stelen = recvfrom(s, buff, BUF_SIZE, 0, (struct sockaddr*) &router_addr, (socklen_t*) &nsize);
                     cout<<"Primary:: Read a packet from Secondary, packet length: "<<stelen<<endl;
                     Packer *p = new Packer(buff, stelen);
                     if (p->recieve()){
-                        logger<<"ICMP from port: "<<routerAddr.sin_port<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
-                        cout<<"Primary:: ICMP from port: "<<routerAddr.sin_port<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
+                        logger<<"ICMP from port: "<<router_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
+                        cout<<"Primary:: ICMP from port: "<<router_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
                         write(global::tun_fd, p->getpacket(), p->getlen());
                     }
                     else cout<<"Primary:: Invalid packet from Secondary!"<<endl;
@@ -125,7 +130,7 @@ private:
                         if (p->recieve()){
                             logger<<"ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
                             cout<<"Primary:: ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
-                            p->send(&routerAddr, s, p->getpacket(), p->getlen());
+                            p->send(&router_addr, s, p->getpacket(), p->getlen());
                         }
                         else{
                             cout<<"Primary:: Invalid packet from tunnel!"<<endl;
@@ -147,12 +152,16 @@ public:
         this->stage = _stage;
     }
 
-    ~Secondary() {}
+    ~Secondary() {
+        ostream& logger = Logger::getInstance();
+        logger<<"router 1 closed"<<endl;
+    }
 
     void run(){
         signal(SIGTERM, Secondary::killself);
         signal(SIGABRT, Secondary::killself);
         log_file = "stage" + to_string(stage) + ".secondary.out";
+        global::log_file_name = log_file;
         std::ofstream fout;
         fout.open(log_file);
         Logger::getInstance().rdbuf(fout.rdbuf());
@@ -173,6 +182,11 @@ private:
     
 
     static void killself(int sig_id){
+        // std::ofstream fout;
+        // fout.open(global::log_file_name);
+        // Logger::getInstance().rdbuf(fout.rdbuf());
+        ostream& logger = Logger::getInstance();
+        logger<<"router 1 closed"<<endl;
         close(global::service);
         cout<<endl;
         exit(1);

@@ -40,6 +40,7 @@ namespace global{
 
     // config inf
     string config_file_name = "";
+    string log_file_name = "";
     int stage = -1;
     int num_routers = 0;
 

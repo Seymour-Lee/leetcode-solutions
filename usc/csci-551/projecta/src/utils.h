@@ -87,11 +87,11 @@ namespace utils{
             while( count > 1 )  {
             /*  This is the inner loop */
                 sum += *(unsigned short *) addr;
-                cout<<*(unsigned short *)addr<<" "<<sum<<endl;
+                // cout<<*(unsigned short *)addr<<" "<<sum<<endl;
                 // printf("%c%c\n", addr[0], addr[1]);
             addr += 2;
                 count -= 2;
-        }cout<<endl;
+        }// cout<<endl;
 
             /*  Add left-over byte, if any */
         if( count > 0 )
@@ -100,7 +100,7 @@ namespace utils{
             /*  Fold 32-bit sum to 16 bits */
         while (sum>>16)
             sum = (sum & 0xffff) + (sum >> 16);
-        cout<<(unsigned short) ~sum<<endl;
+        // cout<<(unsigned short) ~sum<<endl;
         return (unsigned short) ~sum;
     }
 }
