@@ -16,13 +16,11 @@ int main(int argc, char const *argv[]){
 
         // set socket
         int s = utils::initSocket();
-        cout<<"init socket port is "<<global::sin.sin_port<<endl;
         if(s < 0) throw "an error occured while initializing socket";
         global::primary_port = global::sin.sin_port;
 
         // fork child process
         global::pid = fork();
-        cout<<"after fork(), global::pid is "<<global::pid<<endl;
         // run self or child
         Router *router = nullptr;
         if(global::pid == 0) router = new Secondary(s, global::stage);

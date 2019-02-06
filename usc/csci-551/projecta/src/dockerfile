@@ -1,0 +1,11 @@
+yum update
+yum install -y iproute
+yum install iputils
+yum install net-tools
+yum groupinstall "Development Tools"
+yum install gcc gcc-c++
+
+sudo ip tuntap add dev tun1 mode tun
+sudo ifconfig tun1 10.5.51.2/24 up
+
+ping -c 4 10.5.51.3

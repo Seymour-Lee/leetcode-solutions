@@ -15,6 +15,13 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <netdb.h>
+#include <net/if.h>
+#include <linux/if_tun.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
 
 using namespace std;
 
@@ -49,7 +56,7 @@ namespace global{
 
     // /* -------------- Global Variables for Proxy Only --------------- */
     // int sock;
-    // int tun_fd;
+    int tun_fd;
 
 }
 
