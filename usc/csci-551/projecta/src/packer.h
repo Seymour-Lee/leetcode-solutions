@@ -4,6 +4,15 @@
 #include "shares.h"
 #include "utils.h"
 
+struct icmp_header
+{
+    u_char icmp_type;
+    u_char icmp_code;
+    u_short icmp_sum;
+    u_short icmp_ident;
+    u_short icmp_seq;
+};
+
 class Packer{
 public:
     int type;
@@ -87,20 +96,21 @@ public:
         }
         return 0;
     }
-    void setChecksum(){
+    void setchecksum(){
+        cout<<*(unsigned short *) (packet+IPV4_OFFSET+2)<<endl;
         *(packet+IPV4_OFFSET+2) = 0;
         *(packet+IPV4_OFFSET+3) = 0;
         unsigned short chksum = utils::checksum(packet+IPV4_OFFSET, len-IPV4_OFFSET);
         cout<<chksum<<" "<<(chksum >> 8)<<" "<<(chksum & 0x00ff)<<endl;
-        *(packet+IPV4_OFFSET+2) = chksum >> 8;
-        *(packet+IPV4_OFFSET+3) = chksum & 0x00ff;
+        *(unsigned short *) (packet+IPV4_OFFSET+2) = chksum;
     }
     void check(){
         cout<<len<<" "<<len-IPV4_OFFSET<<endl;
-        unsigned short chksum = utils::checksum(packet+IPV4_OFFSET, len-IPV4_OFFSET);
+        unsigned short chksum = utils::checksum(packet+IPV4_OFFSET, sizeof(struct icmp_header));
         cout<<chksum<<" "<<(chksum >> 8)<<" "<<(chksum & 0x00ff)<<endl;
-        *(packet+IPV4_OFFSET+2) = chksum >> 8;
-        *(packet+IPV4_OFFSET+3) = chksum & 0x00ff;
+        *(unsigned short *) (packet+IPV4_OFFSET+2) = chksum;
+        // *(packet+IPV4_OFFSET+2) = (char)(chksum >> 8);
+        // *(packet+IPV4_OFFSET+3) = (char)chksum & 0x00ff;
     }
 
 private:

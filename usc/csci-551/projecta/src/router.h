@@ -74,6 +74,7 @@ private:
         fd_set readset;
         int select_ans;
         int maxfd = (global::tun_fd>s)?(global::tun_fd+1):(s+1);
+        struct timeval tv;
 
         while (true){
             cout<<"Primary:: stage2 start to listen"<<endl;
@@ -81,7 +82,7 @@ private:
             FD_SET(global::tun_fd, &readset);
             FD_SET(s, &readset);
             cout<<"Primary:: waiting"<<endl;
-            struct timeval tv;
+            
             tv.tv_sec = 15;
             tv.tv_usec = 0;
             select_ans = select(maxfd+1, &readset, NULL, NULL, &tv);
@@ -210,15 +211,8 @@ private:
             if (p->recieve()){
                 logger<<"ICMP from port: "<<primary_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->type<<endl;
                 cout<<"Secondary:: ICMP from port: "<<primary_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->type<<endl;
-                cout<<"before checksum"<<endl;
-                p->printPacket();
-                p->printICMP();
-                // p->switchip();
-                // p->setChecksum();
-                p->check();
-                cout<<"after checksum"<<endl;
-                p->printPacket();
-                p->printICMP();
+                p->switchip();
+                p->setchecksum();
                 p->send(&primary_addr, s, p->getpacket(), p->getlen());
             }
             else{
