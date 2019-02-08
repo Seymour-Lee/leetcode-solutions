@@ -1,5 +1,5 @@
 a) Reused Code:
-    No reused codes
+    No reused codes and my makefile is modified from a generic makefile.
    
 b) Complete:
     Totally compelete

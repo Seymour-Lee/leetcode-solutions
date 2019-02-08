@@ -1,6 +1,6 @@
 a) Reused Code:
     I reused tun_alloc() from sample_tunnel.c and checksum() from icmp_checksum.c. Both are totally copied 
-    and no big midifications made except some output.
+    and no big midifications made except some output. My makefile is modified from a generic makefile.
    
 b) Complete:
     Totally compelete
