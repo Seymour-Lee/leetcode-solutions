@@ -140,7 +140,8 @@ class relu:
         # TODO: Implement the relu forward pass. Store the result in forward_output    #
         ################################################################################
         # raise NotImplementedError("Not Implemented function: forward, class: relu")
-        
+        self.mask = (X >= 0)
+        forward_output = np.maximum(X, 0)
         return forward_output
 
     def backward(self, X, grad):
@@ -161,7 +162,8 @@ class relu:
         # TODO: Implement the backward pass
         # You can use the mask created in the forward step.
         ####################################################################################################
-        raise NotImplementedError("Not Implemented function: backward, class: relu")
+        # raise NotImplementedError("Not Implemented function: backward, class: relu")
+        backward_output = grad * self.mask
         return backward_output
 
 
@@ -265,7 +267,8 @@ class dropout:
         # You can use the mask created in the forward step
         ####################################################################################################
 
-        raise NotImplementedError("Not Implemented function: backward, class: dropout")
+        # raise NotImplementedError("Not Implemented function: backward, class: dropout")
+        backward_output = grad * self.mask
         return backward_output
 
 
@@ -304,8 +307,10 @@ def miniBatchGradientDescent(model, momentum, _lambda, _alpha, _learning_rate):
                     # And update model parameter
                     #################################################################################
 
-                    raise NotImplementedError("Not Implemented function: miniBatchGradientDescent")
-                    
+                    # raise NotImplementedError("Not Implemented function: miniBatchGradientDescent")
+                    _key = module_name + '_' + key
+                    momentum[_key] = _alpha * momentum[_key] - _learning_rate * g
+                    module.params[key] = module.params[key] + momentum[_key]
 
                 else:
 
@@ -313,7 +318,8 @@ def miniBatchGradientDescent(model, momentum, _lambda, _alpha, _learning_rate):
                     # TODO: update model parameter without momentum
                     #################################################################################
 
-                    raise NotImplementedError("Not Implemented function: miniBatchGradientDescent")
+                    # raise NotImplementedError("Not Implemented function: miniBatchGradientDescent")
+                    module.params[key] = module.params[key] - _learning_rate * g
 
     return model
 
@@ -421,7 +427,10 @@ def main(main_params, optimization_type="minibatch_sgd"):
             # Do not modify them.
             ######################################################################################
             
-            raise NotImplementedError("Not Implemented BACKWARD PASS in main()")
+            # raise NotImplementedError("Not Implemented BACKWARD PASS in main()")
+            grad_d1 = model['L2'].backward(d1, grad_a2)
+            grad_h1 = model['drop1'].backward(h1, grad_d1)
+            grad_a1 = model['nonlinear1'].backward(a1, grad_h1)
 
             ######################################################################################
             # NOTE: DO NOT MODIFY CODE BELOW THIS, until next TODO
@@ -442,7 +451,11 @@ def main(main_params, optimization_type="minibatch_sgd"):
             # Check above forward code
             ######################################################################################
             
-            raise NotImplementedError("Not Implemented COMPUTING TRAINING ACCURACY in main()")
+            # raise NotImplementedError("Not Implemented COMPUTING TRAINING ACCURACY in main()")
+            a1 = model['L1'].forward(x)
+            h1 = model['nonlinear1'].forward(a1)
+            d1 = model['drop1'].forward(h1, is_train = False)
+            a2 = model['L2'].forward(d1)
 
             ######################################################################################
             # NOTE: DO NOT MODIFY CODE BELOW THIS, until next TODO
@@ -472,8 +485,11 @@ def main(main_params, optimization_type="minibatch_sgd"):
             # Check above forward code
             ######################################################################################
             
-            raise NotImplementedError("Not Implemented COMPUTING VALIDATION ACCURACY in main()")
-
+            # raise NotImplementedError("Not Implemented COMPUTING VALIDATION ACCURACY in main()")
+            a1 = model['L1'].forward(x)
+            h1 = model['nonlinear1'].forward(a1)
+            d1 = model['drop1'].forward(h1, is_train = False)
+            a2 = model['L2'].forward(d1)
             
             ######################################################################################
             # NOTE: DO NOT MODIFY CODE BELOW THIS, until next TODO
