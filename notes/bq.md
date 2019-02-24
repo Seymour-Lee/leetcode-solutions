@@ -1,3 +1,33 @@
+\1. Tell me a challenge you had where the best way forward was not clear cut. How did you decide what to do?
+
+
+
+\2. Give me an example of something you tried to accomplish but failed.
+
+
+
+\3. Give me an example of a time when you showed initiative.
+
+
+
+\4. Give me an example of a time when you motivated others.
+
+
+
+\5. Tell me about a time when you delegated a project effectively.
+
+
+
+\6. Tell me about a time when you coached someone.
+
+
+
+\7. When have you used your fact finding skills to solve a problem?
+
+
+
+
+
 ·        Ownership - Tell me about a time when you took on something significant outside your area of responsibility.  Why was it important?  What was the outcome? OR Give me an example of a time when you didn't think you were going to meet the commitments you promised.  How did you identify the risk and communicate it to stakeholders?  What was the outcome?
 
 ·        Deliver Results - Tell me about a goal that you set that took a long time to achieve or that you are still working towards.  How do you keep focused on the goal given the other priorities you have? OR Tell me about a time where you not only met a goal but considerably exceeded expectations.  How were you able to do it?  What challenges did you have to overcome?

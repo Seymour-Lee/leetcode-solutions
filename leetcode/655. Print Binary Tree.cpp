@@ -30,3 +30,36 @@ private:
         return max(getHeight(root->left), getHeight(root->right))+1;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<string>> printTree(TreeNode* root) {
+        if(root == nullptr) return {};
+        int h = geth(root);
+        vector<vector<string>> ans(h, vector<string>((1<<h)-1, ""));
+        dfs(root, ans, 0, 0, (1<<h)-1);
+        return ans;
+    }
+    
+private:
+    void dfs(TreeNode *root, vector<vector<string>> &ans, int h, int l, int r){
+        if(root == nullptr) return;
+        ans[h][l+(r-l)/2] = to_string(root->val);
+        dfs(root->left, ans, h+1, l, l+(r-l)/2-1);
+        dfs(root->right, ans, h+1, l+(r-l)/2+1, r);
+    }
+    
+    int geth(TreeNode *root){
+        if(root == nullptr) return 0;
+        return max(geth(root->left), geth(root->right))+1;
+    }
+};

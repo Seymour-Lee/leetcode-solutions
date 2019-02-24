@@ -37,3 +37,40 @@ private:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool canPartitionKSubsets(vector<int>& nums, int k) {
+        if(k == 1) return true;
+        int n = nums.size();
+        if(n < k) return false;
+        int sum = 0;
+        for(auto num: nums) sum += num;
+        if(sum % k != 0) return false;
+        int subsum = sum / k;
+        vector<int> subsums(k, 0);
+        vector<bool> seen(n, false);
+        subsums[0] = nums.back();
+        seen.back() = true;
+        return recursion(nums, k, subsums, seen, 0, subsum, n-1);
+    }
+    
+private:
+    bool recursion(vector<int> &nums, int k, vector<int> &subsums, vector<bool> &seen, int cursub, int subsum, int s){
+        if(subsums[cursub] == subsum){
+            if(cursub == k-2) return true;
+            return recursion(nums, k, subsums, seen, cursub+1, subsum, nums.size()-1);
+        }
+        for(int i = s; i >= 0; i--) if(seen[i] == false){
+            if(subsums[cursub]+nums[i] <= subsum){
+                seen[i] = true;
+                subsums[cursub] += nums[i];
+                bool ans = recursion(nums, k, subsums, seen, cursub, subsum, s-1);
+                subsums[cursub] -= nums[i];
+                seen[i] = false;
+                if(ans) return true;
+            }
+        }
+        return false;
+    }
+};
