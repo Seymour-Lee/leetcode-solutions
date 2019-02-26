@@ -1,3 +1,75 @@
+## Customer Obsession
+
+Leaders start with the customer and work backwards. They work vigorously to earn and keep customer trust. Although leaders pay attention to competitors, they obsess over customers.
+
+## Ownership
+
+Leaders are owners. They think long term and don’t sacrifice long-term value for short-term results. They act on behalf of the entire company, beyond just their own team. They never say “that’s not my job". 
+
+## Invent and Simplify
+
+Leaders expect and require innovation and invention from their teams and always find ways to simplify. They are externally aware, look for new ideas from everywhere, and are not limited by “not invented here". As we do new things, we accept that we may be misunderstood for long periods of time.
+
+## Are Right, A Lot
+
+Leaders are right a lot. They have strong judgment and good instincts. They seek diverse perspectives and work to disconfirm their beliefs.
+
+## Learn and Be Curious
+
+Leaders are never done learning and always seek to improve themselves. They are curious about new possibilities and act to explore them.
+
+## Hire and Develop the Best
+
+Leaders raise the performance bar with every hire and promotion. They recognize exceptional talent, and willingly move them throughout the organization. Leaders develop leaders and take seriously their role in coaching others. We work on behalf of our people to invent mechanisms for development like Career Choice.
+
+## Insist on the Highest Standards
+
+Leaders have relentlessly high standards - many people may think these standards are unreasonably high. Leaders are continually raising the bar and drive their teams to deliver high quality products, services and processes. Leaders ensure that defects do not get sent down the line and that problems are fixed so they stay fixed.
+
+## Think Big
+
+Thinking small is a self-fulfilling prophecy. Leaders create and communicate a bold direction that inspires results. They think differently and look around corners for ways to serve customers.
+
+## Bias for Action
+
+Speed matters in business. Many decisions and actions are reversible and do not need extensive study. We value calculated risk taking. 
+
+## Frugality
+
+Accomplish more with less. Constraints breed resourcefulness, self-sufficiency and invention. There are no extra points for growing headcount, budget size or fixed expense.
+
+## Earn Trust
+
+Leaders listen attentively, speak candidly, and treat others respectfully. They are vocally self-critical, even when doing so is awkward or embarrassing. Leaders do not believe their or their team’s body odor smells of perfume. They benchmark themselves and their teams against the best.
+
+## Dive Deep
+
+Leaders operate at all levels, stay connected to the details, audit frequently, and are skeptical when metrics and anecdote differ. No task is beneath them.
+
+## Have Backbone; Disagree and Commit
+
+Leaders are obligated to respectfully challenge decisions when they disagree, even when doing so is uncomfortable or exhausting. Leaders have conviction and are tenacious. They do not compromise for the sake of social cohesion. Once a decision is determined, they commit wholly.
+
+## Deliver Results
+
+Leaders focus on the key inputs for their business and deliver them with the right quality and in a timely fashion. Despite setbacks, they rise to the occasion and never settle.
+
+
+
+
+
+
+
+
+
+Work simulation(原则有先后顺序) 目前两大做题中最重要原则： 1.requirement排在第一，deadline第二。 2.有manager出现的选项无脑选manager，manager就是一个组的地头蛇。Amazon9条主要原则 原则1：客户是上帝，requirement优先，任何影响上帝的事情都不能干. 如某个requirement影响了上帝的体验， 你就是死键盘上也不能砍了，宁愿miss deadline 原则2：为长远考虑，即客户几年之后可能会出现的需求也要考虑到， 不会为了交付短期的deadline， 而牺牲长期的价值。（比如 global api 和 local api） 原则3：最高标准，“最高”对应上面的“长远”。 原则4：一般情况，能请示manager就请示manager，manager一般不会出错 原则5：速度很重要，决策和行动都可以改变，因此不需要进行过于广泛的推敲 ，但提倡在深思熟虑下进行冒险。 原则6：不需要一定要坚持“非我发明”，需求帮助也是可以的，四处寻找创意 来源一亩，并且接受长期被误导的可能 原则7：敢于承担责任，任劳任怨，比如领导说谁会java，你会你就跳出来说我会 原则8：对问题刨根问底，探究细节 原则9：服从大局（团队比个人重要）
+
+
+
+
+
+
+
 \1. Tell me a challenge you had where the best way forward was not clear cut. How did you decide what to do?
 
 
