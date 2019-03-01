@@ -1,59 +1,139 @@
+- 需要很快时间学习一个新知识来完成的项目
+- 要compromise小細節來趕上的deadline（tradeoff）deadline 过后有没有做什么 improvement，怎么做
+- 先解释项目，项目怎么展开的遇到了哪些困难技术trade off
+- 自我介绍
+- 举一个例子，当你的peer在学业或者工作上陷入困难时，你是怎么做帮助他的，最后结果如何?
+- 以往有限时间内必须拿出结果的经历，为什么选了某个特定的技术，有没有什么规划好却没有实现的功能
+- 最自豪的经历
+- 你没有在deadline之前完成任务的经历
+- 讲一个你帮同事分担任务的经历
+- a situation or tast you have to dive in
+- a situation you have to take a risk.
+- 一个是项目中犯过的错误，what’s the biggest mistake/failure you’ve made?
+- 另一个是如果项目进度很慢怎么办
+- 过了下简历，如何lead课程项目的
+- ddl处理，完不成怎么办
+- 实习中需要gather information and make a decision的例子，遇到新问题且无法搜集相关资料怎么办
+- 讲一个被困难stuck住的经历
+- 描述一件你曾经失败的事情  一个没有克服的困难  讲一件没有达成自己目标的事情
+- how to communicate with the teammate, if u guys have some disagreements.
+- how to choose between different technical stack? 
+- 之前经历过项目中最有挑战性 or most interesting的project
+- 因为时间不够而放弃的项目里的本应实现的feature
+- 讲述一次放弃的经历
+- 受到强烈质疑该怎么办
+- courses in this semester and plan courses next semester;  当前的学习目标
+- why Amazon
+- How to work with limited time or resource?
+- 有没有为了project深入理解package运作的经验
+- 违背过的承诺
+- 你以前实习的manager有没有对你失望过？
+- 你事先没有发现问题的例子
+- 有没有学习新东西的经历？有没有没能完成的目标？
+
+- 有没有做过stand out的project
+- 自己做决定的经历
+- 帮助struggle队友的经历
+- talk about project你想做而不是出于学业／工作压力做的？
+- Describe a situation in which you took extra responsibility for a task that does not belong to you..
+- Tell me about a time when you had difficulty working with someone on a side or class project?
+  What did you do to overcome this?
+
+
+
 ## Customer Obsession
 
 Leaders start with the customer and work backwards. They work vigorously to earn and keep customer trust. Although leaders pay attention to competitors, they obsess over customers.
+
+客户第一位，哪怕牺牲自己的利益违背自己的准则，犯了错误要在顾客要求之前补偿
+
+#### Question
+
+* Give me an example of your most difficult customer interaction and how you worked through it.  What was the outcome?
+* Tell me about a time a customer wanted one thing, but you felt they needed something else.  How did you approach the situation, what were your actions and what was the end result?
 
 ## Ownership
 
 Leaders are owners. They think long term and don’t sacrifice long-term value for short-term results. They act on behalf of the entire company, beyond just their own team. They never say “that’s not my job". 
 
+优先考虑长期目标，一切都是我的工作
+
+#### Questions
+
+* Tell me about a time when you took on something significant outside your area of responsibility.  Why was it important?  What was the outcome?
+* Give me an example of a time when you didn't think you were going to meet the commitments you promised.  How did you identify the risk and communicate it to stakeholders?  What was the outcome?
+
 ## Invent and Simplify
 
 Leaders expect and require innovation and invention from their teams and always find ways to simplify. They are externally aware, look for new ideas from everywhere, and are not limited by “not invented here". As we do new things, we accept that we may be misunderstood for long periods of time.
+
+保持简单，为此要不断创新
 
 ## Are Right, A Lot
 
 Leaders are right a lot. They have strong judgment and good instincts. They seek diverse perspectives and work to disconfirm their beliefs.
 
+Leader总是对的，哪怕态度180度转弯
+
 ## Learn and Be Curious
 
 Leaders are never done learning and always seek to improve themselves. They are curious about new possibilities and act to explore them.
+
+保持好奇心，自我提升
 
 ## Hire and Develop the Best
 
 Leaders raise the performance bar with every hire and promotion. They recognize exceptional talent, and willingly move them throughout the organization. Leaders develop leaders and take seriously their role in coaching others. We work on behalf of our people to invent mechanisms for development like Career Choice.
 
+雇最好的人，让他们发挥才能
+
 ## Insist on the Highest Standards
 
 Leaders have relentlessly high standards - many people may think these standards are unreasonably high. Leaders are continually raising the bar and drive their teams to deliver high quality products, services and processes. Leaders ensure that defects do not get sent down the line and that problems are fixed so they stay fixed.
+
+坚持最高标准
 
 ## Think Big
 
 Thinking small is a self-fulfilling prophecy. Leaders create and communicate a bold direction that inspires results. They think differently and look around corners for ways to serve customers.
 
+顾客至上的前提下，着眼大局
+
 ## Bias for Action
 
 Speed matters in business. Many decisions and actions are reversible and do not need extensive study. We value calculated risk taking. 
+
+积极行动，快速前行，敢于冒险
 
 ## Frugality
 
 Accomplish more with less. Constraints breed resourcefulness, self-sufficiency and invention. There are no extra points for growing headcount, budget size or fixed expense.
 
+节俭，投入最小产出最大
+
 ## Earn Trust
 
 Leaders listen attentively, speak candidly, and treat others respectfully. They are vocally self-critical, even when doing so is awkward or embarrassing. Leaders do not believe their or their team’s body odor smells of perfume. They benchmark themselves and their teams against the best.
+
+赢得信任，并让人感觉被信任
 
 ## Dive Deep
 
 Leaders operate at all levels, stay connected to the details, audit frequently, and are skeptical when metrics and anecdote differ. No task is beneath them.
 
+深入研究，不同时要怀疑
+
 ## Have Backbone; Disagree and Commit
 
 Leaders are obligated to respectfully challenge decisions when they disagree, even when doing so is uncomfortable or exhausting. Leaders have conviction and are tenacious. They do not compromise for the sake of social cohesion. Once a decision is determined, they commit wholly.
+
+有决心处理分歧，一旦作出决定，就完全遵从
 
 ## Deliver Results
 
 Leaders focus on the key inputs for their business and deliver them with the right quality and in a timely fashion. Despite setbacks, they rise to the occasion and never settle.
 
+克服一切困难达到目标
 
 
 
@@ -61,8 +141,23 @@ Leaders focus on the key inputs for their business and deliver them with the rig
 
 
 
+Work simulation(原则有先后顺序) 
 
-Work simulation(原则有先后顺序) 目前两大做题中最重要原则： 1.requirement排在第一，deadline第二。 2.有manager出现的选项无脑选manager，manager就是一个组的地头蛇。Amazon9条主要原则 原则1：客户是上帝，requirement优先，任何影响上帝的事情都不能干. 如某个requirement影响了上帝的体验， 你就是死键盘上也不能砍了，宁愿miss deadline 原则2：为长远考虑，即客户几年之后可能会出现的需求也要考虑到， 不会为了交付短期的deadline， 而牺牲长期的价值。（比如 global api 和 local api） 原则3：最高标准，“最高”对应上面的“长远”。 原则4：一般情况，能请示manager就请示manager，manager一般不会出错 原则5：速度很重要，决策和行动都可以改变，因此不需要进行过于广泛的推敲 ，但提倡在深思熟虑下进行冒险。 原则6：不需要一定要坚持“非我发明”，需求帮助也是可以的，四处寻找创意 来源一亩，并且接受长期被误导的可能 原则7：敢于承担责任，任劳任怨，比如领导说谁会java，你会你就跳出来说我会 原则8：对问题刨根问底，探究细节 原则9：服从大局（团队比个人重要）
+目前两大做题中最重要原则： 
+
+* 1.requirement排在第一，deadline第二。 
+* 2.有manager出现的选项无脑选manager，manager就是一个组的地头蛇。
+
+Amazon9条主要原则 
+
+* 原则1：客户是上帝，requirement优先，任何影响上帝的事情都不能干. 如某个requirement影响了上帝的体验， 你就是死键盘上也不能砍了，宁愿miss deadline 
+* 原则2：为长远考虑，即客户几年之后可能会出现的需求也要考虑到， 不会为了交付短期的deadline， 而牺牲长期的价值。（比如 global api 和 local api） 
+* 原则3：最高标准，“最高”对应上面的“长远”。 
+* 原则4：一般情况，能请示manager就请示manager，manager一般不会出错 
+* 原则5：速度很重要，决策和行动都可以改变，因此不需要进行过于广泛的推敲 ，但提倡在深思熟虑下进行冒险。
+* 原则6：不需要一定要坚持“非我发明”，需求帮助也是可以的，四处寻找创意 来源一亩，并且接受长期被误导的可能 
+* 原则7：敢于承担责任，任劳任怨，比如领导说谁会java，你会你就跳出来说我会 
+* 原则8：对问题刨根问底，探究细节 原则9：服从大局（团队比个人重要）
 
 
 
@@ -100,7 +195,7 @@ Work simulation(原则有先后顺序) 目前两大做题中最重要原则： 1
 
 
 
-·        Ownership - Tell me about a time when you took on something significant outside your area of responsibility.  Why was it important?  What was the outcome? OR Give me an example of a time when you didn't think you were going to meet the commitments you promised.  How did you identify the risk and communicate it to stakeholders?  What was the outcome?
+
 
 ·        Deliver Results - Tell me about a goal that you set that took a long time to achieve or that you are still working towards.  How do you keep focused on the goal given the other priorities you have? OR Tell me about a time where you not only met a goal but considerably exceeded expectations.  How were you able to do it?  What challenges did you have to overcome?
 
@@ -115,8 +210,6 @@ Work simulation(原则有先后顺序) 目前两大做题中最重要原则： 1
 ·        Earn Trust - Give an example of a tough or critical piece of feedback you received.  What was it and what did you do about it? OR Give me an example of an idea you had that was strongly opposed.  Why was there so much resistance?  How did you handle the negative feedback?
 
 ·        Learn And Be Curious - What is the coolest thing you have learned on your own that has helped you better perform your job? OR Tell me of a time when you took on work outside of your comfort area and found it rewarding?
-
-·        Customer Obsession - Give me an example of your most difficult customer interaction and how you worked through it.  What was the outcome? OR Tell me about a time a customer wanted one thing, but you felt they needed something else.  How did you approach the situation, what were your actions and what was the end result?
 
 ·        Are Right A Lot - Tell me about a decision for which data and analysis weren’t sufficient to provide the right course and you had to rely on your judgment and instincts.  Give me two to three examples.  They don’t have to be big strategic decisions – could be big or small OR Give me an example of when you have to make an important decision in the absence of good data because there just wasn’t any.  What was the situation and how did you arrive at your decision?  Did the decision turn out to be the correct one?  Why or why not?
 
@@ -137,6 +230,10 @@ More smile, more example, more respect
 have  a regular meeting with my manager
 
 story: situatiion-task-approach-result(good, show your strengths)
+
+
+
+## Basic
 
 ### General Questions
 
