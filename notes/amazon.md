@@ -19,7 +19,7 @@
   1. followup1: replace all the islands with their size.
   2. followup2: 如果有人来买岛，给出某个range size的选项。如何优化。
 
-- recursive的方式求一个数的factorial **写递归**
+- recursive的方式求一个数的factorial  **写递归**
 
 - 给个sorted的string array，问我怎么找到某个string **Binary Search**
 
