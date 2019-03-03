@@ -721,6 +721,12 @@
 
 
 
+
+
+[跳转到coding](#Coding)
+
+
+
 Given an array of integers, and every integer represents column height.Find maximum amount of water of these columns can trap if we can remove two of columns of them. 
 
 1.给一个string，可能是一个单词，可能是一段话， 要求返回最长的重复的substring。例如：
