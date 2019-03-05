@@ -101,7 +101,7 @@
 - implement min && max heap
 
   ```C++
-  
+  // https://www.techiedelight.com/min-heap-max-heap-implementation-c/
   ```
 
 - implemtn hashmap
@@ -211,7 +211,7 @@
   大概这样，复杂度全是O(1);
 
   ```C++
-  
+  https://leetcode.com/problems/design-circular-queue/description/
   ```
 
 - merge two sorted arrays. **Just do it**
@@ -345,7 +345,9 @@
   trie要多加一个startwith的function
 
   ```C++
+  https://leetcode.com/problems/design-hashset/description/
   
+  https://leetcode.com/problems/design-hashmap/description/
   ```
 
 - lc252 Meeting Rooms **线扫描** followup：是如果是有两间会议室如何去modify your code(lc253) **counter判断改一下**
