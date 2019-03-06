@@ -1,3 +1,7 @@
+捧客户、啥都干、要简单、听老板、多学习、雇最好、高标准、顾大局、快行动、要节约、赢信任、go deep、许不同、给结果
+
+
+
 结束时一定要说：I am so happy to be here and I am very excited about this opportunity. And thank you so much for this interview, I am really enjoy talking with you. Hava a good day!
 
 
