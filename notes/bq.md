@@ -1,4 +1,4 @@
-捧客户、啥都干、要简单、听老板、多学习、雇最好、高标准、顾大局、快行动、要节约、赢信任、go deep、许不同、给结果
+捧客户、啥都干、要简单、听老板、勤学习、雇最好、高标准、顾大局、快行动、要节约、赢信任、要深入、许不同、给结果
 
 
 
@@ -55,7 +55,7 @@ Example:
 
 Mistake Example:
 
-The biggest mistake I have made happened when I interned at Microsoft. While developing, we use different dev environment. I used Linux and some teammates used windows. Because we were developing our prototype, our first verison, we did have very strict code review. I imported a dynamic library into our project, but this library could not be compiled in Window. After my teammate merged my codes, they could not compile in their computer. I found this problem very quickly, and I rolled back my commit immediately. After that I apologized to my teammates and my mentor. And I started to find another way to solve that problem.
+The biggest mistake I have made happened when I interned at Microsoft. While developing, we use different dev environment. I used Linux and some teammates used windows. Because we were developing our prototype, our first verison, we did not have very strict code review. I imported a dynamic library into our project, but this library could not be compiled in Window. After my teammate merged my codes, they could not compile in their computer. I found this problem very quickly, and I rolled back my commit immediately. After that I apologized to my teammates and my mentor. And I started to find another way to solve that problem.
 
 Not Reaching Goal or Disobey your word Example:
 
@@ -373,6 +373,8 @@ intern at Microsoft
 
 Example:
 
+这个例子也可以认为是一个没有达到commitment，但是我认为experience更重要，所以我做了tradeoff
+
 During my thrid year of undergraduate study, I got a chance to intern at Microsoft, but the workload of that semester is quite heavy. But I insisted on my internship. Although my GPA is not quite good, but I think it worth. I got a chance to know more about the industry, I know what I am really interested in.
 
 Example(Tech):
@@ -458,7 +460,7 @@ Leaders expect and require innovation and invention from their teams and always 
 
 Example:
 
-
+transfer learning的例子改改
 
 ## Are Right, A Lot
 
@@ -503,6 +505,8 @@ Example:
 
 编一个还能进一步优化的例子
 
+transfer learning的例子，还有一个相似的问法是问优化project
+
 ## Think Big
 
 Thinking small is a self-fulfilling prophecy. Leaders create and communicate a bold direction that inspires results. They think differently and look around corners for ways to serve customers.
@@ -525,7 +529,7 @@ Speed matters in business. Many decisions and actions are reversible and do not 
 
 Example:
 
-
+老板出差了，结果打电话告诉我找Carter让我帮忙写个小demo，一天时间出结果，然后我就很努力很努力，自己做决定，和product manager积极沟通技术细节，最后如期完成，customer很满意
 
 ## Frugality
 

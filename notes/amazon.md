@@ -746,17 +746,31 @@ Input: "banana" Output: "ana"
 ### Data Struct && Tech
 
 * Whta is priority_queue，怎么实现的，手写heap代码
+
 * Hashmap原理、时空复杂度，最差复杂度 有Collision怎么解决  hashset hashmap的区别 
+
+  
+
 * BST与二叉树  BST查找复杂度、什么时候用BST什么时候用hashtable；
+
 * array, arraylist, linked list 分别是什么, random access 的 time complexity
+
 * vector有哪些interface还有vector和array对内存的分配
+
 * 要在一台内存较小的移动设备上存储大量数据 究竟是应该用数组还是链表 我当时直接懵了 后来胡乱答了一通 说用链表 不然的话本来内存就很小 用数组得连续分配内存 容易external fragmentation 面试官说cool 但是给我的感觉是我没有答出他想要的答案但是讲的很有道理的样子（事后经过同学提醒应该是用数组 链表得多存一个指针）
+
 * Abstract Class是什么，和普通的class比有什么区别
+
 * 什么是Polymorphism
+
 * Greedy vs DP
+
 * java和javascript有什么区别，回答了java多线程， js单线程；java编译语言，js脚本语言等等诸如此类
+
 * overriding + overloading
+
 * 什么是 graph, tree, binary tree, binary search tree 用什么 data structure 存 graph
+
 * 给一个情景，说一个family围坐在一个圆桌上，然后用什么数据结构设计，并且当 new family想加入时，该怎么操作（method）。什么额外条件都没有，随你自己说和写。
 
 
@@ -810,9 +824,197 @@ Input: "banana" Output: "ana"
 
 
 
+bq:
+
+* give me an example that you show ownership
+
+* what do you do when the release date of your project is due and only 90% of the function is working
+* favorite project, the technology you use, what is the part you don't like
+* a time when you take calculated risk
+* challenge project
+* the trade off you made when you can't meet deadline
+* ddl要到了是否会妥协细节
+* 有没有做过超出自己责任范围的事情
+* 有没有做过超出课业或项目要求的事情
+* 在很短的时间内完成一件事情的经历
+* 快速决定的经历(own decision)编一个老板出差，自己做决定的例子
+* what's the biggest mistake?
+* how would you go about it if you don't have other resources and you have to get things down independently? 
+* what decision did you make without consulting others?
+* 讲一个最后超出自己预期的项目
+* 讲一个时间紧迫情况下完成的任务
+* 介绍一个在某项目中有一个坑比队友的经历，要求detail（项目、当时情况和你怎么做的）
+* 介绍一个你需要赶deadline的时候，也是要求detail
+* 团队里有人没能完成自己的事情
+* 你犯了错
+* 团队没能catch up with deadline
+* 一个屈就于短期目标而舍弃long term value的时候
+* 一个你改变了解决问题的方法而取得显著进步的例子。
+* how make your influence in share goal in the team
+* 
 
 
 
+
+
+coding:
+
+* double binary tree
+
+  https://www.geeksforgeeks.org/double-tree/
+
+* find all two sum
+
+* quicksort
+
+  ```C++
+  class Solution {
+  public:
+      /**
+       * @param A: an integer array
+       * @return: nothing
+       */
+      void sortIntegers2(vector<int> &A) {
+          // write your code here
+          quicksort(A, 0, A.size()-1);
+      }
+      
+  private:
+      void quicksort(vector<int> &A, int low, int high){
+          if(low >= high) return;
+          int p = partition(A, low, high);
+          quicksort(A, low, p-1);
+          quicksort(A, p+1, high);
+      }
+  
+      int partition(vector<int> &A, int low, int high){
+          int pivot = A[high];
+          int i = low;
+          for(int j = low; j <= high-1; j++){
+              if(A[j] <= pivot) swap(A[i++], A[j]);
+          }
+          swap(A[i], A[high]);
+          return i;
+      }
+  };
+  
+  class Solution {
+  public:
+      /**
+       * @param A: an integer array
+       * @return: nothing
+       */
+      void sortIntegers2(vector<int> &A) {
+          // write your code here
+          mergesort(A, 0, A.size()-1);
+      }
+      
+  private:
+      void mergesort(vector<int> &A, int l, int r){
+          if(l >= r) return;
+          int m = l + (r - l) / 2;
+          mergesort(A, l, m);
+          mergesort(A, m+1, r);
+          merge(A, l, m, r);
+      }
+      
+      void merge(vector<int> &A, int l, int m, int r){
+          int l1 = m-l+1;
+          int l2=  r-m;
+          vector<int> a(A.begin()+l, A.begin()+m+1);
+          vector<int> b(A.begin()+m+1, A.begin()+r+1);
+          
+          int i = 0, j = 0;
+          int k = l;
+          while(i < l1 && j < l2){
+              if(a[i] < b[j]) A[k++] = a[i++];
+              else A[k++] = b[j++];
+          }
+          
+          while(i < l1) A[k++] = a[i++];
+          while(j < l2) A[k++] = b[j++];
+      }
+  };
+  ```
+
+  
+
+* 扑克牌，建立一副扑克牌，实现所有花色和面值的排列组合，实现shuffle这个组合，时间复杂度/空间复杂度，有没有方式降低空间复杂度，实现 lc384
+
+* merge sort
+
+* TicTacToe
+
+* top k most frequent and top k least frequent
+
+* 找一个数最近的平方数
+
+* 在二维数组中找垂直或者水平方向上的最长连续相等数 lc361
+
+* 3 sum with repeat
+
+* 最近公共祖先
+
+* lc366
+
+* lc155
+
+* lc100 Same Tree
+
+* wordbreak II
+
+* lc314
+
+* quicklelect
+
+* ```C++
+  class Solution {
+  public:
+      /**
+       * @param n: An integer
+       * @param nums: An array
+       * @return: the Kth largest element
+       */
+      int kthLargestElement(int n, vector<int> &nums) {
+          // write your code here
+          int ans = quickselect(nums, 0, nums.size()-1, n-1);
+          // for(auto a: nums) cout<<a<<" ";
+          return ans;
+      }
+      
+  private:
+      int quickselect(vector<int> &A, int l, int r, int n){
+          if(l >= r) return A[n];
+          int p = partition(A, l, r);
+          // cout<<p<<endl;
+          // for(auto a: A) cout<<a<<" "; cout<<endl;
+          if(p == n) return A[p];
+          if(p > n) return quickselect(A, l, p-1, n);
+          return quickselect(A, p+1, r, n);
+      }
+      
+      int partition(vector<int> &A, int l, int r){
+          int pivot = A[r];
+          int i = l;
+          for(int j = l; j <= r-1; j++){
+              if(A[j] >= pivot) swap(A[i++], A[j]);
+          }
+          swap(A[i], A[r]);
+          return i;
+      }
+  };
+  ```
+
+* 
+
+
+
+
+
+data structure:
+
+* 实现一个BST并且如何实现曾删改查，还问了各种操作的时间复杂度。（在增加和删除后要维护BST的结构，不要忘了）之后由树转化到HashTable，问HashTable的原理，用冲突的解决方法，各自的优缺点。最后还问了hash函数怎么设计才是好的，这个楼主也不太会。。。就随便说了一下。
+* Stack， heap的时间复杂度   HashMap常见问题（hash function， collision）
 
 
 
