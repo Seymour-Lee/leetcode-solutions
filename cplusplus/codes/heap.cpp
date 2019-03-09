@@ -37,7 +37,7 @@ private:
 		int right = RIGHT(i);
 
 		int largest = i;
-
+ 
 		// compare A[i] with its left and right child
 		// and find largest value
 		if (left < size() && A[left] > A[largest])
