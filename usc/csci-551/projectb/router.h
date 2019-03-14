@@ -32,6 +32,7 @@ public:
         ostream& logger = Logger::getInstance();
         this->stage1();
         if(this->stage == 2) this->stage2();
+        if(this->stage == 3) this->stage3();
         close(s);
         logger<<"router 0 closed"<<endl;
     }
@@ -45,6 +46,9 @@ private:
     int stelen;
     int nsize;
     struct sockaddr_in router_addr;
+
+    // stage3
+    
 
     void stage1(){
         cout<<"Primary:: get into stage1 "<<this->s<<endl;
@@ -143,6 +147,8 @@ private:
         }
         close(global::tun_fd);
     }
+
+    void stage3(){}
 };
 
 class Secondary: public Router{
@@ -169,6 +175,7 @@ public:
 
         this->stage1();
         if(this->stage == 2) this->stage2();
+        if(this->stage == 3) this->stage3();
         close(s);
         logger<<"router 1 closed"<<endl;
     }
@@ -179,6 +186,9 @@ private:
     char buff[BUF_SIZE], str[BUF_SIZE];
     struct sockaddr_in primary_addr;
     string log_file;
+
+    // stage3
+    
     
 
     static void killself(int sig_id){
@@ -235,6 +245,8 @@ private:
             delete p;
         }
     }
+
+    void stage3(){}
 };
 
 #endif
