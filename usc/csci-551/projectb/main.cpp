@@ -1,6 +1,8 @@
 #include "shares.h"
 #include "utils.h"
 #include "router.h"
+#include "primary.h"
+#include "secondary.h"
 #include "logger.h"
 
 Router *router = nullptr;
@@ -22,11 +24,13 @@ void* watcher(void* arg){
     // Logger::getInstance().rdbuf(fout.rdbuf());
     ostream& logger = Logger::getInstance();
     logger<<"router 0 closed"<<endl;
+    return nullptr;
 }
 
 void* doer(void* arg){
     router = new Primary(global::service, global::stage);
     router->run();
+    return nullptr;
 }
 
 int main(int argc, char const *argv[]){
@@ -41,27 +45,43 @@ int main(int argc, char const *argv[]){
         // clear env
         utils::cleanEnv();
 
+        if(global::stage > 2){
+            global::eth = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in)*global::num_routers);
+            for(size_t i = 0; i < global::num_routers; i++){
+                char ip[MAXPATHLENGTH];
+                sprintf(ip, "192.168.20%d.2", i+1);
+                memset(&global::eth[i], 0, sizeof(struct sockaddr_in));
+                inet_aton(ip, &global::eth[i].sin_addr);
+                global::eth[i].sin_family = AF_INET;
+            }
+        }
+
         // set socket
         int s = utils::initSocket();
         if(s < 0) throw "an error occured while initializing socket";
         global::primary_port = global::sin.sin_port;
         global::service = s;
 
-        // fork child process
-        global::pid = fork();
-        // run self or child
+        for(int i = 0; i < global::num_routers; i++){
+            // fork child process
+            global::pid = fork();
+            // run self or child
+            if(global::pid < 0){
+                throw "fail to fork";
+                exit(1);
+            }
+            else if(global::pid == 0) {
+                router = new Secondary(s, global::stage, i);
+                router->run();
+                return 0;
+            }
+            // if(router != nullptr) delete router;
+        }
+        pthread_create(&global::proxy_thread, NULL, doer, NULL);
+        pthread_create(&global::monitor_thread, NULL, watcher, NULL);
+        pthread_join(global::proxy_thread,0);
+        pthread_cancel(global::monitor_thread);
         
-        if(global::pid == 0) {
-            router = new Secondary(s, global::stage);
-            router->run();
-        }
-        else {
-            pthread_create(&global::proxy_thread, NULL, doer, NULL);
-            pthread_create(&global::monitor_thread, NULL, watcher, NULL);
-            pthread_join(global::proxy_thread,0);
-            pthread_cancel(global::monitor_thread);
-        }
-        // if(router != nullptr) delete router;
     }
     catch(exception& e){
         cout<<"in catch"<<endl;

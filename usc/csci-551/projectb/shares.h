@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <exception>
+#include <unordered_map>
 
 #include <signal.h>
 #include <netinet/in.h>
@@ -17,6 +18,8 @@
 #include <netdb.h>
 #include <net/if.h>
 #include <linux/if_tun.h>
+#include <linux/ip.h>
+#include <linux/icmp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -50,6 +53,9 @@ namespace global{
     pthread_t proxy_thread, monitor_thread;
     int tun_fd;
     int service;
+
+    // stage3
+    struct sockaddr_in *eth;
 }
 
 #endif
