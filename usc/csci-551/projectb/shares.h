@@ -35,6 +35,18 @@ using namespace std;
 #define MAXPATHLENGTH 256
 #define IPV4_OFFSET 20
 
+struct octane_control{
+    uint8_t octane_action; // forward(1), reply(2), drop(3), remove(4)
+    uint8_t octane_flags; // "take the action"(0), ACK, "acknowledge action taken"(1)
+    uint16_t octane_seqno; // start from 1, incrementing with each subsequent
+    uint32_t octane_source_ip; //
+    uint32_t octane_dest_ip;
+    uint16_t octane_source_port;
+    uint16_t octane_dest_port;
+    uint16_t octane_protocol;
+    uint16_t octane_port;
+};
+
 namespace global{
     // process related
     const char* ip_address = "127.0.0.1";

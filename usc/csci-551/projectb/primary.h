@@ -100,7 +100,7 @@ private:
                 raise(SIGTERM);
             }
             else{
-                if(FD_ISSET(s, &readset)){
+                if(FD_ISSET(s, &readset)){ // handle message between primary and secondarys
                     stelen = recvfrom(s, buff, BUF_SIZE, 0, (struct sockaddr*) &router_addr, (socklen_t*) &nsize);
                     cout<<"Primary:: Read a packet from Secondary, packet length: "<<stelen<<endl;
                     Packer *p = new Packer(buff, stelen);
@@ -113,7 +113,7 @@ private:
                     else cout<<"Primary:: Invalid packet from Secondary!"<<endl;
                     delete p;
                 }
-                if(FD_ISSET(global::tun_fd, &readset)){
+                if(FD_ISSET(global::tun_fd, &readset)){ // handle message between primary and tunnel
                     // read from tunnel
                     int nread = read(global::tun_fd,buff,BUF_SIZE);
                     if(nread < 0){
@@ -128,6 +128,7 @@ private:
                         if (p->recieve()){
                             logger<<"ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
                             cout<<"Primary:: ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
+                            // judge the action of message from tunnel
                             p->send(&router_addr, s, p->getpacket(), p->getlen());
                         }
                         else{

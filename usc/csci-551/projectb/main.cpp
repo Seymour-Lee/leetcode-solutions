@@ -34,12 +34,10 @@ void* doer(void* arg){
 }
 
 int main(int argc, char const *argv[]){
-    cout<<"in main()"<<endl;
-
     try{
         // parse args && get conf info
         utils::getConf(argc, argv);
-        cout<<global::config_file_name<<" "<<global::stage<<" "<<global::num_routers<<endl;
+        cout<<"Config info: "<<global::config_file_name<<" "<<global::stage<<" "<<global::num_routers<<endl;
 
         // run process:
         // clear env

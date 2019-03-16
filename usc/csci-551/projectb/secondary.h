@@ -15,7 +15,7 @@ public:
 
     ~Secondary() {
         ostream& logger = Logger::getInstance();
-        logger<<"router 1 closed"<<endl;
+        logger<<"router "<<router_id+1<<" closed"<<endl;
     }
 
     void run(){
@@ -87,7 +87,7 @@ private:
         //     return true;
         // }
         if(socket_no == s){
-            return dst == "10.5.51.3.";
+            return dst == "10.5.51.3";
         }
         else if(socket_no == raw_sock){
             if(strcmp(dst.c_str(), inet_ntoa(global::eth[router_id].sin_addr)) == 0)return true;
