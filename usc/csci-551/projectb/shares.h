@@ -63,6 +63,8 @@ namespace global{
     string log_file_name = "";
     int stage = -1;
     int num_routers = 0;
+    // stage4 and above
+    int drop_after = -1;
 
     struct sockaddr_in sin;
     short unsigned int primary_port;

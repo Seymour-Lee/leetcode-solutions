@@ -2,5 +2,5 @@
 
 cd ..
 
-scp -r projectb seymourlee@104.42.216.57:/home/seymourlee/csci551
+scp -r projectb seymourlee@40.83.141.67:/home/seymourlee
 

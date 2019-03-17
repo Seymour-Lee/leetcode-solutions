@@ -37,7 +37,7 @@ int main(int argc, char const *argv[]){
     try{
         // parse args && get conf info
         utils::getConf(argc, argv);
-        cout<<"Config info: "<<global::config_file_name<<" "<<global::stage<<" "<<global::num_routers<<endl;
+        cout<<"Config info: "<<global::config_file_name<<" "<<global::stage<<" "<<global::num_routers<<" "<<global::drop_after<<endl;
 
         // run process:
         // clear env

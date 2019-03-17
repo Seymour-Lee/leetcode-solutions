@@ -8,6 +8,7 @@ public:
     Primary(int _s, int _stage) {
         this->s = _s;
         this->stage = _stage;
+        this->octane_counter = 0;
     }
 
     ~Primary() {
@@ -38,7 +39,8 @@ private:
     int nsize;
     struct sockaddr_in router_addr;
 
-    // stage3
+    // stage4 and above
+    int octane_counter;
     
 
     void stage1(){
@@ -64,34 +66,34 @@ private:
         // unsigned char* buffer = (unsigned char*)malloc(sizeof(struct iphdr)+sizeof(struct octane_control));
         // memset(&buffer, 0, sizeof(struct iphdr)+sizeof(struct octane_control));
         // cout<<"sizeof: "<<sizeof(struct iphdr)+sizeof(struct octane_control)<<" "<<sizeof(buffer)<<endl;
-        unsigned char *buffer = (unsigned char *)malloc(BUF_SIZE);// [BUF_SIZE];
-        memset(buffer, 0, BUF_SIZE);
-        int len = recvfrom(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, (socklen_t*) &nsize);
-        cout<<"Recieve a message from secondary, len is: "<<len<<endl;
-        // struct temp dese;
-        // memset(&dese, 0, sizeof(struct temp));
-        // unsigned char *ptr = deserialize_temp(buffer, &dese);
-        // cout<<"Recieve a message from secondary, len is: "<<len<<" "<<(ptr-buffer)<<endl;
-        // cout<<dese.a<<" "<<dese.b<<endl;
-        struct iphdr *iph = (struct iphdr *)buffer;
-        cout<<"Primary:: iph->protocol is "<<(int)iph->protocol<<endl;
-        struct octane_control *octane = (struct octane_control*)(buffer + sizeof(struct iphdr));
-        // memset(&octane, 0, sizeof(struct octane_control));
-        // unsigned char *ptr = utils::deserialize_octane_control(buffer, &octane);
-        // cout<<"Recieve a message from secondary, len is: "<<len<<" "<<(ptr-buffer)<<endl;
-        cout<<(int)octane->octane_action<<endl;
-        cout<<(int)octane->octane_flags<<endl;
-        cout<<(int)octane->octane_seqno<<endl;
-        cout<<octane->octane_source_ip<<endl;
-        cout<<octane->octane_dest_ip<<endl;
-        cout<<octane->octane_source_port<<endl;
-        cout<<octane->octane_dest_port<<endl;
-        cout<<octane->octane_protocol<<endl;
-        cout<<octane->octane_port<<endl;
-        Packer *p = new Packer((char *)buffer, len);
-        p->parse();
-        cout<<"p->type is "<<p->type<<endl;
-        delete p;
+        // unsigned char *buffer = (unsigned char *)malloc(BUF_SIZE);// [BUF_SIZE];
+        // memset(buffer, 0, BUF_SIZE);
+        // int len = recvfrom(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, (socklen_t*) &nsize);
+        // cout<<"Recieve a message from secondary, len is: "<<len<<endl;
+        // // struct temp dese;
+        // // memset(&dese, 0, sizeof(struct temp));
+        // // unsigned char *ptr = deserialize_temp(buffer, &dese);
+        // // cout<<"Recieve a message from secondary, len is: "<<len<<" "<<(ptr-buffer)<<endl;
+        // // cout<<dese.a<<" "<<dese.b<<endl;
+        // struct iphdr *iph = (struct iphdr *)buffer;
+        // cout<<"Primary:: iph->protocol is "<<(int)iph->protocol<<endl;
+        // struct octane_control *octane = (struct octane_control*)(buffer + sizeof(struct iphdr));
+        // // memset(&octane, 0, sizeof(struct octane_control));
+        // // unsigned char *ptr = utils::deserialize_octane_control(buffer, &octane);
+        // // cout<<"Recieve a message from secondary, len is: "<<len<<" "<<(ptr-buffer)<<endl;
+        // cout<<(int)octane->octane_action<<endl;
+        // cout<<(int)octane->octane_flags<<endl;
+        // cout<<(int)octane->octane_seqno<<endl;
+        // cout<<octane->octane_source_ip<<endl;
+        // cout<<octane->octane_dest_ip<<endl;
+        // cout<<octane->octane_source_port<<endl;
+        // cout<<octane->octane_dest_port<<endl;
+        // cout<<octane->octane_protocol<<endl;
+        // cout<<octane->octane_port<<endl;
+        // Packer *p = new Packer((char *)buffer, len);
+        // p->parse();
+        // cout<<"p->type is "<<p->type<<endl;
+        // delete p;
     }
 
     unsigned char * deserialize_temp(unsigned char *buffer, struct temp *value){
@@ -186,15 +188,16 @@ private:
                             logger<<"ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->icmptype<<endl;
                             cout<<"Primary:: ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->icmptype<<endl;
                             // judge the action of message from tunnel
-                            unsigned char* buffer = (unsigned char*)malloc(BUF_SIZE);
-                            memset(buffer, 0, sizeof(BUF_SIZE));
-                            utils::serialize_octane_messgae(buffer, p->get_iphdr());
-                            int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, BUF_SIZE);
-                            cout<<"Sent serialize data to primary: "<<ans<<endl;
+                            if(this->stage >= 4){
+                                distribute_control_message(p);
+                                if(this->stage >= 5){
+                                    write_flow_table();
+                                }
+                            }
                             p->send(&router_addr, s, p->getpacket(), p->getlen());
                         }
                         else{
-                            cout<<"Primary:: Invalid packet from tunnel!"<<endl;
+                            cout<<"Primary:: Invalid packet from tunnel! p->type is "<<p->type<<endl;
                         }
                         delete p;
                     }
@@ -203,6 +206,65 @@ private:
             // pthread_mutex_unlock(&mutex);
         }
         close(global::tun_fd);
+    }
+
+    void write_flow_table(){
+        
+    }
+
+    void distribute_control_message(Packer *p){
+        cout<<"Primary: distributing octane control message"<<endl;
+        ostream& logger = Logger::getInstance();
+        if(this->stage == 4){
+            logger<<"router: 0, rule installed ("<<p->src<<", 65535, "<<p->dst<<", 65535, "<<p->type<<") action 1"<<endl;
+            logger<<"router: 0, rule installed ("<<p->dst<<", 65535, "<<p->src<<", 65535, "<<p->type<<") action 1"<<endl;
+            cout<<"router: 0, rule installed ("<<p->src<<", 65535, "<<p->dst<<", 65535, "<<p->type<<") action 1"<<endl;
+            cout<<"router: 0, rule installed ("<<p->dst<<", 65535, "<<p->src<<", 65535, "<<p->type<<") action 1"<<endl;
+            send_octane_forward(p);
+            // send_octane_forward(p);
+        }
+        
+    }
+
+    void send_octane_forward(Packer *p){
+        unsigned char* buffer = (unsigned char*)malloc(BUF_SIZE);
+        memset(buffer, 0, sizeof(BUF_SIZE));
+        struct iphdr *ori = p->get_iphdr();
+        // utils::serialize_octane_messgae(buffer, ori);
+
+        struct iphdr *iph = (struct iphdr*)buffer;
+        *iph = *ori;
+        iph->protocol = 253;
+        cout<<"compare iph and ori: "<<endl;
+        cout<<iph->saddr<<" "<<ori->saddr<<endl;
+        cout<<iph->daddr<<" "<<ori->daddr<<endl;
+        
+        struct octane_control* octane = (struct octane_control*)(buffer+sizeof(struct iphdr));
+        // memset(octane, 0, sizeof(struct octane_control));
+        octane->octane_action = 1; // forward
+        octane->octane_flags = 0; // take an action
+        octane->octane_seqno = this->octane_counter;
+        octane->octane_source_ip = p->src_int;
+        octane->octane_dest_ip = p->dst_int;
+        octane->octane_source_port = 65535;
+        octane->octane_dest_port = 65535;
+        octane->octane_protocol = p->type;
+        octane->octane_port = 0;
+
+        int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, BUF_SIZE);
+        cout<<"Sent forward to primary: "<<ans<<endl;
+    }
+
+    void send_octane_reply(unsigned char *buffer, struct iphdr *ori){
+
+    }
+
+    void send_octane_drop(unsigned char *buffer, struct iphdr *ori){
+
+    }
+
+    void send_octane_remove(unsigned char *buffer, struct iphdr *ori){
+
     }
 
     void stage3(){}

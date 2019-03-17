@@ -11,6 +11,8 @@ public:
         this->s = _s;
         this->stage = _stage;
         this->router_id = _router_id;
+        this->drop_after = global::drop_after;
+        this->octane_counter = 0;
     }
 
     ~Secondary() {
@@ -44,7 +46,9 @@ private:
     struct sockaddr_in primary_addr;
     string log_file;
 
-    // stage3
+    // stage4 and above
+    int drop_after;
+    int octane_counter;
     
     
 
@@ -78,40 +82,40 @@ private:
         sendto(s, buff, strlen(buff), 0, (struct sockaddr*) &primary_addr, addrlen);
         cout<<"Secondary:: I am up message sent"<<endl;
 
-        // send a octane to primary
-        // unsigned char* buffer = (unsigned char*)malloc(sizeof(struct iphdr)+sizeof(struct octane_control));
-        unsigned char* buffer = (unsigned char*)malloc(BUF_SIZE);
-        memset(buffer, 0, sizeof(BUF_SIZE));
+        // // send a octane to primary
+        // // unsigned char* buffer = (unsigned char*)malloc(sizeof(struct iphdr)+sizeof(struct octane_control));
+        // unsigned char* buffer = (unsigned char*)malloc(BUF_SIZE);
+        // memset(buffer, 0, sizeof(BUF_SIZE));
 
-        struct iphdr *iph = (struct iphdr*)buffer;
-        iph->protocol = 253;
+        // struct iphdr *iph = (struct iphdr*)buffer;
+        // iph->protocol = 253;
         
-        struct octane_control* octane = (struct octane_control*)(buffer+sizeof(struct iphdr));
-        // memset(octane, 0, sizeof(struct octane_control));
-        octane->octane_action = 11;
-        octane->octane_flags = 12;
-        octane->octane_seqno = 3;
-        octane->octane_source_ip = 4;
-        octane->octane_dest_ip = 5;
-        octane->octane_source_port = 6;
-        octane->octane_dest_port = 7;
-        octane->octane_protocol = 8;
-        octane->octane_port = 9;
+        // struct octane_control* octane = (struct octane_control*)(buffer+sizeof(struct iphdr));
+        // // memset(octane, 0, sizeof(struct octane_control));
+        // octane->octane_action = 11;
+        // octane->octane_flags = 12;
+        // octane->octane_seqno = 3;
+        // octane->octane_source_ip = 4;
+        // octane->octane_dest_ip = 5;
+        // octane->octane_source_port = 6;
+        // octane->octane_dest_port = 7;
+        // octane->octane_protocol = 8;
+        // octane->octane_port = 9;
 
         
         
 
-        // buffer = (unsigned char *)iph;
-        // struct iphdr *t = (struct iphdr *)buffer;
-        // cout<<"test: "<<t->protocol;
-        cout<<"iphdr protocol is: "<<(int)iph->protocol<<endl;
-        // buffer += sizeof(struct iphdr);
+        // // buffer = (unsigned char *)iph;
+        // // struct iphdr *t = (struct iphdr *)buffer;
+        // // cout<<"test: "<<t->protocol;
+        // cout<<"iphdr protocol is: "<<(int)iph->protocol<<endl;
+        // // buffer += sizeof(struct iphdr);
         
-        // unsigned char *ptr;
+        // // unsigned char *ptr;
 
-        // ptr = utils::serialize_octane_control(buffer+sizeof(struct iphdr), octane);
-        int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &primary_addr, addrlen);
-        cout<<"Sent serialize data to primary: "<<ans<<endl;
+        // // ptr = utils::serialize_octane_control(buffer+sizeof(struct iphdr), octane);
+        // int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &primary_addr, addrlen);
+        // cout<<"Sent serialize data to primary: "<<ans<<endl;
     }
 
     unsigned char * serialize_int(unsigned char *buffer, int value)
@@ -157,7 +161,7 @@ private:
     }
 
     void read_from_primary(){
-        cout<<"Secondary:: start stage2"<<endl;
+        cout<<"Secondary:: read_from_primary()"<<endl;
         ostream& logger = Logger::getInstance();
         
         memset(&buff, 0, sizeof(buff));
@@ -185,7 +189,11 @@ private:
             
         }
         else if(p->type == 253){
-            logger<<"router: "<<router_id+1<<", rule installed "<<"action 1"<<endl;
+            if(this->stage >= 4){
+                get_octane_message(p);
+            }
+            
+            
         }
         else{
             cout<<"Secondary:: Invalid packet from Primary! IP protocol type is "<<p->type<<endl;
@@ -193,6 +201,40 @@ private:
         delete p;
         
     }
+
+    void get_octane_message(Packer *p){
+        ostream& logger = Logger::getInstance();
+        unsigned char *buffer = (unsigned char *)p->getpacket();
+        struct octane_control *octane = (struct octane_control *)(buffer+sizeof(struct iphdr));
+        logger<<"router: "<<router_id+1<<", rule installed ("<<ip2str(octane->octane_source_ip)<<", "<<octane->octane_source_port<<", "
+              <<ip2str(octane->octane_dest_ip)<<", "<<octane->octane_dest_port<<", "<<octane->octane_protocol<<") action "<<(int)octane->octane_action<<endl;
+        cout<<"router: "<<router_id+1<<", rule installed ("<<ip2str(octane->octane_source_ip)<<", "<<octane->octane_source_port<<", "
+              <<ip2str(octane->octane_dest_ip)<<", "<<octane->octane_dest_port<<", "<<octane->octane_protocol<<") action "<<(int)octane->octane_action<<endl;
+        send_ack();
+        if(this->stage >= 5){
+            write_flow_table(octane);
+        }
+    }
+
+    void send_ack(){
+        
+    }
+
+    void write_flow_table(struct octane_control *octane){
+
+    }
+
+    string ip2str(uint32_t ip){
+        string ans;
+        unsigned int a = ip & 0x000000ff;
+        unsigned int b = (ip >> 8) & 0x000000ff;
+        unsigned int c = (ip >> 16) & 0x000000ff;
+        unsigned int d = (ip >> 24) & 0x000000ff;
+        ans = to_string(a) + "." + to_string(b) + "." + to_string(c) + "." + to_string(d);
+        return ans;
+    }
+
+
 
     void loop(){
         fd_set readset;

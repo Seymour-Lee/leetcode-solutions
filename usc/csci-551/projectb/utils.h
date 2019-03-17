@@ -27,6 +27,7 @@ namespace utils{
             int val = stoi(line.substr(pos));
             if(name == "stage") global::stage = val;
             if(name == "num_routers") global::num_routers = val;
+            if(name == "drop_after") global::drop_after = val;
         }
     }
 
@@ -175,6 +176,10 @@ namespace utils{
         struct iphdr *iph = (struct iphdr*)buffer;
         *iph = *ori;
         iph->protocol = 253;
+        cout<<"compare iph and ori: "<<endl;
+        cout<<iph->saddr<<" "<<ori->saddr<<endl;
+        cout<<iph->daddr<<" "<<ori->daddr<<endl;
+
         
         struct octane_control* octane = (struct octane_control*)(buffer+sizeof(struct iphdr));
         // memset(octane, 0, sizeof(struct octane_control));

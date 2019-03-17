@@ -1,6 +1,8 @@
 #!/usr/bin/sh
 
-IP_OF_ETH0=10.0.2.15
+# IP_OF_ETH0=10.0.2.15
+
+IP_OF_ETH0=10.0.0.5
 
 sudo ip tuntap add dev tun1 mode tun
 sudo ifconfig tun1 10.5.51.2/24 up
