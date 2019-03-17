@@ -58,6 +58,59 @@ private:
         global::pid = atoi(buff);
         logger<<"router: "<<global::num_routers<<", pid: "<<global::pid<<", port: "<<router_addr.sin_port<<endl;
         pthread_mutex_unlock(&global::mutex);
+        // sleep(1);
+
+        // receive a octane packet from secondary
+        // unsigned char* buffer = (unsigned char*)malloc(sizeof(struct iphdr)+sizeof(struct octane_control));
+        // memset(&buffer, 0, sizeof(struct iphdr)+sizeof(struct octane_control));
+        // cout<<"sizeof: "<<sizeof(struct iphdr)+sizeof(struct octane_control)<<" "<<sizeof(buffer)<<endl;
+        unsigned char *buffer = (unsigned char *)malloc(BUF_SIZE);// [BUF_SIZE];
+        memset(buffer, 0, BUF_SIZE);
+        int len = recvfrom(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, (socklen_t*) &nsize);
+        cout<<"Recieve a message from secondary, len is: "<<len<<endl;
+        // struct temp dese;
+        // memset(&dese, 0, sizeof(struct temp));
+        // unsigned char *ptr = deserialize_temp(buffer, &dese);
+        // cout<<"Recieve a message from secondary, len is: "<<len<<" "<<(ptr-buffer)<<endl;
+        // cout<<dese.a<<" "<<dese.b<<endl;
+        struct iphdr *iph = (struct iphdr *)buffer;
+        cout<<"Primary:: iph->protocol is "<<(int)iph->protocol<<endl;
+        struct octane_control *octane = (struct octane_control*)(buffer + sizeof(struct iphdr));
+        // memset(&octane, 0, sizeof(struct octane_control));
+        // unsigned char *ptr = utils::deserialize_octane_control(buffer, &octane);
+        // cout<<"Recieve a message from secondary, len is: "<<len<<" "<<(ptr-buffer)<<endl;
+        cout<<(int)octane->octane_action<<endl;
+        cout<<(int)octane->octane_flags<<endl;
+        cout<<(int)octane->octane_seqno<<endl;
+        cout<<octane->octane_source_ip<<endl;
+        cout<<octane->octane_dest_ip<<endl;
+        cout<<octane->octane_source_port<<endl;
+        cout<<octane->octane_dest_port<<endl;
+        cout<<octane->octane_protocol<<endl;
+        cout<<octane->octane_port<<endl;
+        Packer *p = new Packer((char *)buffer, len);
+        p->parse();
+        cout<<"p->type is "<<p->type<<endl;
+        delete p;
+    }
+
+    unsigned char * deserialize_temp(unsigned char *buffer, struct temp *value){
+        buffer = deserialize_int(buffer, &value->a);
+        buffer = deserialize_char(buffer, &value->b);
+        return buffer;
+    }
+
+    unsigned char * deserialize_int(unsigned char *buffer, int *value){
+        *value = *value | (buffer[0] << 24);
+        *value = *value | (buffer[1] << 16);
+        *value = *value | (buffer[2] << 8);
+        *value = *value | (buffer[3]);
+        return buffer + 4;
+    }
+
+    unsigned char * deserialize_char(unsigned char *buffer, char *value){
+        *value = buffer[0];
+        return buffer + 1;
     }
 
     void stage2(){
@@ -105,9 +158,12 @@ private:
                     cout<<"Primary:: Read a packet from Secondary, packet length: "<<stelen<<endl;
                     Packer *p = new Packer(buff, stelen);
                     p->parse();
-                    if (p->recieve()){
-                        logger<<"ICMP from port: "<<router_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
-                        cout<<"Primary:: ICMP from port: "<<router_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
+                    
+
+                    // if (p->recieve()){
+                    if(p->type == 1){
+                        logger<<"ICMP from port: "<<router_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->icmptype<<endl;
+                        cout<<"Primary:: ICMP from port: "<<router_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->icmptype<<endl;
                         write(global::tun_fd, p->getpacket(), p->getlen());
                     }
                     else cout<<"Primary:: Invalid packet from Secondary!"<<endl;
@@ -125,10 +181,16 @@ private:
                         cout<<"Primary:: Read a packet from tunnel, packet length: "<<nread<<endl;
                         Packer *p = new Packer(buff, nread);
                         p->parse();
-                        if (p->recieve()){
-                            logger<<"ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
-                            cout<<"Primary:: ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->type<<endl;
+                        // if (p->recieve()){
+                        if(p->type == 1){
+                            logger<<"ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->icmptype<<endl;
+                            cout<<"Primary:: ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->icmptype<<endl;
                             // judge the action of message from tunnel
+                            unsigned char* buffer = (unsigned char*)malloc(BUF_SIZE);
+                            memset(buffer, 0, sizeof(BUF_SIZE));
+                            utils::serialize_octane_messgae(buffer, p->get_iphdr());
+                            int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, BUF_SIZE);
+                            cout<<"Sent serialize data to primary: "<<ans<<endl;
                             p->send(&router_addr, s, p->getpacket(), p->getlen());
                         }
                         else{

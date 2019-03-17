@@ -47,6 +47,11 @@ struct octane_control{
     uint16_t octane_port;
 };
 
+struct temp{
+    int a;
+    char b;
+};
+
 namespace global{
     // process related
     const char* ip_address = "127.0.0.1";

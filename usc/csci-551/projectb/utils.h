@@ -103,6 +103,99 @@ namespace utils{
         // cout<<(unsigned short) ~sum<<endl;
         return (unsigned short) ~sum;
     }
+
+    unsigned char * serialize_uint32_t(unsigned char *buffer, uint32_t value){
+    /* Write big-endian int value into buffer; assumes 32-bit int and 8-bit char. */
+        buffer[0] = value >> 24;
+        buffer[1] = value >> 16;
+        buffer[2] = value >> 8;
+        buffer[3] = value;
+        return buffer + 4;
+    }
+
+    unsigned char * serialize_uint16_t(unsigned char *buffer, uint16_t value){
+        buffer[0] = value >> 8;
+        buffer[1] = value;
+        return buffer + 2;
+    }
+
+    unsigned char * serialize_uint8_t(unsigned char *buffer, uint8_t value){
+        buffer[0] = value;
+        return buffer + 1;
+    }
+
+    unsigned char * serialize_octane_control(unsigned char *buffer, struct octane_control *value){
+        buffer = serialize_uint8_t(buffer, value->octane_action);
+        buffer = serialize_uint8_t(buffer, value->octane_flags);
+        buffer = serialize_uint16_t(buffer, value->octane_seqno);
+        buffer = serialize_uint32_t(buffer, value->octane_source_ip);
+        buffer = serialize_uint32_t(buffer, value->octane_dest_ip);
+        buffer = serialize_uint16_t(buffer, value->octane_source_port);
+        buffer = serialize_uint16_t(buffer, value->octane_dest_port);
+        buffer = serialize_uint16_t(buffer, value->octane_protocol);
+        buffer = serialize_uint16_t(buffer, value->octane_port);
+        return buffer;
+    }
+
+    unsigned char * deserialize_uint32_t(unsigned char *buffer, uint32_t *value){
+        *value = *value | (buffer[0] << 24);
+        *value = *value | (buffer[1] << 16);
+        *value = *value | (buffer[2] << 8);
+        *value = *value | (buffer[3]);
+        return buffer + 4;
+    }
+
+    unsigned char * deserialize_uint16_t(unsigned char *buffer, uint16_t *value){
+        *value = *value | (buffer[0] << 8);
+        *value = *value | (buffer[1]);
+        return buffer + 2;
+    }
+
+    unsigned char * deserialize_uint8_t(unsigned char *buffer, uint8_t *value){
+        *value = buffer[0];
+        return buffer + 1;
+    }
+
+    unsigned char * deserialize_octane_control(unsigned char *buffer, struct octane_control *value){
+        // buffer = deserialize_int(buffer, &value->a);
+        // buffer = deserialize_char(buffer, &value->b);
+        buffer = deserialize_uint8_t(buffer, &value->octane_action);
+        buffer = deserialize_uint8_t(buffer, &value->octane_flags);
+        buffer = deserialize_uint16_t(buffer, &value->octane_seqno);
+        buffer = deserialize_uint32_t(buffer, &value->octane_source_ip);
+        buffer = deserialize_uint32_t(buffer, &value->octane_dest_ip);
+        buffer = deserialize_uint16_t(buffer, &value->octane_source_port);
+        buffer = deserialize_uint16_t(buffer, &value->octane_dest_port);
+        buffer = deserialize_uint16_t(buffer, &value->octane_protocol);
+        buffer = deserialize_uint16_t(buffer, &value->octane_port);
+        return buffer;
+    }
+
+    void serialize_octane_messgae(unsigned char *buffer, struct iphdr *ori){
+        struct iphdr *iph = (struct iphdr*)buffer;
+        *iph = *ori;
+        iph->protocol = 253;
+        
+        struct octane_control* octane = (struct octane_control*)(buffer+sizeof(struct iphdr));
+        // memset(octane, 0, sizeof(struct octane_control));
+        octane->octane_action = 11;
+        octane->octane_flags = 12;
+        octane->octane_seqno = 3;
+        octane->octane_source_ip = 4;
+        octane->octane_dest_ip = 5;
+        octane->octane_source_port = 6;
+        octane->octane_dest_port = 7;
+        octane->octane_protocol = 8;
+        octane->octane_port = 9;
+    }
+
+    void deserialize_octane_message(unsigned char *buffer){
+
+    }
+
+    void test_send_octane(){
+        
+    }
 }
 
 #endif

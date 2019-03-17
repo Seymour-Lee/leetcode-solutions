@@ -29,7 +29,11 @@ public:
     Packer(char* buf, int nread){
         packet = buf;
         len = nread;
-        parse();
+        // parse();
+    }
+
+    void parse_octane(){
+
     }
 
     void parse(){
@@ -69,6 +73,7 @@ public:
         }
         else if (type == 253) {
                 // the experimental IP protocol number
+            cout<<"Woooooocaoooo, find IP protocol with 253"<<endl;
         }
     }
 
@@ -102,6 +107,10 @@ public:
     int get_payload_len(){return len-iphdr_len;}
 
     int getlen() {return len;}
+
+    struct iphdr * get_iphdr(){
+        return (struct iphdr *)packet;
+    }
     
     int switchip(){
         *(packet+IPV4_OFFSET) = 0;

@@ -77,7 +77,67 @@ private:
         sprintf(buff, "%d", getpid());
         sendto(s, buff, strlen(buff), 0, (struct sockaddr*) &primary_addr, addrlen);
         cout<<"Secondary:: I am up message sent"<<endl;
+
+        // send a octane to primary
+        // unsigned char* buffer = (unsigned char*)malloc(sizeof(struct iphdr)+sizeof(struct octane_control));
+        unsigned char* buffer = (unsigned char*)malloc(BUF_SIZE);
+        memset(buffer, 0, sizeof(BUF_SIZE));
+
+        struct iphdr *iph = (struct iphdr*)buffer;
+        iph->protocol = 253;
+        
+        struct octane_control* octane = (struct octane_control*)(buffer+sizeof(struct iphdr));
+        // memset(octane, 0, sizeof(struct octane_control));
+        octane->octane_action = 11;
+        octane->octane_flags = 12;
+        octane->octane_seqno = 3;
+        octane->octane_source_ip = 4;
+        octane->octane_dest_ip = 5;
+        octane->octane_source_port = 6;
+        octane->octane_dest_port = 7;
+        octane->octane_protocol = 8;
+        octane->octane_port = 9;
+
+        
+        
+
+        // buffer = (unsigned char *)iph;
+        // struct iphdr *t = (struct iphdr *)buffer;
+        // cout<<"test: "<<t->protocol;
+        cout<<"iphdr protocol is: "<<(int)iph->protocol<<endl;
+        // buffer += sizeof(struct iphdr);
+        
+        // unsigned char *ptr;
+
+        // ptr = utils::serialize_octane_control(buffer+sizeof(struct iphdr), octane);
+        int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &primary_addr, addrlen);
+        cout<<"Sent serialize data to primary: "<<ans<<endl;
     }
+
+    unsigned char * serialize_int(unsigned char *buffer, int value)
+    {
+    /* Write big-endian int value into buffer; assumes 32-bit int and 8-bit char. */
+    buffer[0] = value >> 24;
+    buffer[1] = value >> 16;
+    buffer[2] = value >> 8;
+    buffer[3] = value;
+    return buffer + 4;
+    }
+
+    unsigned char * serialize_char(unsigned char *buffer, char value)
+    {
+    buffer[0] = value;
+    return buffer + 1;
+    }
+
+    unsigned char * serialize_temp(unsigned char *buffer, struct temp *value)
+    {
+    buffer = serialize_int(buffer, value->a);
+    buffer = serialize_char(buffer, value->b);
+    return buffer;
+    }
+
+
 
     bool send_to_secondary(Packer *p, int socket_no){
         
@@ -107,9 +167,10 @@ private:
 
         Packer *p = new Packer(buff, stelen);
         p->parse();
-        if (p->recieve()){
-            logger<<"ICMP from port: "<<primary_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->type<<endl;
-            cout<<"Secondary:: ICMP from port: "<<primary_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->type<<endl;
+        // if (p->recieve()){
+        if(p->type == 1){
+            logger<<"ICMP from port: "<<primary_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->icmptype<<endl;
+            cout<<"Secondary:: ICMP from port: "<<primary_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->icmptype<<endl;
             if(send_to_secondary(p, s)){ // stage2
                 p->switchip();
                 p->setchecksum();
@@ -123,8 +184,11 @@ private:
             }
             
         }
+        else if(p->type == 253){
+            logger<<"router: "<<router_id+1<<", rule installed "<<"action 1"<<endl;
+        }
         else{
-            cout<<"Secondary:: Invalid packet from Primary!"<<endl;
+            cout<<"Secondary:: Invalid packet from Primary! IP protocol type is "<<p->type<<endl;
         }
         delete p;
         
@@ -176,7 +240,8 @@ private:
             cout<<"Router"<<router_id+1<<": read a pecket from raw socket, packet length: "<<buf_len<<endl;
             Packer *p = new Packer(buffer, buf_len);
             p->parse();
-            if (p->recieve()){
+            // if (p->recieve()){
+            if(p->type == 1){
                 handle_icmp_from_raw(p);
             }
             else{
@@ -216,8 +281,10 @@ private:
     }
 
     void handle_icmp_from_raw(Packer *p){
-        // cout<<"Secondary:: handle icmp from raw, src: "<<p->src.data()<<", dst: ">>p->dst.data()<<", type: "<<(p->type)<<endl;
-        cout<<"Secondary:: handle icmp from raw, src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->type<<endl;
+        ostream& logger = Logger::getInstance();
+        logger<<"ICMP from raw sock, src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->icmptype<<endl;
+        // cout<<"Secondary:: handle icmp from raw, src: "<<p->src.data()<<", dst: ">>p->dst.data()<<", type: "<<(p->icmptype)<<endl;
+        cout<<"Secondary:: handle icmp from raw, src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->icmptype<<endl;
         if(send_to_secondary(p, raw_sock)){
             cout<<"icmp from raw p->src is "<<p->src<<endl;
             if(dst2src.find(p->src) != dst2src.end()){
