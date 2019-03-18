@@ -36,6 +36,10 @@ public:
 
     }
 
+    void set_ack_ip(){
+
+    }
+
     void parse(){
         struct sockaddr_in source, dest;
         char src_addr_buf[BUF_SIZE];
@@ -65,8 +69,8 @@ public:
                 // ICMP
                 struct icmphdr *icmph = (struct icmphdr *)(packet + iphdr_len);
                 this->icmptype = icmph->type;
-                this->srcport = 0;
-                this->dstport = 0;
+                this->srcport = 65535;
+                this->dstport = 65535;
         }
         else if (type == 6) {
                 // TCP
@@ -176,6 +180,30 @@ public:
         memset(dst_addr_buf, 0, BUF_SIZE);
         strcpy(dst_addr_buf, inet_ntoa(dst.sin_addr));
         this->dst = dst_addr_buf;
+
+        return 1;
+    }
+
+    int change_src(string srcIP) {
+        struct iphdr *iph = (struct iphdr *)packet;
+
+        /// change src in place
+        struct sockaddr_in src;
+        memset(&src, 0, sizeof(struct sockaddr_in));
+        inet_aton(srcIP.c_str(), &src.sin_addr);
+
+        iph->saddr = src.sin_addr.s_addr;
+
+        // recompute checksum
+        //iph->check = 0;
+        //iph->check = in_cksum((unsigned short *)iph, sizeof(struct iphdr));
+        recheckPkt();
+
+        // renew src
+        char src_addr_buf[BUF_SIZE];
+        memset(src_addr_buf, 0, BUF_SIZE);
+        strcpy(src_addr_buf, inet_ntoa(src.sin_addr));
+        this->src = src_addr_buf;
 
         return 1;
     }

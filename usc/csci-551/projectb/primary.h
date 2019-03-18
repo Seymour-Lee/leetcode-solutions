@@ -41,6 +41,7 @@ private:
 
     // stage4 and above
     int octane_counter;
+    unordered_map<uint16_t, unordered_set<string>> pro2addr; // octane_protocol to "src_ip, src_port, dst_ip, dst_port"
     
 
     void stage1(){
@@ -168,6 +169,12 @@ private:
                         cout<<"Primary:: ICMP from port: "<<router_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->icmptype<<endl;
                         write(global::tun_fd, p->getpacket(), p->getlen());
                     }
+                    else if(p->type == 253){
+                        unsigned char *buffer = (unsigned char *)p->getpacket();
+                        struct octane_control *octane = (struct octane_control *)(buffer+sizeof(struct iphdr));
+                        cout<<"Primary:: get ack from secondary!! seqno is "<<octane->octane_seqno<<endl;
+                        //
+                    }
                     else cout<<"Primary:: Invalid packet from Secondary!"<<endl;
                     delete p;
                 }
@@ -189,12 +196,14 @@ private:
                             cout<<"Primary:: ICMP from tunnel, src: "<<p->src.data()<<", dst: "<< p->dst.data()<<", type: "<<p->icmptype<<endl;
                             // judge the action of message from tunnel
                             if(this->stage >= 4){
-                                distribute_control_message(p);
-                                if(this->stage >= 5){
-                                    write_flow_table();
-                                }
+                                handle_control_message(p, p->type);
+                                
                             }
                             p->send(&router_addr, s, p->getpacket(), p->getlen());
+                        }
+                        else if(p->type == 6){
+                            // handle tcp
+                            cout<<"find tcp packet!!!!!!"<<endl;
                         }
                         else{
                             cout<<"Primary:: Invalid packet from tunnel! p->type is "<<p->type<<endl;
@@ -208,25 +217,73 @@ private:
         close(global::tun_fd);
     }
 
-    void write_flow_table(){
-        
+    void write_flow_table(int protocol, string addr){
+        cout<<"in primary:;write_flow_table()"<<endl;
+        pro2addr[protocol].insert(addr);
     }
 
-    void distribute_control_message(Packer *p){
+    void handle_control_message(Packer *p, int protocol_type){
         cout<<"Primary: distributing octane control message"<<endl;
         ostream& logger = Logger::getInstance();
-        if(this->stage == 4){
-            logger<<"router: 0, rule installed ("<<p->src<<", 65535, "<<p->dst<<", 65535, "<<p->type<<") action 1"<<endl;
-            logger<<"router: 0, rule installed ("<<p->dst<<", 65535, "<<p->src<<", 65535, "<<p->type<<") action 1"<<endl;
-            cout<<"router: 0, rule installed ("<<p->src<<", 65535, "<<p->dst<<", 65535, "<<p->type<<") action 1"<<endl;
-            cout<<"router: 0, rule installed ("<<p->dst<<", 65535, "<<p->src<<", 65535, "<<p->type<<") action 1"<<endl;
-            send_octane_forward(p);
+        
+        if(this->stage >= 4){
+            // judge hit or not
+            string addr0 = p->src+", "+to_string(p->srcport)+", "+p->dst+", "+to_string(p->dstport);
+            string addr1 = p->dst+", "+to_string(p->dstport)+", "+p->src+", "+to_string(p->srcport);
+            // if not hit
+            if(pro2addr[p->type].find(addr0) == pro2addr[p->type].end()){
+                self_install_rule(addr0, p->type);
+
+                if(this->octane_counter != 0 && this->octane_counter%(global::drop_after) == 0){
+                    send_octane_drop(p, p->src_int, p->srcport, p->dst_int, p->dstport, p->type);
+                }
+                else if(p->dst.find("10.5.51") != string::npos){
+                    send_octane_reply(p, p->src_int, p->srcport, p->dst_int, p->dstport, p->type);
+                }
+                else{ // send to outside world
+                    send_octane_forward(p, p->src_int, p->srcport, p->dst_int, p->dstport, p->type);
+                }
+            }
+            // if hit
+            else{
+                logger<<"router: 0, rule hit ("<<addr1<<", "<<p->type<<") action 1"<<endl;
+                cout<<"router: 0, rule hit ("<<addr1<<", "<<p->type<<") action 1"<<endl;
+            }
+            // reverse: if not hit and packet is sent to outside
+            if(pro2addr[p->type].find(addr1) == pro2addr[p->type].end()){
+                // install this rule to self table
+                self_install_rule(addr1, p->type);
+                if(p->dst.find("10.5.51") == string::npos){ // packet is to outside world
+                    if(this->octane_counter != 0 && this->octane_counter%(global::drop_after) == 0){
+                        send_octane_drop(p, p->dst_int, p->dstport, p->src_int, p->srcport, p->type);
+                    }
+                    else{ // send to outside world
+                        send_octane_forward(p, p->dst_int, p->dstport, p->src_int, p->srcport, p->type);
+                    }
+                }
+                else{
+                    cout<<"After reverse src and dst, the dst is not outside"<<endl;
+                }
+            }
+            // if hit
+            else{
+                // cout<<"hittttttttt"<<endl;
+                logger<<"router: 0, rule hit ("<<addr1<<", "<<p->type<<") action 1"<<endl;
+                cout<<"router: 0, rule hit ("<<addr1<<", "<<p->type<<") action 1"<<endl;
+            }
             // send_octane_forward(p);
         }
         
     }
 
-    void send_octane_forward(Packer *p){
+    void self_install_rule(string addr, int protocol){
+        ostream& logger = Logger::getInstance();
+        logger<<"router: 0, rule installed ("<<addr<<", "<<protocol<<") action 1"<<endl;
+        cout<<"router: 0, rule installed ("<<addr<<", "<<protocol<<") action 1"<<endl;
+        pro2addr[protocol].insert(addr);
+    }
+
+    void send_octane(Packer *p, int src, int srcport, int dst, int dstport, int type, int action){
         unsigned char* buffer = (unsigned char*)malloc(BUF_SIZE);
         memset(buffer, 0, sizeof(BUF_SIZE));
         struct iphdr *ori = p->get_iphdr();
@@ -235,36 +292,44 @@ private:
         struct iphdr *iph = (struct iphdr*)buffer;
         *iph = *ori;
         iph->protocol = 253;
-        cout<<"compare iph and ori: "<<endl;
+        cout<<"compare iph and ori: "<<endl; 
         cout<<iph->saddr<<" "<<ori->saddr<<endl;
         cout<<iph->daddr<<" "<<ori->daddr<<endl;
         
         struct octane_control* octane = (struct octane_control*)(buffer+sizeof(struct iphdr));
         // memset(octane, 0, sizeof(struct octane_control));
-        octane->octane_action = 1; // forward
+        octane->octane_action = action;
         octane->octane_flags = 0; // take an action
-        octane->octane_seqno = this->octane_counter;
-        octane->octane_source_ip = p->src_int;
-        octane->octane_dest_ip = p->dst_int;
-        octane->octane_source_port = 65535;
-        octane->octane_dest_port = 65535;
-        octane->octane_protocol = p->type;
+        octane->octane_seqno = this->octane_counter++;
+        octane->octane_source_ip = src;
+        octane->octane_dest_ip = dst;
+        octane->octane_source_port = srcport;
+        octane->octane_dest_port = dstport;
+        octane->octane_protocol = type;
         octane->octane_port = 0;
 
         int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, BUF_SIZE);
         cout<<"Sent forward to primary: "<<ans<<endl;
     }
 
-    void send_octane_reply(unsigned char *buffer, struct iphdr *ori){
-
+    void send_octane_forward(Packer *p, int src, int srcport, int dst, int dstport, int type){
+        cout<<"Send forward message to secondary"<<endl;
+        send_octane(p, src, srcport, dst, dstport, type, 1);
     }
 
-    void send_octane_drop(unsigned char *buffer, struct iphdr *ori){
-
+    void send_octane_reply(Packer *p, int src, int srcport, int dst, int dstport, int type){
+        cout<<"Send reply message to secondary"<<endl;
+        send_octane(p, src, srcport, dst, dstport, type, 2);
     }
 
-    void send_octane_remove(unsigned char *buffer, struct iphdr *ori){
+    void send_octane_drop(Packer *p, int src, int srcport, int dst, int dstport, int type){
+        cout<<"Send drop message to secondary"<<endl;
+        send_octane(p, src, srcport, dst, dstport, type, 3);
+    }
 
+    void send_octane_remove(Packer *p, int src, int srcport, int dst, int dstport, int type){
+        cout<<"Send remove message to secondary"<<endl;
+        send_octane(p, src, srcport, dst, dstport, type, 4);
     }
 
     void stage3(){}

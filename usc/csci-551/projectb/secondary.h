@@ -13,6 +13,8 @@ public:
         this->router_id = _router_id;
         this->drop_after = global::drop_after;
         this->octane_counter = 0;
+
+        
     }
 
     ~Secondary() {
@@ -32,6 +34,9 @@ public:
 
         this->stage1();
         // if(this->stage >= 2) this->stage2();
+        // install default rule
+        if(this->stage >= 5)
+            self_install_rule("255.255.255.255, 65535, 255.255.255.255, 65535", 655535, 3);
         if(this->stage >= 2) this->loop();
         // if(this->stage == 3) this->stage3();
         close(s);
@@ -49,6 +54,8 @@ private:
     // stage4 and above
     int drop_after;
     int octane_counter;
+    unordered_map<uint16_t, unordered_set<string>> pro2addr; // octane_protocol to "src_ip, src_port, dst_ip, dst_port"
+    unordered_map<string, int> tuple2action;
     
     
 
@@ -81,41 +88,6 @@ private:
         sprintf(buff, "%d", getpid());
         sendto(s, buff, strlen(buff), 0, (struct sockaddr*) &primary_addr, addrlen);
         cout<<"Secondary:: I am up message sent"<<endl;
-
-        // // send a octane to primary
-        // // unsigned char* buffer = (unsigned char*)malloc(sizeof(struct iphdr)+sizeof(struct octane_control));
-        // unsigned char* buffer = (unsigned char*)malloc(BUF_SIZE);
-        // memset(buffer, 0, sizeof(BUF_SIZE));
-
-        // struct iphdr *iph = (struct iphdr*)buffer;
-        // iph->protocol = 253;
-        
-        // struct octane_control* octane = (struct octane_control*)(buffer+sizeof(struct iphdr));
-        // // memset(octane, 0, sizeof(struct octane_control));
-        // octane->octane_action = 11;
-        // octane->octane_flags = 12;
-        // octane->octane_seqno = 3;
-        // octane->octane_source_ip = 4;
-        // octane->octane_dest_ip = 5;
-        // octane->octane_source_port = 6;
-        // octane->octane_dest_port = 7;
-        // octane->octane_protocol = 8;
-        // octane->octane_port = 9;
-
-        
-        
-
-        // // buffer = (unsigned char *)iph;
-        // // struct iphdr *t = (struct iphdr *)buffer;
-        // // cout<<"test: "<<t->protocol;
-        // cout<<"iphdr protocol is: "<<(int)iph->protocol<<endl;
-        // // buffer += sizeof(struct iphdr);
-        
-        // // unsigned char *ptr;
-
-        // // ptr = utils::serialize_octane_control(buffer+sizeof(struct iphdr), octane);
-        // int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &primary_addr, addrlen);
-        // cout<<"Sent serialize data to primary: "<<ans<<endl;
     }
 
     unsigned char * serialize_int(unsigned char *buffer, int value)
@@ -151,13 +123,28 @@ private:
         //     return true;
         // }
         if(socket_no == s){
-            return dst == "10.5.51.3";
+            return dst.find("10.5.51") != string::npos;
         }
         else if(socket_no == raw_sock){
             if(strcmp(dst.c_str(), inet_ntoa(global::eth[router_id].sin_addr)) == 0)return true;
             return true;
         }
         return false;
+    }
+
+    int hit_rule(Packer *p){
+        string srcip = p->src;
+        string dstip = p->dst;
+        int srcport = p->srcport;
+        int dstport = p->dstport;
+        int protocol = p->type;
+        string addr = srcip+", "+to_string(srcport)+", "+dstip+", "+to_string(dstport);
+        // cout<<"DEBUG:: router: "<<router_id+1<<", rule hit ("<<addr<<", "<<protocol<<") action "<<endl;
+        if(pro2addr[protocol].find(addr) == pro2addr[protocol].end()) return -1;
+        ostream& logger = Logger::getInstance();
+        logger<<"router: "<<router_id+1<<", rule hit ("<<addr<<", "<<protocol<<")"<<endl;
+        cout<<"router: "<<router_id+1<<", rule hit ("<<addr<<", "<<protocol<<")"<<endl;
+        return tuple2action[addr+", "+to_string(protocol)];
     }
 
     void read_from_primary(){
@@ -175,18 +162,24 @@ private:
         if(p->type == 1){
             logger<<"ICMP from port: "<<primary_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->icmptype<<endl;
             cout<<"Secondary:: ICMP from port: "<<primary_addr.sin_port<<", src: "<<p->src.data()<<", dst: "<<p->dst.data()<<", type: "<<p->icmptype<<endl;
-            if(send_to_secondary(p, s)){ // stage2
-                p->switchip();
-                p->setchecksum();
-                p->send(&primary_addr, s, p->getpacket(), p->getlen());
+            int ans = -1;
+            if(this->stage >= 5) ans = hit_rule(p);
+            if(this->stage <= 4 || ans == 1 || ans == 2){
+                if(send_to_secondary(p, s)){ // stage2
+                    p->switchip();
+                    p->setchecksum();
+                    p->send(&primary_addr, s, p->getpacket(), p->getlen());
+                }
+                else{ //stage3
+                    cout<<"Secondary:: rewrite and send to outside"<<endl;
+                    dst2src[p->dst] = p->src;
+                    cout<<p->dst<<" "<<p->src<<endl;
+                    send_to_raw(p);
+                }
             }
-            else{ //stage3
-                cout<<"Secondary:: rewrite and send to outside"<<endl;
-                dst2src[p->dst] = p->src;
-                cout<<p->dst<<" "<<p->src<<endl;
-                send_to_raw(p);
+            else{
+                // drop
             }
-            
         }
         else if(p->type == 253){
             if(this->stage >= 4){
@@ -203,26 +196,53 @@ private:
     }
 
     void get_octane_message(Packer *p){
+        cout<<"Secondary:: get an octane control message"<<endl;
         ostream& logger = Logger::getInstance();
         unsigned char *buffer = (unsigned char *)p->getpacket();
         struct octane_control *octane = (struct octane_control *)(buffer+sizeof(struct iphdr));
-        logger<<"router: "<<router_id+1<<", rule installed ("<<ip2str(octane->octane_source_ip)<<", "<<octane->octane_source_port<<", "
-              <<ip2str(octane->octane_dest_ip)<<", "<<octane->octane_dest_port<<", "<<octane->octane_protocol<<") action "<<(int)octane->octane_action<<endl;
-        cout<<"router: "<<router_id+1<<", rule installed ("<<ip2str(octane->octane_source_ip)<<", "<<octane->octane_source_port<<", "
-              <<ip2str(octane->octane_dest_ip)<<", "<<octane->octane_dest_port<<", "<<octane->octane_protocol<<") action "<<(int)octane->octane_action<<endl;
-        send_ack();
-        if(this->stage >= 5){
-            write_flow_table(octane);
+        handle_octane_message(octane);
+        send_ack(p);
+    }
+
+    void handle_octane_message(struct octane_control *octane){
+        ostream& logger = Logger::getInstance();
+        int protocol = octane->octane_protocol;
+        int srcip = octane->octane_source_ip;
+        int srcport = octane->octane_source_port;
+        int dstip = octane->octane_dest_ip;
+        int dstport = octane->octane_dest_port;
+        int action = octane->octane_action;
+        string addr = ip2str(srcip)+", "+to_string(srcport)+", "+ip2str(dstip)+", "+to_string(dstport);
+        if(pro2addr[protocol].find(addr) == pro2addr[protocol].end()){
+            self_install_rule(addr, protocol, action);
+        }
+        else{
+            // cout<<"Secondary:: hit!!!"<<endl;
+            logger<<"router: "<<router_id+1<<", rule hit ("<<addr<<", "<<protocol<<") action "<<tuple2action[addr+", "+to_string(protocol)]<<endl;
+            cout<<"router: "<<router_id+1<<", rule hit ("<<addr<<", "<<protocol<<") action "<<tuple2action[addr+", "+to_string(protocol)]<<endl;
         }
     }
 
-    void send_ack(){
-        
+    void self_install_rule(string addr, int protocol, int action){
+        ostream& logger = Logger::getInstance();
+        logger<<"router: "<<router_id+1<<", rule installed ("<<addr<<", "<<protocol<<") action "<<action<<endl;
+        cout<<"router: "<<router_id+1<<", rule installed ("<<addr<<", "<<protocol<<") action "<<action<<endl;
+        pro2addr[protocol].insert(addr);
+        tuple2action[addr+", "+to_string(protocol)] = action;
+    } 
+
+    void send_ack(Packer *p){
+        unsigned char *buffer = (unsigned char *)p->getpacket();
+        struct octane_control *octane = (struct octane_control *)(buffer+sizeof(struct iphdr));
+        octane->octane_flags = 1;
+        // p->switchip();
+        p->change_dst(p->src); // to primary
+        p->change_src("10.5.51.3"); // from self
+        p->setchecksum();
+        p->send(&primary_addr, s, p->getpacket(), p->getlen());
     }
 
-    void write_flow_table(struct octane_control *octane){
-
-    }
+    
 
     string ip2str(uint32_t ip){
         string ans;
@@ -333,10 +353,16 @@ private:
                 p->change_dst(dst2src[p->src]);
                 // p->switchip();
                 // p->setchecksum();
-                cout<<"Secondary:: Send message to Primary from outside world"<<endl;
-                p->send(&primary_addr, s, p->getpacket(), p->getlen());
+                int ans = -1;
+                if(this->stage >= 5) ans = hit_rule(p);
+                if(this->stage <= 4 || ans == 1 || ans == 2){
+                    cout<<"Secondary:: Send message to Primary from outside world"<<endl;
+                    p->send(&primary_addr, s, p->getpacket(), p->getlen());
+                }
+                
             }
         }
+        
     }
 
     int raw_alloc(){

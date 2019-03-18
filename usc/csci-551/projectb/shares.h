@@ -7,6 +7,7 @@
 #include <string>
 #include <exception>
 #include <unordered_map>
+#include <unordered_set>
 
 #include <signal.h>
 #include <netinet/in.h>

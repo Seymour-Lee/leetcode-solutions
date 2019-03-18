@@ -1,8 +1,8 @@
 #! /bin/bash
 
-# IP_OF_ETH0=10.0.2.15
+IP_OF_ETH0=10.0.2.15
 
-IP_OF_ETH0=10.0.0.5
+# IP_OF_ETH0=10.0.0.5
 
 # FORWARD
 ping -I $IP_OF_ETH0 wireless.csail.mit.edu -c 1
