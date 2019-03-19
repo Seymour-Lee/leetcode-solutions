@@ -15,5 +15,6 @@ ip route add table 9 to 128.30/16 dev tun1
 iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP
 
 ifconfig eth1 192.168.201.2/24 up
+ifconfig eth2 192.168.202.2/24 up
 
 

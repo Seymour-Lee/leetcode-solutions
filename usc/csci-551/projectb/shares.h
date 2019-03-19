@@ -8,6 +8,7 @@
 #include <exception>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 #include <signal.h>
 #include <netinet/in.h>
@@ -21,6 +22,7 @@
 #include <linux/if_tun.h>
 #include <linux/ip.h>
 #include <linux/icmp.h>
+#include <linux/tcp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +33,7 @@
 
 using namespace std;
 
-#define BUF_SIZE 128
+#define BUF_SIZE 65535
 #define MAXSIZE 2048
 #define MAXPATHLENGTH 256
 #define IPV4_OFFSET 20
@@ -48,9 +50,13 @@ struct octane_control{
     uint16_t octane_port;
 };
 
-struct temp{
-    int a;
-    char b;
+struct psd_tcp {
+        struct in_addr src;
+        struct in_addr dst;
+        unsigned char pad;
+        unsigned char proto;
+        unsigned short tcp_len;
+        struct tcphdr tcp;
 };
 
 namespace global{
@@ -76,6 +82,12 @@ namespace global{
 
     // stage3
     struct sockaddr_in *eth;
+
+    // stage6 and above
+    int *routers_pid;
+    int *routers_port;
+
+    // struct sockaddr_in *r_addr;
 }
 
 #endif

@@ -2,6 +2,7 @@
 #define _PRIMARY_H_
 
 #include "router.h"
+#include "timers.hh"
 
 class Primary: public Router{
 public:
@@ -9,6 +10,7 @@ public:
         this->s = _s;
         this->stage = _stage;
         this->octane_counter = 0;
+        for(int i = 0; i < global::num_routers; i++) router2ip[i] = "10.5.51.1"+to_string(i+1), ip2router["10.5.51.1"+to_string(i+1)] = i;
     }
 
     ~Primary() {
@@ -17,15 +19,17 @@ public:
     }
 
     void run(){
-        log_file = "stage" + to_string(stage) + ".primary.out";
+        log_file = "stage" + to_string(stage) + ".r0.out";
         global::log_file_name = log_file;
         std::ofstream fout;
         fout.open(log_file);
         Logger::getInstance().rdbuf(fout.rdbuf());
         ostream& logger = Logger::getInstance();
-        this->stage1();
+        if(this->stage <= 5)this->stage1();
+        else this->wait_hello_from_routers();
         if(this->stage >= 2) this->stage2();
         close(s);
+        close(global::tun_fd);
         logger<<"router 0 closed"<<endl;
     }
 
@@ -42,7 +46,46 @@ private:
     // stage4 and above
     int octane_counter;
     unordered_map<uint16_t, unordered_set<string>> pro2addr; // octane_protocol to "src_ip, src_port, dst_ip, dst_port"
+    Timers *timersManager_;
     
+    // stage6 and above
+    unordered_map<int, string> router2ip;
+    unordered_map<string, int> ip2router;
+    // vector<struct sockaddr_in> routers_addr(8);
+    struct sockaddr_in *routers_addr;
+    unordered_map<string, unsigned int> ip2port;
+
+
+    void wait_hello_from_routers(){
+        ostream& logger = Logger::getInstance();
+        logger<<"primary port: "<<global::primary_port<<endl;
+        char buffer[BUF_SIZE];
+        int num = global::num_routers;
+        global::routers_pid = (int*)malloc(sizeof(int)*num);
+        global::routers_port = (int*)malloc(sizeof(int)*num);
+        routers_addr = (struct sockaddr_in *)malloc(sizeof(struct sockaddr_in)*num);
+        struct sockaddr_in cur_router_addr;
+        while(num--){
+            int len = recvfrom(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &cur_router_addr, (socklen_t*) &nsize);
+            string data(buffer);
+            cout<<"data is "<<data<<endl;
+            
+            int router_id = stoi(data.substr(0, 1));
+            data = data.substr(2);
+            // cout<<router_id<<" "<<data<<endl;
+            if(router_id == 0) router_addr = cur_router_addr;
+            // cout<<router_id<<"----------------------"<<cur_router_addr.sin_port<<endl;
+            
+            int pos = data.find(',');
+            int router_pid = stoi(data.substr(0, pos));
+            int router_port = stoi(data.substr(pos+1));
+            cur_router_addr.sin_port = router_port;
+            global::routers_pid[router_id] = router_pid;
+            global::routers_port[router_id] = router_port;
+            routers_addr[router_id] = cur_router_addr;
+            logger<<"router: "<<router_id+1<<", pid: "<<router_pid<<", port: "<<router_port<<endl;
+        }
+    }
 
     void stage1(){
         cout<<"Primary:: get into stage1 "<<this->s<<endl;
@@ -61,59 +104,6 @@ private:
         global::pid = atoi(buff);
         logger<<"router: "<<global::num_routers<<", pid: "<<global::pid<<", port: "<<router_addr.sin_port<<endl;
         pthread_mutex_unlock(&global::mutex);
-        // sleep(1);
-
-        // receive a octane packet from secondary
-        // unsigned char* buffer = (unsigned char*)malloc(sizeof(struct iphdr)+sizeof(struct octane_control));
-        // memset(&buffer, 0, sizeof(struct iphdr)+sizeof(struct octane_control));
-        // cout<<"sizeof: "<<sizeof(struct iphdr)+sizeof(struct octane_control)<<" "<<sizeof(buffer)<<endl;
-        // unsigned char *buffer = (unsigned char *)malloc(BUF_SIZE);// [BUF_SIZE];
-        // memset(buffer, 0, BUF_SIZE);
-        // int len = recvfrom(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, (socklen_t*) &nsize);
-        // cout<<"Recieve a message from secondary, len is: "<<len<<endl;
-        // // struct temp dese;
-        // // memset(&dese, 0, sizeof(struct temp));
-        // // unsigned char *ptr = deserialize_temp(buffer, &dese);
-        // // cout<<"Recieve a message from secondary, len is: "<<len<<" "<<(ptr-buffer)<<endl;
-        // // cout<<dese.a<<" "<<dese.b<<endl;
-        // struct iphdr *iph = (struct iphdr *)buffer;
-        // cout<<"Primary:: iph->protocol is "<<(int)iph->protocol<<endl;
-        // struct octane_control *octane = (struct octane_control*)(buffer + sizeof(struct iphdr));
-        // // memset(&octane, 0, sizeof(struct octane_control));
-        // // unsigned char *ptr = utils::deserialize_octane_control(buffer, &octane);
-        // // cout<<"Recieve a message from secondary, len is: "<<len<<" "<<(ptr-buffer)<<endl;
-        // cout<<(int)octane->octane_action<<endl;
-        // cout<<(int)octane->octane_flags<<endl;
-        // cout<<(int)octane->octane_seqno<<endl;
-        // cout<<octane->octane_source_ip<<endl;
-        // cout<<octane->octane_dest_ip<<endl;
-        // cout<<octane->octane_source_port<<endl;
-        // cout<<octane->octane_dest_port<<endl;
-        // cout<<octane->octane_protocol<<endl;
-        // cout<<octane->octane_port<<endl;
-        // Packer *p = new Packer((char *)buffer, len);
-        // p->parse();
-        // cout<<"p->type is "<<p->type<<endl;
-        // delete p;
-    }
-
-    unsigned char * deserialize_temp(unsigned char *buffer, struct temp *value){
-        buffer = deserialize_int(buffer, &value->a);
-        buffer = deserialize_char(buffer, &value->b);
-        return buffer;
-    }
-
-    unsigned char * deserialize_int(unsigned char *buffer, int *value){
-        *value = *value | (buffer[0] << 24);
-        *value = *value | (buffer[1] << 16);
-        *value = *value | (buffer[2] << 8);
-        *value = *value | (buffer[3]);
-        return buffer + 4;
-    }
-
-    unsigned char * deserialize_char(unsigned char *buffer, char *value){
-        *value = buffer[0];
-        return buffer + 1;
     }
 
     void stage2(){
@@ -138,7 +128,7 @@ private:
             FD_SET(s, &readset);
             cout<<"Primary:: waiting"<<endl;
             
-            tv.tv_sec = 15;
+            tv.tv_sec = 1000;
             tv.tv_usec = 0;
             select_ans = select(maxfd+1, &readset, NULL, NULL, &tv);
             cout<<"Primary:: get an info"<<endl;
@@ -148,10 +138,27 @@ private:
             else if(select_ans == 0){
                 cout<<"Primary:: time out"<<endl;
                 logger<<"router 0 closed"<<endl;
-                int status;
-                kill(global::pid, SIGTERM);
-                wait(&status);
-                if (WIFSIGNALED(status))printf("Child process received singal %d\n", WTERMSIG(status));
+                // int status;
+                // kill(global::pid, SIGTERM);
+                // wait(&status);
+                // if (WIFSIGNALED(status))printf("Child process received singal %d\n", WTERMSIG(status));
+
+                if(this->stage <= 5){
+                    int status;
+                    kill(global::pid, SIGTERM);
+                    wait(&status);
+                    if (WIFSIGNALED(status)) cout<<"Secondary got killed"<<endl;
+                }
+                else{
+                    for(int i = 0; i < global::num_routers; i++){
+                        int status;
+                        kill(global::routers_pid[i], SIGTERM);
+                        wait(&status);
+                        cout<<"router: "<<i<<" got killed"<<endl;
+                        if (WIFSIGNALED(status)) cout<<"router: "<<i<<" got killed"<<endl;
+                    }
+                }
+
                 close(global::service);
                 raise(SIGTERM);
             }
@@ -174,6 +181,19 @@ private:
                         struct octane_control *octane = (struct octane_control *)(buffer+sizeof(struct iphdr));
                         cout<<"Primary:: get ack from secondary!! seqno is "<<octane->octane_seqno<<endl;
                         //
+                    }
+                    else if(p->type == 6){
+                        // p->parse_tcp();
+                        cout<<"Primary:: get tcp packet from secondary"<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<" "<<p->dstport<<endl;
+                        cout<<ip2port[p->src]<<endl;
+                        p->change_dst("10.0.2.15");
+                        p->recheck_tcp();  // recheck tcp checksum
+                        // p->recheck_pkt();
+                        
+                        // p->setchecksum(); // recheck ip checksum
+                        // p->parse_tcp();
+                        cout<<"Primary:: get tcp packet from secondary"<<", src: "<<p->src.data()<<", dst: "<< p->dst.data()<<" "<<p->dstport<<endl;
+                        write(global::tun_fd, p->getpacket(), p->getlen());
                     }
                     else cout<<"Primary:: Invalid packet from Secondary!"<<endl;
                     delete p;
@@ -199,11 +219,28 @@ private:
                                 handle_control_message(p, p->type);
                                 
                             }
-                            p->send(&router_addr, s, p->getpacket(), p->getlen());
+                            if(this->stage >= 6){
+                                int id = p->dst.back()-'1';
+                                p->send(&routers_addr[id], s, p->getpacket(), p->getlen());
+                            }
+                            else{
+                                p->send(&router_addr, s, p->getpacket(), p->getlen());
+                            }
+                            
                         }
                         else if(p->type == 6){
                             // handle tcp
-                            cout<<"find tcp packet!!!!!!"<<endl;
+                            // cout<<"find tcp packet!!!!!!"<<endl;
+                            if(this->stage >= 6){
+                                handle_control_message(p, p->type);
+                                
+                            }
+                            if(this->stage >= 6){
+                                p->parse_tcp();
+                                // send control message
+                                handle_tcp_from_tunnel(p);
+                            }
+
                         }
                         else{
                             cout<<"Primary:: Invalid packet from tunnel! p->type is "<<p->type<<endl;
@@ -217,6 +254,34 @@ private:
         close(global::tun_fd);
     }
 
+    void handle_tcp_from_tunnel(Packer *p){
+        // cout<<"Primary:: get a tcp packet from tunnel, src: "<<p->src<<", dst: "<<p->dst<<endl;
+        ostream& logger = Logger::getInstance();
+        if(p->dstport != 80 && p->dstport != 443) return; // discard others
+        logger<<"TCP from tunnel, ("<<p->src<<", "<<p->srcport<<", "<<p->dst<<", "<<p->dstport<<")"<<endl;
+        cout<<"TCP from tunnel, ("<<p->src<<", "<<p->srcport<<", "<<p->dst<<", "<<p->dstport<<")"<<endl;
+        ip2port[p->dst] = p->srcport;
+        if(p->dstport == 80){
+            send_tcp_to_r1(p);
+        }
+        else if(p->dstport == 443){
+            if(this->stage == 6) send_tcp_to_r2(p);
+            else if(this->stage == 7) send_jump_tcp_to_r1(p);
+        }
+    }
+
+    void send_tcp_to_r1(Packer *p){
+        p->send(&routers_addr[0], s, p->getpacket(), p->getlen());
+    }
+
+    void send_tcp_to_r2(Packer *p){
+        p->send(&routers_addr[1], s, p->getpacket(), p->getlen());
+    }
+
+    void send_jump_tcp_to_r1(Packer *p){
+        send_tcp_to_r1(p);
+    }
+
     void write_flow_table(int protocol, string addr){
         cout<<"in primary:;write_flow_table()"<<endl;
         pro2addr[protocol].insert(addr);
@@ -225,6 +290,10 @@ private:
     void handle_control_message(Packer *p, int protocol_type){
         cout<<"Primary: distributing octane control message"<<endl;
         ostream& logger = Logger::getInstance();
+
+        // if(this->stage >= 6){
+
+        // }
         
         if(this->stage >= 4){
             // judge hit or not
@@ -246,8 +315,8 @@ private:
             }
             // if hit
             else{
-                logger<<"router: 0, rule hit ("<<addr1<<", "<<p->type<<") action 1"<<endl;
-                cout<<"router: 0, rule hit ("<<addr1<<", "<<p->type<<") action 1"<<endl;
+                logger<<"router: 0, rule hit ("<<addr0<<", "<<p->type<<") action 1"<<endl;
+                cout<<"router: 0, rule hit ("<<addr0<<", "<<p->type<<") action 1"<<endl;
             }
             // reverse: if not hit and packet is sent to outside
             if(pro2addr[p->type].find(addr1) == pro2addr[p->type].end()){
@@ -272,6 +341,17 @@ private:
                 cout<<"router: 0, rule hit ("<<addr1<<", "<<p->type<<") action 1"<<endl;
             }
             // send_octane_forward(p);
+
+            if(this->stage >= 6){
+                if(pro2addr[p->type].find(addr0) != pro2addr[p->type].end()){
+                    logger<<"router: 0, rule hit ("<<addr0<<", "<<p->type<<") action 1"<<endl;
+                    cout<<"router: 0, rule hit ("<<addr0<<", "<<p->type<<") action 1"<<endl;
+                }
+                if(pro2addr[p->type].find(addr1) != pro2addr[p->type].end()){
+                    logger<<"router: 0, rule hit ("<<addr1<<", "<<p->type<<") action 1"<<endl;
+                    cout<<"router: 0, rule hit ("<<addr1<<", "<<p->type<<") action 1"<<endl;
+                }
+            }
         }
         
     }
@@ -307,9 +387,17 @@ private:
         octane->octane_dest_port = dstport;
         octane->octane_protocol = type;
         octane->octane_port = 0;
-
-        int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, BUF_SIZE);
-        cout<<"Sent forward to primary: "<<ans<<endl;
+        
+        if(this->stage >= 6 && (action == 2 || action == 3)){
+            int id = p->dst.back()-'0'-1;
+            int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &routers_addr[id], BUF_SIZE);
+            cout<<"Sent forward to primary: "<<ans<<endl;
+        }
+        else{
+            int ans = sendto(s, buffer, BUF_SIZE, 0, (struct sockaddr*) &router_addr, BUF_SIZE);
+            cout<<"Sent forward to primary: "<<ans<<endl;
+        }
+        
     }
 
     void send_octane_forward(Packer *p, int src, int srcport, int dst, int dstport, int type){
@@ -331,8 +419,6 @@ private:
         cout<<"Send remove message to secondary"<<endl;
         send_octane(p, src, srcport, dst, dstport, type, 4);
     }
-
-    void stage3(){}
 };
 
 #endif

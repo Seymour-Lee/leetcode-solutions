@@ -12,10 +12,22 @@ void* watcher(void* arg){
     sigwait(&global::signal_set, &sig2wait);
     pthread_mutex_lock(&global::mutex);
     close(global::tun_fd);
-    int status;
-    kill(global::pid, SIGTERM);
-    wait(&status);
-    if (WIFSIGNALED(status)) cout<<"Secondary got killed"<<endl;
+    if(global::stage <= 5){
+        int status;
+        kill(global::pid, SIGTERM);
+        wait(&status);
+        if (WIFSIGNALED(status)) cout<<"Secondary got killed"<<endl;
+    }
+    else{
+        for(int i = 0; i < global::num_routers; i++){
+            int status;
+            kill(global::routers_pid[i], SIGTERM);
+            wait(&status);
+            cout<<"router: "<<i<<" got killed"<<endl;
+            if (WIFSIGNALED(status)) cout<<"router: "<<i<<" got killed"<<endl;
+        }
+    }
+    
     close(global::service);
     pthread_cancel(global::proxy_thread);
     pthread_mutex_unlock(&global::mutex);
