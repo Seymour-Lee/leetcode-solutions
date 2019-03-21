@@ -1,0 +1,10 @@
+Q1. According to this paper, each mapper and reducer write their output into a seperate file. Why not write the output into the same file?
+
+- For mappers, writting to one single file is uncessary, because master node will assign the output of each mapper to a reducer. In this step, we only concern the output of each mapper.
+- For reducer, writting to a single file seems to make sense. But I think, if we do this in our system, we have to take care of data consistency. In the example of counting the number of occurrences in documents, if reducers writting to one single file, we need to deal with read-write conflict, which will make our system more complex.
+
+Q2. The paper mentions if the master node fails, we will redo the work. Is there any other better way to deal with this?
+
+- Maybe using a monitor node is a good idea. Master node keeps recoding checkpoints. And if monitor node finds master is down, it will recover master with checkpoints.
+- Maybe we can design an algorithm to elect a new master node of running nodes.
+- I think there is not a 100% reliable way to avoid master failure.
