@@ -36,6 +36,12 @@ class HMM:
         ###################################################
         # Edit here
         ###################################################
+        for i in range(S):
+            delta[i, 0] = self.pi[i] * self.B[i, self.obs_dict[Osequence[0]]]
+
+        for i in range(1, L):
+            for j in range(S):
+                delta[j, i] = self.B[j, self.obs_dict[Osequence[i]]] * sum([self.A[k,j] * delta[k,i-1] for k in range(S)])
         return delta
 
     # TODO:
@@ -56,6 +62,12 @@ class HMM:
         ###################################################
         # Edit here
         ###################################################
+        for j in range(S):
+            gamma[j,L-1]=1
+        
+        for t in range(L-2,-1,-1):
+            for k in range(S):
+                gamma[k,t]= sum([gamma[j,t+1]* self.A[k,j] * self.B[j,self.obs_dict[Osequence[t+1]]] for j in range(S)])
         return gamma
 
     # TODO:
@@ -71,6 +83,8 @@ class HMM:
         ###################################################
         # Edit here
         ###################################################
+        alpha = self.forward(Osequence)
+        prob = sum(alpha[:,-1])
         return prob
 
     # TODO:
@@ -86,6 +100,10 @@ class HMM:
         ###################################################
         # Edit here
         ###################################################
+        delta = self.forward(Osequence)
+        gamma = self.backward(Osequence)
+        p = self.sequence_prob(Osequence)
+        prob = sum([delta[i,0] * self.pi[i] * self.B[i, self.obs_dict[Osequence[0]]] for i in range(len(self.pi))])
         return prob
 
     # TODO:
@@ -101,4 +119,23 @@ class HMM:
         ###################################################
         # Edit here
         ###################################################
+        S = len(self.pi)
+        N = len(Osequence)
+        delta = np.zeros([S, N])
+        paths = np.zeros([S, N], dtype="int")
+        
+        for j in range(S):
+            delta[j, 0] = self.pi[j] * self.B[j, self.obs_dict[Osequence[0]]]
+            paths[j, 0] = 0
+        
+        for t in range(1, N):
+            for j in range(S):
+                deltas = [delta[i, t - 1] * self.A[i, j] * self.B[j, self.obs_dict[Osequence[t]]] for i in range(S)]
+                delta[j, t] = max(deltas)
+                paths[j, t] = np.argmax(deltas)
+        
+        path.append(np.argmax(delta[:, -1]))
+        for t in reversed(range(N - 1)):
+            path.append(paths[path[-1], t])
+        path = reversed(path)
         return path

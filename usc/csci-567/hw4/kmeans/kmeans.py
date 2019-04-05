@@ -79,9 +79,34 @@ class KMeans():
         # - return (means, membership, number_of_updates)
 
         # DONOT CHANGE CODE ABOVE THIS LINE
-        raise Exception(
-             'Implement fit function in KMeans class')
-        
+        # - comment/remove the exception.
+        # raise Exception(
+        #      'Implement fit function in KMeans class')
+
+        # - Initialize means by picking self.n_cluster from N data points
+        self.generator.seed(42)
+        centroids = x[self.centers, :]
+        y = np.zeros(N, dtype = int)
+
+        cur = np.sum([np.sum((x[y == k] - centroids[k]) ** 2) for k in range(self.n_cluster)]) / N
+
+        i = 0
+        # - Update means and membership until convergence or until you have made self.max_iter updates.
+        while i < self.max_iter:
+            l2 = np.sum(((x - np.expand_dims(centroids, axis=1)) ** 2), axis=2)
+            y = np.argmin(l2, axis=0)
+            nxt = np.sum([np.sum((x[y == k] - centroids[k]) ** 2) for k in range(self.n_cluster)]) / N
+            if np.absolute(cur - nxt) <= self.e:
+                break
+            cur = nxt
+            centroids_next = np.array([np.mean(x[y == k], axis=0) for k in range(self.n_cluster)])
+            index = np.where(np.isnan(centroids_next))
+            centroids_next[index] = centroids[index]
+            centroids = centroids_next
+            i += 1
+
+        # - return (means, membership, number_of_updates)
+        return centroids, y, i
         # DO NOT CHANGE CODE BELOW THIS LINE
         return centroids, y, self.max_iter
 
