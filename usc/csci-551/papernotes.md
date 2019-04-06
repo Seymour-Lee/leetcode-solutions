@@ -1,5 +1,31 @@
 ##  Week 1
 
+### w1p1-Hanson99a-Efficient Reading of Papers in Science and Technology
+* 记笔记
+* 高亮关键点
+* 不懂的地方标记
+* 给 paper写总结
+
+
+
+### w1p2-Jamin03a-Paper Reading and Writing Check Lists
+
+* Nothing to record
+
+
+
+### w1p3-Levin83a-An Evaluation of the Ninth SOSP Submissions or How to Write a Good System Paper
+
+* Nothing to record
+
+
+
+### w1p4-Heilmeier92a-Some Reflections on Innovation and Invention
+
+
+
+
+
 
 
 
