@@ -82,10 +82,88 @@ def model_training(train_data, tags):
 	Returns:
 	- model: an object of HMM class initialized with parameters(pi, A, B, obs_dict, state_dict) you calculated based on train_data
 	"""
-	model = None
+	# model = None
 	###################################################
 	# Edit here
 	###################################################
+	# print(train_data)
+	# print(tags)
+	obs = set([])
+	states = set([])
+	obs2times = {}
+	state2times = {}
+	obs_total = 0
+	state_total = 0
+	for line in train_data:
+		for w in line.words:
+			obs.add(w)
+			if w in obs2times:
+				obs2times[w] += 1
+			else:
+				obs2times[w] = 1
+			obs_total += 1
+		for t in line.tags:
+			states.add(t)
+			if t in state2times:
+				state2times[t] += 1
+			else:
+				state2times[t] = 1
+			state_total += 1
+	# print(words)
+	obs_dict = {}
+	i = 0
+	for w in obs:
+		obs_dict[w] = i
+		i += 1
+
+	state_dict = {}
+	i = 0
+	for t in states:
+		state_dict[t] = i
+		i += 1
+	# print(obs_dict)
+	# print(state_dict)
+	obs_dict_size = len(obs_dict)
+	state_dict_size = len(state_dict)
+	# print(obs_dict_size, state_dict_size)
+	pi = np.ones([state_dict_size+1], dtype="float")
+	A = np.ones([state_dict_size+1, state_dict_size+1], dtype="float")
+	B = np.ones([state_dict_size+1, obs_dict_size+1], dtype="float")
+
+	
+	"""
+	- pi: (1*num_state) A numpy array of initial probabilities. pi[i] = P(Z_1 = s_i)
+	- A: (num_state*num_state) A numpy array of transition probabilities. A[i, j] = P(Z_t = s_j|Z_t-1 = s_i)
+	- B: (num_state*num_obs_symbol) A numpy array of observation probabilities. B[i, k] = P(O_t = x_k| Z_t = s_i)
+	- obs_dict: (num_obs_symbol*1) A dictionary mapping each observation symbol to their index in B
+	- state_dict: (num_state*1) A dictionary mapping each state to their index in pi and A
+	"""
+	# pi: (1*num_state) A numpy array of initial probabilities. pi[i] = P(Z_1 = s_i)
+	pi_counter = 0.0
+	for line in train_data:
+		c = line.tags[0]
+		# print(c)
+		# print(c in state_dict)
+		pi[state_dict[c]] += 1.0
+		pi_counter += 1.0
+	for i in range(len(pi)):
+		pi[i] = float(pi[i]) / float(pi_counter)
+
+	# A: (num_state*num_state) A numpy array of transition probabilities. A[i, j] = P(Z_t = s_j|Z_t-1 = s_i)
+	for line in train_data:
+		for i in range(0, len(line.tags)-1, 1):
+			# the following line exists accumulation error
+			A[state_dict[line.tags[i]]][state_dict[line.tags[i+1]]] += 1.0 / float(state2times[line.tags[i]])
+
+	# B: (num_state*num_obs_symbol) A numpy array of observation probabilities. B[i, k] = P(O_t = x_k| Z_t = s_i)
+	for line in train_data:
+		for i in range(len(line.words)):
+			o = line.words[i]
+			s = line.tags[i]
+			B[state_dict[s]][obs_dict[o]] += 1.0 / float(obs2times[o])
+
+	model = HMM(pi, A, B, obs_dict, state_dict)
+	# print(len(model.obs_dict))
 	return model
 
 
@@ -103,5 +181,10 @@ def speech_tagging(test_data, model, tags):
 	###################################################
 	# Edit here
 	###################################################
+	# print(model[0])
+	
+	for line in test_data:
+		curtag = model.viterbi(line.words)
+		tagging.append(curtag)
 	return tagging
 

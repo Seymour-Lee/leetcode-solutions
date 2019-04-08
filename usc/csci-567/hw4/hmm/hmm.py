@@ -28,7 +28,7 @@ class HMM:
         - Osequence: (1*L) A numpy array of observation sequence with length L
 
         Returns:
-        - delta: (num_state*L) A numpy array delta[i, t] = P(Z_t = s_i, x_1:x_t | λ)
+        - delta: (num_state*L) A numpy array delta[i, t] = P(Z_t = s_i, x_1:x_t |  )
         """
         S = len(self.pi)
         L = len(Osequence)
@@ -54,7 +54,7 @@ class HMM:
         - Osequence: (1*L) A numpy array of observation sequence with length L
 
         Returns:
-        - gamma: (num_state*L) A numpy array gamma[i, t] = P(x_t+1:x_T | Z_t = s_i, λ)
+        - gamma: (num_state*L) A numpy array gamma[i, t] = P(x_t+1:x_T | Z_t = s_i,  )
         """
         S = len(self.pi)
         L = len(Osequence)
@@ -77,7 +77,7 @@ class HMM:
         - Osequence: (1*L) A numpy array of observation sequence with length L
 
         Returns:
-        - prob: A float number of P(x_1:x_T | λ)
+        - prob: A float number of P(x_1:x_T |  )
         """
         prob = 0
         ###################################################
@@ -94,16 +94,21 @@ class HMM:
         - Osequence: (1*L) A numpy array of observation sequence with length L
 
         Returns:
-        - prob: (num_state*L) A numpy array of P(s_t = i | O, λ)
+        - prob: (num_state*L) A numpy array of P(s_t = i | O,  )
         """
         prob = 0
         ###################################################
         # Edit here
         ###################################################
+        S = len(self.pi)
+        L = len(Osequence)
+        prob = np.zeros([S, L])
         delta = self.forward(Osequence)
         gamma = self.backward(Osequence)
         p = self.sequence_prob(Osequence)
-        prob = sum([delta[i,0] * self.pi[i] * self.B[i, self.obs_dict[Osequence[0]]] for i in range(len(self.pi))])
+        for i in range(len(self.pi)):
+            for j in range(len(Osequence)):
+                prob[i][j] = delta[i][j] * gamma[i][j] / p
         return prob
 
     # TODO:
@@ -122,20 +127,39 @@ class HMM:
         S = len(self.pi)
         N = len(Osequence)
         delta = np.zeros([S, N])
-        paths = np.zeros([S, N], dtype="int")
+        names = np.zeros([S, N], dtype="int")
         
         for j in range(S):
-            delta[j, 0] = self.pi[j] * self.B[j, self.obs_dict[Osequence[0]]]
-            paths[j, 0] = 0
+            if Osequence[0] in self.obs_dict:
+                delta[j, 0] = self.pi[j] * self.B[j, self.obs_dict[Osequence[0]]]
+            else:
+                delta[j, 0] = 0.00000005
+            names[j, 0] = 0
         
         for t in range(1, N):
             for j in range(S):
-                deltas = [delta[i, t - 1] * self.A[i, j] * self.B[j, self.obs_dict[Osequence[t]]] for i in range(S)]
+                # a if condition else b
+                deltas = [delta[i, t - 1] * self.A[i, j] * (self.B[j, self.obs_dict[Osequence[t]]] if Osequence[t] in self.obs_dict else 0.00000005) for i in range(S)]
                 delta[j, t] = max(deltas)
-                paths[j, t] = np.argmax(deltas)
+                names[j, t] = np.argmax(deltas)
         
-        path.append(np.argmax(delta[:, -1]))
-        for t in reversed(range(N - 1)):
-            path.append(paths[path[-1], t])
-        path = reversed(path)
+        idx = []
+        maxval = 0
+        maxidx = -1
+        for i in range(S):
+            if delta[i][-1] > maxval:
+                maxval = delta[i][-1]
+                maxidx = i
+        idx.append(maxidx)
+        for i in range(N-1, 0, -1):
+            maxidx = names[maxidx][i]
+            idx.append(maxidx)
+
+        idx = reversed(idx)
+        path = []
+        for i in idx:
+            for k in self.state_dict:
+                if self.state_dict[k] == i:
+                    path.append(k)
+                    break
         return path
