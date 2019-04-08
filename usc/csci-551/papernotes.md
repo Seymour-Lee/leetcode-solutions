@@ -1,4 +1,4 @@
-##  Week 1
+##  TWeek 1
 
 ### w1p1-Hanson99a-Efficient Reading of Papers in Science and Technology
 * 记笔记
@@ -22,15 +22,96 @@
 
 ### w1p4-Heilmeier92a-Some Reflections on Innovation and Invention
 
-
-
-
-
-
+* This paper just talks about writer's ideas about innovation and invention
 
 
 
 ## Week 2
+
+### w2p5-Clark88a-The Design Philosophy of the DARPA Internet Protocols
+
+#### 1. Abstract & Introduction
+
+1. TCP/IP最早是由Defense Advanced Research Projects Agency（DARPA）开发的
+2. 网络协议是基于无链接和数据报（datagram）模式的。本文探讨了如此设计网络协议的一些原因。
+
+#### 2. Fundamental Goal
+
+1. DARPA网络架构的top目标，是开发一套多用途（multiplex）的，能有效利用现有的互联网络的技术
+2. 包交换（packet switching）被选择实现multiplex。没有选择电路交换（circuit switching）是因为包交换更适合需要支持的服务。
+3. top level假设：网络由包交换层连接，也被称作gateways
+4. 由以上信息得出internet的基本结构：一个包交换的通讯设施，很多不同的网络互联在一起，使用gateway在不同网络间存储并forward包
+5. top level goal主要关注在effective
+
+#### 3. Second Level Goals
+
+1. Second level goals：（in order of importance）
+   * 即使部分网络或者gateway下线，网络通讯也必须继续
+   * 支持多类型的通讯服务
+   * 网络架构必须适应各种网络
+   * 支持分布式管理资源
+   * cost effective
+   * 允许host以小代价attach到网络
+   * resource应该accountable
+2. Goals的顺序改变会产生不同的网络
+
+#### 4. Survivability in the Face of Failure
+
+1. Survivability意味着当两个entities在通讯，这时网络中出现了failure，那么我们不需要重建服务，两个entities仍然可以通讯。换言之，是要有物理path，通讯就能继续
+2. 为了实现这一目标，必须
+3. 
+
+#### 5. Types of Service
+
+
+
+
+
+#### 6. Varieties of Networks
+
+
+
+
+
+#### 7. Other Goals
+
+
+
+
+
+#### 8. Architecture and Implementation
+
+
+
+
+
+#### 9. Datagrams
+
+
+
+
+
+#### 10. TCP
+
+
+
+
+
+#### 11. Conclusion
+
+
+
+
+
+#### 12. Acknowledgments — A Historial Perspective
+
+
+
+
+
+
+
+
 
 
 
@@ -185,6 +266,32 @@ A——B——C，A和C互相看不见，B能看见A和C
 
 
 ## Week 8
+
+### w8p25-Leland94a-On the Self-Similar Nature of Ethernet Traffic
+
+#### 1. Abstract & Introduction
+
+
+
+#### 2. Traffic Measurement
+
+
+
+#### 3. Self-Similar Stochastic Process
+
+
+
+#### 4. Ethernet Traffic is Self-Similar
+
+
+
+#### 5. Engineering for Self-Similar Network Traffic
+
+
+
+#### 6. Discussion
+
+
 
 
 
