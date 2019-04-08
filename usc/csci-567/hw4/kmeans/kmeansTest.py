@@ -66,7 +66,7 @@ def kmeans_builder(centroid_func):
     fig = Figure()
     fig.ax.scatter(x[:, 0], x[:, 1], c=membership)
     fig.ax.scatter(centroids[:, 0], centroids[:, 1], c='red')
-    fig.savefig('plots/toy_dataset_predicted_labels.png')
+    fig.savefig('plots/toy_dataset_predicted_labels_'+str(i)+'.png')
 
 
 
@@ -166,5 +166,6 @@ def kmeans_classification_builder(centroid_func, x_train, x_test, y_train, y_tes
 
 if __name__ == '__main__':
     kmeans_toy()
-    kmeans_image_compression()
     kmeans_classification()
+    kmeans_image_compression()
+    

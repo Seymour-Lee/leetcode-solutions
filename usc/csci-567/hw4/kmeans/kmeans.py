@@ -18,11 +18,36 @@ def get_k_means_plus_plus_center_indices(n, n_cluster, x, generator=np.random):
     # TODO:
     # implement the Kmeans++ algorithm of how to choose the centers according to the lecture and notebook
     # Choose 1st center randomly and use Euclidean distance to calculate other centers.
-    raise Exception(
-             'Implement get_k_means_plus_plus_center_indices function in Kmeans.py')
+    # raise Exception(
+    #          'Implement get_k_means_plus_plus_center_indices function in Kmeans.py')
+    generator.seed(generator.randint(n))
+    distance_matrix = np.zeros([n, n])
+    for i in range(n):
+        for j in range(n):
+            distance_matrix[i][j] = np.linalg.norm(x[i]-x[j])
 
-    
-
+    centers = np.zeros([n_cluster], dtype="int")
+    index_left = set([i for i in range(n)])
+    first_index = generator.randint(n)
+    centers[0] = first_index
+    index_left.remove(first_index)
+    for i in range(1, n_cluster):
+        maxdis = 0
+        maxidx = -1
+        for j in index_left:
+            minval = float('inf')
+            mincen = -1
+            for k in range(i):
+                c_index = centers[k]
+                if distance_matrix[j][c_index] < minval:
+                    minval = distance_matrix[j][c_index]
+                    mincen = c_index
+            if distance_matrix[j][mincen] > maxdis:
+                maxdis = minval
+                maxidx = j
+        centers[i] = maxidx
+        index_left.remove(maxidx)
+    return list(set(centers))
     # DO NOT CHANGE CODE BELOW THIS LINE
 
     print("[+] returning center for [{}, {}] points: {}".format(n, len(x), centers))
@@ -85,7 +110,9 @@ class KMeans():
 
         # - Initialize means by picking self.n_cluster from N data points
         self.generator.seed(42)
+        # centroids a n_cluster X D numpy array
         centroids = x[self.centers, :]
+        # y a length (N,) numpy array where cell i is the ith sample's assigned cluster
         y = np.zeros(N, dtype = int)
 
         cur = np.sum([np.sum((x[y == k] - centroids[k]) ** 2) for k in range(self.n_cluster)]) / N
@@ -162,12 +189,15 @@ class KMeansClassifier():
         # - assign labels to centroid_labels
 
         # DONOT CHANGE CODE ABOVE THIS LINE
-        raise Exception(
-             'Implement fit function in KMeansClassifier class')
-
-        
-
-        
+        # raise Exception(
+        #      'Implement fit function in KMeansClassifier class')
+        kmeans = KMeans(self.n_cluster, self.max_iter, self.e)
+        centroids, membership, itors = kmeans.fit(x)
+        votes = [{} for k in range(self.n_cluster)]
+        label2idx = zip(y,membership)
+        for label, idx in label2idx:
+            votes[idx][label]= votes[idx].get(label, 0) + 1
+        centroid_labels = np.array([0 if not vote else max(vote, key=vote.get) for vote in votes])  
         # DONOT CHANGE CODE BELOW THIS LINE
 
         self.centroid_labels = centroid_labels
@@ -198,10 +228,28 @@ class KMeansClassifier():
         # - return labels
 
         # DONOT CHANGE CODE ABOVE THIS LINE
-        raise Exception(
-             'Implement predict function in KMeansClassifier class')
-        
-        
+        # raise Exception(
+        #      'Implement predict function in KMeansClassifier class')
+        l2 = np.sum(((x - np.expand_dims(self.centroids, axis=1))**2), axis=2)
+        idx = np.argmin(l2, axis=0)
+        # print(idx)
+        # print(self.centroid_labels)
+        labels = self.centroid_labels[idx]
+        # print(labels)
+        # indexes = []
+        # for p in x:
+        #     mindis = float('inf')
+        #     minidx = -1
+        #     for i in range(len(self.centroids)):
+        #         c = self.centroids[i]
+        #         dis = np.linalg.norm(p-c)
+        #         if dis < mindis:
+        #             minidx = i
+        #             mindis = dis
+        #     indexes.append(indexes)
+        # labels = []
+        # for idx in indexes:
+        #     labels.append(self.centroid_labels[idx])
         # DO NOT CHANGE CODE BELOW THIS LINE
         return np.array(labels)
         
@@ -227,10 +275,21 @@ def transform_image(image, code_vectors):
     # - implement the function
 
     # DONOT CHANGE CODE ABOVE THIS LINE
-    raise Exception(
-             'Implement transform_image function')
-    
-
+    # raise Exception(
+    #          'Implement transform_image function')
+    new_im = np.zeros(image.shape)
+    # print(image)
+    # print(code_vectors)
+    for i in range(len(image)):
+        for j in range(len(image[i])):
+            mindis = float('inf')
+            minvec = None
+            for vec in code_vectors:
+                dis = np.linalg.norm(image[i][j]-vec)
+                if dis < mindis:
+                    mindis = dis
+                    minvec = vec
+            new_im[i][j] = minvec
     # DONOT CHANGE CODE BELOW THIS LINE
     return new_im
 
