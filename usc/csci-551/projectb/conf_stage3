@@ -1,4 +1,0 @@
-#This is a comment line, should be ignored
-stage 3
-# There can be other comments, or variable numbers of spaces or tabs in lines.
-num_routers 1
