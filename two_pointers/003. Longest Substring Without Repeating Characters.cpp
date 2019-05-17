@@ -57,3 +57,25 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s.size() == 0) return 0;
+        int ans = 1;
+        unordered_set<char> seen;
+        seen.insert(s[0]);
+        int l = 0, r = 1;
+        while(l <= r && r < s.size()){
+            if(seen.find(s[r]) == seen.end()){
+                seen.insert(s[r]);
+                ans = max(ans, r-l+1);
+                r++;
+            }
+            else{
+                seen.erase(s[l++]);
+            }
+        }
+        return ans;
+    }
+};
