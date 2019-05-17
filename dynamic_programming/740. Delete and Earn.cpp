@@ -51,3 +51,20 @@ public:
         return max(odd, even);
     }
 };
+
+class Solution {
+public:
+    int deleteAndEarn(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        int maxval = *max_element(nums.begin(), nums.end());
+        vector<int> dp(maxval+1, 0);
+        vector<int> vals(maxval+1, 0);
+        for(auto num: nums) vals[num] += num;
+        if(vals.size() <= 2) return *max_element(vals.begin(), vals.end());
+        dp[0] = vals[0], dp[1] = vals[1];
+        for(int i = 2; i < vals.size(); i++){
+            dp[i] = max(dp[i-2]+vals[i], dp[i-1]);
+        }
+        return max(dp[maxval], dp[maxval-1]);
+    }
+};

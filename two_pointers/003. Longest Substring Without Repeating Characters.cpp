@@ -79,3 +79,17 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int ans = 0;
+        vector<int> index(128, 0);
+        for(int l = 0, r = 0; r < s.size(); r++){
+            l = max(l, index[s[r]]);
+            ans = max(ans, r-l+1);
+            index[s[r]] = r+1;
+        }
+        return ans;
+    }
+};
