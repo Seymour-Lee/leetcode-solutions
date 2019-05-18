@@ -52,3 +52,18 @@ public:
         return sign? ans: -ans;
     }
 };
+
+class Solution {
+public:
+    int reverse(int x) {
+        long long ans = 0;
+        bool pos = x > 0;
+        long long num = labs((long)x);
+        while(num){
+            ans = ans*10 + num%10;
+            num = num/10;
+        }
+        ans = pos? ans: -ans;
+        return ans > INT_MAX || ans < INT_MIN? 0: ans;
+    }
+};

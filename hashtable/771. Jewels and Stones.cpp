@@ -13,3 +13,13 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int numJewelsInStones(string J, string S) {
+        unordered_set<char> jewels(J.begin(), J.end());
+        int ans = 0;
+        for(auto s: S) if(jewels.find(s) != jewels.end()) ans++;
+        return ans;
+    }
+};

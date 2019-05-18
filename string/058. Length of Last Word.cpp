@@ -27,3 +27,12 @@ public:
         return ans.size();
     }
 };
+
+class Solution {
+public:
+    int lengthOfLastWord(string s) {
+        while(s.size() && s.back() == ' ') s.pop_back();
+        reverse(s.begin(), s.end());
+        return s.find(' ') == string::npos? s.size(): s.find(' ');
+    }
+};

@@ -33,6 +33,17 @@ public:
 };
 ```
 
+## Range dp
+### 494. Target Sum
+Given an array, and we can add +/- previous each problem. Return the number of ways to get the result equal to a target.
+The length of the array will not exceed 20, and the elements will be positive, the sum of all elements will not exceed 1000.
+
+#### A naive way
+Since the problem tells us the length of the array will not exceed 20, so we can use backtracking to solve this problem.
+
+#### A better way
+
+
 
 
 ## Tree-like dp

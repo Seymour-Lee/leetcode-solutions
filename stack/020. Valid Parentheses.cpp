@@ -39,3 +39,26 @@ public:
         return stk.empty();
     }
 };
+
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> stk;
+        unordered_map<char, char> r2l = {
+            {')', '('},
+            {']', '['},
+            {'}', '{'},
+        };
+        for(auto c: s){
+            if(c == '(' || c == '[' || c == '{') stk.push(c);
+            else{
+                if(stk.empty() == false && stk.top() == r2l[c]){
+                    stk.pop();
+                    continue;
+                }
+                return false;
+            }
+        }
+        return stk.empty();
+    }
+};
