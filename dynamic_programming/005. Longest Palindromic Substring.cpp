@@ -93,3 +93,45 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if(s.size() <= 1) return s;
+        string ans = "";
+        vector<vector<bool>> dp(s.size(), vector<bool>(s.size(), false));
+        for(int i = 0; i < s.size(); i++) dp[i][i] = true, ans = s.substr(i, 1);
+        for(int i = 0; i+2-1 < s.size(); i++) if(s[i] == s[i+1]) dp[i][i+1] = true, ans = s.substr(i, 2);
+        for(int len = 3; len <= s.size(); len++){
+            for(int i = 0, j = i+len-1 ; j < s.size(); i++, j++){
+                if(s[i] == s[j] && dp[i+1][j-1]) dp[i][j] = true, ans = s.substr(i, len);
+            }
+        }
+        return ans;
+    }
+};
+
+// "babad", size() == 5
+// dp[i][j] represents whether s[i:j+1] is palindromic or not
+//      0   1   2   3   4
+//  0   T
+//  1       T
+//  2           T
+//  3               T
+//  4                   T
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string ans = "";
+        for(int pos = 0; pos < s.size(); pos++){
+            int i = pos, j = pos;
+            while(i >= 0 && j < s.size() && s[i] == s[j]) i--, j++;
+            if(j-i-1 > ans.size()) ans = s.substr(i+1, j-i-1);
+            i = pos, j = pos+1;
+            while(i >= 0 && j < s.size() && s[i] == s[j]) i--, j++;
+            if(j-i-1 > ans.size()) ans = s.substr(i+1, j-i-1);
+        }
+        return ans;
+    }
+};
