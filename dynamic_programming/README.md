@@ -33,6 +33,13 @@ public:
 };
 ```
 
+## 516. Longest Palindromic Subsequence
+### A straight way
+let dp[i][j] = the longest palindromic subsequence from i to j
+
+### A tricky way
+reverse string s, find the longest common subsequence
+
 ## Range dp
 ### 494. Target Sum
 Given an array, and we can add +/- previous each problem. Return the number of ways to get the result equal to a target.

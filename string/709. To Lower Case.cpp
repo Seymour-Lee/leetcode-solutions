@@ -9,3 +9,11 @@ public:
         return str;
     }
 };
+
+class Solution {
+public:
+    string toLowerCase(string str) {
+        for(auto &c: str) if('A' <= c && c <= 'Z') c = 'a'-'A'+c;
+        return str;
+    }
+};

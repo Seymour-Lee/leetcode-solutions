@@ -31,3 +31,36 @@ public:
         return result;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<double> averageOfLevels(TreeNode* root) {
+        vector<double> ans;
+        if(root == nullptr) return ans;
+        queue<TreeNode *> q;
+        q.push(root);
+        while(q.empty() == false){
+            int size = q.size();
+            int counter = 0;
+            double sum = 0.0;
+            while(size--){
+                auto node = q.front(); q.pop();
+                counter++;
+                sum += node->val;
+                if(node->left) q.push(node->left);
+                if(node->right) q.push(node->right);
+            }
+            ans.push_back(sum/counter);
+        }
+        return ans;
+    }
+};

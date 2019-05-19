@@ -37,3 +37,20 @@ private:
         backtracking(nums, pos+1, sum-nums[pos], target, ans);
     }
 };
+
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int S) {
+        unordered_map<int, int> sum2num;
+        sum2num[0] = 1;
+        for(auto x: nums){
+            auto prev = sum2num;
+            sum2num.clear();
+            for(auto p: prev){
+                sum2num[p.first+x] += p.second;
+                sum2num[p.first-x] += p.second;
+            }
+        }
+        return sum2num[S];
+    }
+};
