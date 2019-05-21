@@ -2,18 +2,63 @@
 
 ## References
 
+### Member
+#### 1d
 
-## One-D dp
-### 740. Delete and Earn
-Obviously, it is a dynamic programming problem, we can use the same way in House Robber to solve this problem. Like many dp/2_pointers problem, we need to pay more attention to initilization.
+[053. Maximum Subarray](#053. Maximum Subarray)
 
-## Two-D dp
-### 005. Longest Palindromic Substring
+[121.Best Time to Buy and Sell Stock](#121. Best Time to Buy and Sell Stock)
+
+[198. House Robber](#198. House Robber)
+
+[256. Paint House](#256. Paint House)
+
+[303. Range Sum Query - Immutable](#303. Range Sum Query - Immutable)
+
+[740. Delete and Earn](#740. Delete and Earn)
+
+[746. Min Cost Climbing Stairs](#746. Min Cost Climbing Stairs)
+
+
+
+
+
+
+#### 2d
+
+[005. Longest Palindromic Substring](#005. Longest Palindromic Substring)
+
+
+
+### Range
+
+#### 1d
+
+[070. Climbing Stairs](#070. Climbing Stairs)
+
+[338. Counting Bits](#338. Counting Bits)
+
+
+
+#### 2d
+
+[516. Longest Palindromic Subsequence](#516. Longest Palindromic Subsequence)
+
+
+
+
+
+
+
+
+## 005. Longest Palindromic Substring
+**type: member-2d**
 We can use a 2-d vector to record whether [i][j] is a palindromic.
-#### A better way
+
+### A better way
 reverse the string, find the longest common substring of two string. We can not use Trie, a counter-example is "aacazbcaa". I still do not find a better way to solve, maybe we can use kmp?
 
-#### A better better way
+### A better better way
 We can construct the palindromic from the center character.
 ```C++
 class Solution {
@@ -33,25 +78,105 @@ public:
 };
 ```
 
+
+
+## 053. Maximum Subarray
+
+**type: member 1d**
+
+dp[i] = maxSubarray end with nums[i]
+
+
+
+## 070. Climbing Stairs
+
+**type: range 1d**
+
+dp[i] = the number of ways to level i
+
+
+
+## 121. Best Time to Buy and Sell Stock
+
+**type: member 1d**
+
+dp[i] = max value to get if sell on day[i]
+
+
+
+## 198. House Robber
+
+**type: member 1d**
+dp[i] = max values rob or not house[i]
+Similar to 740. Delete and Earn
+
+
+
+## 256. Paint House
+
+**type: member 1d**
+
+dp[i] = min cost with color[i]
+
+
+
+## 303. Range Sum Query - Immutable
+
+**type: member 1d**
+
+dp[i] = sum from 0 to [i]
+
+
+
+## 338. Counting Bits
+
+**type: range 1d** 
+[i] represent the number of bits of i
+
+
+
+## 494. Target Sum
+
+**type: range**
+Given an array, and we can add +/- previous each problem. Return the number of ways to get the result equal to a target.
+The length of the array will not exceed 20, and the elements will be positive, the sum of all elements will not exceed 1000.
+
+### A naive way
+Since the problem tells us the length of the array will not exceed 20, so we can use backtracking to solve this problem.
+
+### A better way
+
+
+
 ## 516. Longest Palindromic Subsequence
+**type: member 2d**
+
 ### A straight way
-let dp[i][j] = the longest palindromic subsequence from i to j
+let dp[i]\[j\] = the longest palindromic subsequence from i to j
 
 ### A tricky way
 reverse string s, find the longest common subsequence
 
-## Range dp
-### 494. Target Sum
-Given an array, and we can add +/- previous each problem. Return the number of ways to get the result equal to a target.
-The length of the array will not exceed 20, and the elements will be positive, the sum of all elements will not exceed 1000.
 
-#### A naive way
-Since the problem tells us the length of the array will not exceed 20, so we can use backtracking to solve this problem.
 
-#### A better way
+## 740. Delete and Earn
+
+**type: member 1d**
+Obviously, it is a dynamic programming problem, we can use the same way in House Robber to solve this problem. Like many dp/2_pointers problem, we need to pay more attention to initilization.
 
 
 
+## 746. Min Cost Climbing Stairs
 
-## Tree-like dp
+**tpye: member 1d**
+
+dp[i] = min cost to level i
+
+
+
+
+
+
+
+
 

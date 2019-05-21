@@ -41,3 +41,15 @@ public:
         return max(dp.back(), dp[nums.size()-2]);
     }
 };
+
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        if(nums.size() <= 2) return *max_element(nums.begin(), nums.end());
+        vector<int> dp(nums.size(), 0);
+        dp[0] = nums[0], dp[1] = max(nums[1], nums[0]);
+        for(int i = 2; i < nums.size(); i++) dp[i] = max(dp[i-1], nums[i]+dp[i-2]);
+        return max(dp[dp.size()-2], dp[dp.size()-1]);
+    }
+};

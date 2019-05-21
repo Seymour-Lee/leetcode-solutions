@@ -26,3 +26,18 @@ public:
         return *min_element(dp.begin(), dp.end());
     }
 };
+
+class Solution {
+public:
+    int minCost(vector<vector<int>>& costs) {
+        if(costs.size() == 0) return 0;
+        vector<int> dp = costs[0];
+        for(int i = 1; i < costs.size(); i++){
+            int a = min(dp[1], dp[2]) + costs[i][0];
+            int b = min(dp[0], dp[2]) + costs[i][1];
+            int c = min(dp[1], dp[0]) + costs[i][2];
+            dp = {a, b, c};
+        }
+        return *min_element(dp.begin(), dp.end());
+    }
+};

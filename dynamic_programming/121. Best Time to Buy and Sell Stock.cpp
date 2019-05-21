@@ -44,3 +44,14 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        vector<int> dp(prices.size(), 0);
+        int minval = INT_MAX;
+        for(int i = 0; i < prices.size(); i++) dp[i] = prices[i]-minval, minval = min(minval, prices[i]);
+        dp.push_back(0);
+        return *max_element(dp.begin(), dp.end());
+    }
+};
