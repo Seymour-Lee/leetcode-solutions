@@ -62,3 +62,22 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows == 1) return s;
+        vector<string> rows(numRows, "");
+        int row = 0;
+        bool down = true;
+        for(auto c: s){
+            rows[row].push_back(c);
+            row = down? row+1: row-1;
+            if(row == -1) row += 2, down = true;
+            if(row == numRows) row -= 2, down = false;
+        }
+        string ans = "";
+        for(auto r: rows) ans += r;
+        return ans;
+    }
+};
