@@ -104,3 +104,52 @@ public:
         return ans;
     }
 };
+
+class Trie{
+public:
+    Trie(): cs(vector<Trie *>(26, nullptr)), end(false){}
+    
+    void insert(string str){
+        auto node = this;
+        for(auto c: str){
+            int i = c - 'a';
+            if(node->cs[i] == nullptr) node->cs[i] = new Trie();
+            node = node->cs[i];
+        }
+        node->end = true;
+    }
+    
+    string prefix(){
+        auto node = this;
+        string ans = "";
+        while(node->end == false){
+            int counter = 0;
+            int pos = -1;
+            for(int i = 0; i < node->cs.size(); i++){
+                auto p = node->cs[i];
+                if(p) counter++;
+                if(p && pos == -1) pos = i;
+            }
+            if(counter == 0 || counter > 1) break;
+            ans += ('a'+pos);
+            node = node->cs[pos];
+        }
+        return ans;
+    }
+    
+private:
+    vector<Trie *> cs;
+    bool end;
+};
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        Trie *trie = new Trie();
+        for(auto str: strs) {
+            if(str == "") return "";
+            trie->insert(str);
+        }
+        return trie->prefix();
+    }
+};
