@@ -94,3 +94,46 @@ private:
     Trie *root;
 };
 
+class Trie{
+public:
+    Trie(): cs(vector<Trie *>(26, nullptr)), end(false) {}
+    
+    void insert(string &str){
+        auto node = this;
+        for(auto c: str){
+            if(node->cs[c-'a'] == nullptr) node->cs[c-'a'] = new Trie();
+            node = node->cs[c-'a'];
+        }
+        node->end = true;
+    }
+    
+    void dfs(string &ans, string cur){
+        if(this->end ==false) return;
+        if(ans.size() < cur.size()) ans = cur;
+        for(int i = 0; i < this->cs.size(); i++) if(this->cs[i]){
+            char c = ('a' + i);
+            this->cs[i]->dfs(ans, cur+c);
+        }
+    }
+    
+
+    vector<Trie *> cs;
+    bool end;
+};
+
+class Solution {
+public:
+    string longestWord(vector<string>& words) {
+        auto f = [](string &a, string &b){
+            if(a.size() == b.size()) return a < b;
+            return a.size() < b.size();
+        };
+        sort(words.begin(), words.end(), f);
+        Trie *trie = new Trie();
+        for(auto &str: words) trie->insert(str);
+        string ans = "";
+        for(int i = 0; i < trie->cs.size(); i++) if(trie->cs[i]) trie->cs[i]->dfs(ans, string(1, 'a'+i));
+        return ans;
+    }
+};
+

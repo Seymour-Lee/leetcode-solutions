@@ -74,3 +74,46 @@ public:
         return ans.substr(1);
     }
 };
+
+class Trie{
+public:
+    Trie(): cs(vector<Trie *>(26, nullptr)), end(false) {}
+    
+    void insert(string &str){
+        auto node = this;
+        for(auto c: str){
+            if(node->cs[c-'a'] == nullptr) node->cs[c-'a'] = new Trie();
+            node = node->cs[c-'a'];
+        }
+        node->end = true;
+    }
+
+    string search(string &str){
+        auto node = this;
+        string ans = "";
+        for(auto c: str){
+            if(node && node->end) break;
+            if(node) node = node->cs[c-'a'];
+            ans += c;
+        }
+        return ans;
+    }
+    
+private:
+    vector<Trie *> cs;
+    bool end;
+};
+
+class Solution {
+public:
+    string replaceWords(vector<string>& dict, string sentence) {
+        Trie *trie = new Trie();
+        for(auto &str: dict) trie->insert(str);
+        string ans = "";
+        istringstream is(sentence);
+        string str = "";
+        while(getline(is, str, ' ')) ans += trie->search(str) + " ";
+        ans.pop_back();
+        return ans;
+    }
+};

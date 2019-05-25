@@ -104,6 +104,14 @@ dp[i] = max value to get if sell on day[i]
 
 
 
+## 139. Word Break
+
+**type: member 1d**
+
+dp[i] = whether str.substr(0, i+1) is true
+
+
+
 ## 198. House Robber
 
 **type: member 1d**

@@ -103,3 +103,70 @@ private:
  * obj.buildDict(dict);
  * bool param_2 = obj.search(word);
  */
+
+class Trie{
+public:
+    Trie(): cs(vector<Trie *>(26, nullptr)), end(false){}
+    
+    void insert(string str){
+        auto node = this;
+        for(auto c: str){
+            int i = c - 'a';
+            if(node->cs[i] == nullptr) node->cs[i] = new Trie();
+            node = node->cs[i];
+        }
+        node->end = true;
+    }
+    
+    bool search(string &word) {
+        auto node = this;
+        bool changed = false;
+        for(auto c: word){
+            if(node->cs[c-'a'] == nullptr) return false;
+            node = node->cs[c-'a'];
+        }
+        return node->end;
+    }
+    
+    
+    
+private:
+    vector<Trie *> cs;
+    bool end;
+};
+
+class MagicDictionary {
+public:
+    /** Initialize your data structure here. */
+    MagicDictionary() {
+        trie = new Trie();
+    }
+    
+    /** Build a dictionary through a list of words */
+    void buildDict(vector<string> dict) {
+        for(auto &str: dict) trie->insert(str);
+    }
+    
+    /** Returns if there is any word in the trie that equals to the given word after modifying exactly one character */
+    bool search(string word) {
+        for(auto &c: word){
+            char ori = c;
+            for(c = 'a'; c <= 'z'; c++){
+                if(c == ori) continue;
+                if(trie->search(word)) return true;
+            }
+            c = ori;
+        }
+        return false;
+    }
+    
+private:
+    Trie *trie;
+};
+
+/**
+ * Your MagicDictionary object will be instantiated and called as such:
+ * MagicDictionary* obj = new MagicDictionary();
+ * obj->buildDict(dict);
+ * bool param_2 = obj->search(word);
+ */
