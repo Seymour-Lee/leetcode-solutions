@@ -19,6 +19,8 @@
 
 [746. Min Cost Climbing Stairs](#746. Min Cost Climbing Stairs)
 
+[1048. Longest String Chain](#1048. Longest String Chain)
+
 
 
 
@@ -181,6 +183,12 @@ Obviously, it is a dynamic programming problem, we can use the same way in House
 dp[i] = min cost to level i
 
 
+
+## 1048. Longest String Chain
+
+**type: member 1d**
+
+dp[i] = max end with [i]
 
 
 
