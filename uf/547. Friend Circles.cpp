@@ -82,3 +82,28 @@ private:
         return p[x] = f(p, p[x]);
     }
 };
+
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& m) {
+        n = m.size();
+        p = vector<int>(n, -1);
+        for(int i = 0; i < m.size(); i++) for(int j = 0; j < i; j++) if(m[i][j]) u(i, j);
+        return n;
+    }
+    
+private:
+    int n;
+    vector<int> p;
+    
+    int f(int x){
+        if(p[x] == -1) return x;
+        return f(p[x]);
+    }
+    
+    void u(int x, int y){
+        int xp = f(x);
+        int yp = f(y);
+        if(xp != yp) p[xp] = yp, n--;
+    }
+};

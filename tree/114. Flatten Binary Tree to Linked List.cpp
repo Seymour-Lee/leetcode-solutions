@@ -33,3 +33,31 @@ private:
         return pair<TreeNode *, TreeNode *>{root, tail};
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        dfs(root);
+    }
+    
+private:
+    pair<TreeNode *, TreeNode *> dfs(TreeNode *root){
+        if(root == nullptr) return {nullptr, nullptr};
+        auto l = dfs(root->left);
+        auto r = dfs(root->right);
+        root->left = nullptr;
+        TreeNode *tail = root;
+        if(l.first) tail->right = l.first, tail = l.second;
+        if(r.first) tail->right = r.first, tail = r.second;
+        return {root, tail};
+    }
+};

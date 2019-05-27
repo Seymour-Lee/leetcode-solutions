@@ -74,3 +74,22 @@ public:
         return true;
     }
 };
+
+class Solution {
+public:
+    bool canAttendMeetings(vector<vector<int>>& intervals) {
+        vector<vector<int>> t;
+        for(auto itv: intervals){
+            t.push_back({itv[0], 1});
+            t.push_back({itv[1], 0});
+        }
+        sort(t.begin(), t.end());
+        int counter = 0;
+        for(auto a: t){
+            if(a[1] == 0) counter--;
+            else counter++;
+            if(counter > 1) return false;
+        }
+        return true;
+    }
+};

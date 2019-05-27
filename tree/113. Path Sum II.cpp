@@ -59,3 +59,61 @@ private:
         dfs(root->right, sum-root->val, ans, cur);
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vector<vector<int>> ans;
+        dfs(root, ans, {}, sum);
+        return ans;
+    }
+    
+private:
+    void dfs(TreeNode *root, vector<vector<int>> &ans, vector<int> cur, int sum){
+        if(root == nullptr) return;
+        sum -= root->val;
+        cur.push_back(root->val);
+        if(root->left == nullptr && root->right == nullptr && sum == 0) ans.push_back(cur);
+        if(root->left) dfs(root->left, ans, cur, sum);
+        if(root->right) dfs(root->right, ans, cur, sum);
+    }
+};
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vector<vector<int>> ans;
+        vector<int> cur;
+        dfs(root, ans, cur, sum);
+        return ans;
+    }
+    
+private:
+    void dfs(TreeNode *root, vector<vector<int>> &ans, vector<int> &cur, int sum){
+        if(root == nullptr) return;
+        sum -= root->val;
+        cur.push_back(root->val);
+        if(root->left == nullptr && root->right == nullptr && sum == 0) ans.push_back(cur);
+        if(root->left) dfs(root->left, ans, cur, sum);
+        if(root->right) dfs(root->right, ans, cur, sum);
+        cur.pop_back();
+    }
+};

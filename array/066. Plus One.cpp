@@ -17,3 +17,18 @@ public:
         return digits;
     }
 };
+
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        int c = (digits.back()+1) / 10;
+        digits.back() = (digits.back()+1)%10;
+        for(int i = digits.size()-2; i >= 0; i--){
+            int cur = (digits[i]+c)%10;
+            c = (digits[i]+c)/10;
+            digits[i] = cur;
+        }
+        if(c) digits.insert(digits.begin(), c);
+        return digits;
+    }
+};

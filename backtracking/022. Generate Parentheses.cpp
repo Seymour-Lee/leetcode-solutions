@@ -21,3 +21,22 @@ private:
         }
     }
 };
+
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        backtracking(ans, n, n, "");
+        return ans;
+    }
+    
+private:
+    void backtracking(vector<string> &ans, int l, int r, string cur){
+        if(l == 0 && r == 0){
+            ans.push_back(cur);
+            return;
+        }
+        if(l) backtracking(ans, l-1, r, cur+"(");
+        if(l < r) backtracking(ans, l, r-1, cur+")");
+    }
+};

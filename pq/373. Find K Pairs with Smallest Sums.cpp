@@ -26,3 +26,22 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        using ii = pair<int, int>;
+        auto f = [](ii a, ii b){return a.first+a.second < b.first+b.second;};
+        priority_queue<ii, vector<ii>, function<bool(ii, ii)>> pq(f);
+        for(auto a: nums1) for(auto b: nums2){
+            pq.push({a, b});
+            if(pq.size() > k) pq.pop();
+        }
+        vector<vector<int>> ans;
+        while(pq.empty() == false){
+            auto p = pq.top(); pq.pop();
+            ans.push_back({p.first, p.second});
+        }
+        return ans;
+    }
+};

@@ -45,3 +45,41 @@ private:
         return pair<ListNode *, ListNode *>{l1, l2};
     }
 };
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        if(head == nullptr) return nullptr;
+        if(head->next == nullptr) return new TreeNode(head->val);
+        ListNode *fast = head;
+        ListNode *slow = head;
+        ListNode *prev = head;
+        while(fast && fast->next){
+            fast = fast->next->next;
+            prev = slow;
+            slow = slow->next;
+        }
+        prev->next = nullptr;
+        TreeNode *root = new TreeNode(slow->val);
+        root->left = sortedListToBST(head);
+        root->right = sortedListToBST(slow ->next);
+        return root;
+    }
+};

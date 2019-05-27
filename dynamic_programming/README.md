@@ -46,6 +46,10 @@
 
 [516. Longest Palindromic Subsequence](#516. Longest Palindromic Subsequence)
 
+[062. Unique Paths](#062. Unique Paths)
+
+[063. Unique Paths II](#063. Unique Paths II)
+
 
 
 
@@ -87,6 +91,22 @@ public:
 **type: member 1d**
 
 dp[i] = maxSubarray end with nums[i]
+
+
+
+## 062. Unique Paths
+
+**type: member 2d**
+
+dp[i]\[j] = ways to pos[i]\[j]
+
+
+
+## 063. Unique Paths II
+
+**type: member 2d**
+
+dp[i]\[j] = ways to pos[i]\[j]
 
 
 
