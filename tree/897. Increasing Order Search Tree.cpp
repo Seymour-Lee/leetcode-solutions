@@ -42,3 +42,33 @@ private:
         }
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* increasingBST(TreeNode* root) {
+        auto p = dfs(root);
+        return p.first;
+    }
+    
+private:
+    pair<TreeNode *, TreeNode *> dfs(TreeNode *root){
+        if(root == nullptr) return {nullptr, nullptr};
+        auto l = dfs(root->left);
+        auto r = dfs(root->right);
+        TreeNode *head = l.first? l.first: root;
+        TreeNode *tail = r.second? r.second: root;
+        if(l.second) l.second->right = root;
+        root->right = r.first;
+        root->left = nullptr;
+        return {head, tail};
+    }
+};

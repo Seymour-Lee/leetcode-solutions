@@ -31,3 +31,34 @@ public:
         return result;
     }
 };
+
+/*
+// Employee info
+class Employee {
+public:
+    // It's the unique ID of each node.
+    // unique id of this employee
+    int id;
+    // the importance value of this employee
+    int importance;
+    // the id of direct subordinates
+    vector<int> subordinates;
+};
+*/
+class Solution {
+public:
+    int getImportance(vector<Employee*> employees, int id) {
+        unordered_map<int, vector<int>> a2b;
+        unordered_map<int, int> a2v;
+        for(auto e: employees) a2b[e->id] = e->subordinates, a2v[e->id] = e->importance;
+        int ans = 0;
+        queue<int> q;
+        q.push(id);
+        while(q.empty() == false){
+            auto a = q.front(); q.pop();
+            ans += a2v[a];
+            for(auto b: a2b[a]) q.push(b);
+        }
+        return ans;
+    }
+};

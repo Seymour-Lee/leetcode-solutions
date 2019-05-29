@@ -31,3 +31,30 @@ private:
         if(root->right) dfs(root->right, q);
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+        vector<int> a, b;
+        dfs(root1, a);
+        dfs(root2, b);
+        return a == b;
+    }
+    
+private:
+    void dfs(TreeNode *root, vector<int> &ans){
+        if(root == nullptr) return;
+        if(root->left == nullptr && root->right == nullptr) ans.push_back(root->val);
+        dfs(root->left, ans);
+        dfs(root->right, ans);
+    }
+};

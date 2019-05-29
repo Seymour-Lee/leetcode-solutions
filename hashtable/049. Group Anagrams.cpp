@@ -54,3 +54,18 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> str2ana;
+        for(auto str: strs){
+            string cur = str;
+            sort(cur.begin(), cur.end());
+            str2ana[cur].push_back(str);
+        }
+        vector<vector<string>> ans;
+        for(auto p: str2ana) ans.push_back(p.second);
+        return ans;
+    }
+};

@@ -16,3 +16,22 @@ public:
         return unique.size();
     }
 };
+
+class Solution {
+public:
+    int numUniqueEmails(vector<string>& emails) {
+        unordered_set<string> ans;
+        for(auto e: emails){
+            auto pos = e.find('@');
+            string fake = e.substr(0, pos);
+            string domain = e.substr(pos);
+            string name = "";
+            for(int i = 0; i < fake.size() && fake[i] != '+'; i++){
+                if(fake[i] == '.') continue;
+                name += fake[i];
+            }
+            ans.insert(name + domain);
+        }
+        return ans.size();
+    }
+};

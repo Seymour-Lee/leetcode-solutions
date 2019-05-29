@@ -23,3 +23,18 @@ private:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<string> uncommonFromSentences(string A, string B) {
+        unordered_map<string, int> str2times;
+        istringstream isa(A);
+        istringstream isb(B);
+        string str;
+        while(getline(isa, str, ' ')) str2times[str]++;
+        while(getline(isb, str, ' ')) str2times[str]++;
+        vector<string> ans;
+        for(auto p: str2times) if(p.second == 1) ans.push_back(p.first);
+        return ans;
+    }
+};
