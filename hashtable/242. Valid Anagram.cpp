@@ -11,3 +11,13 @@ public:
         return true;
     }
 };
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        unordered_map<int, int> s2t;
+        for(auto c: s) s2t[c]++;
+        for(auto c: t) if((--s2t[c]) == 0) s2t.erase(c);
+        return s2t.empty();
+    }
+};

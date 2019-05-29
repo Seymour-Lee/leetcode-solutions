@@ -13,3 +13,18 @@ public:
         return S;
     }
 };
+
+class Solution {
+public:
+    string reverseOnlyLetters(string S) {
+        string str = "";
+        for(auto c: S) if(isalpha(c)) str += c;
+        reverse(str.begin(), str.end());
+        string ans = "";
+        for(int i = 0, j = 0; i < S.size(); i++){
+            if(isalpha(S[i])) ans += str[j++];
+            else ans += S[i];
+        }
+        return ans;
+    }
+};

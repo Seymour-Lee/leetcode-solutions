@@ -46,3 +46,13 @@ public:
         return nums[nums.size()/2];
     }
 };
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int, int> n2t;
+        for(auto num: nums) n2t[num]++;
+        for(auto p: n2t) if(p.second > nums.size()/2) return p.first;
+        return 0;
+    }
+};

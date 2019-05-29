@@ -21,6 +21,8 @@
 
 [746. Min Cost Climbing Stairs](#746. Min Cost Climbing Stairs)
 
+[821. Shortest Distance to a Character](#821. Shortest Distance to a Character)
+
 [1048. Longest String Chain](#1048. Longest String Chain)
 
 
@@ -45,6 +47,8 @@
 [070. Climbing Stairs](#070. Climbing Stairs)
 
 [338. Counting Bits](#338. Counting Bits)
+
+[1025. Divisor Game](#1025. Divisor Game)
 
 
 
@@ -215,6 +219,22 @@ Obviously, it is a dynamic programming problem, we can use the same way in House
 **tpye: member 1d**
 
 dp[i] = min cost to level i
+
+
+
+## 821. Shortest Distance to a Character
+
+**type: member 1d two-way**
+
+l[i] = most left near pos, r[i] = most right near pos
+
+
+
+## 1025. Divisor Game
+
+**type: range 1d**
+
+dp[i] = whether Alice win or not
 
 
 

@@ -20,3 +20,12 @@ public:
         return true;
     }
 };
+
+class Solution {
+public:
+    bool detectCapitalUse(string word) {
+        int counter = 0;
+        for(auto c: word) if('A' <= c && c <= 'Z') counter++;
+        return counter == 0 || counter == word.size() || counter == 1 && 'A' <= word.front() && word.front() <= 'Z';
+    }
+};

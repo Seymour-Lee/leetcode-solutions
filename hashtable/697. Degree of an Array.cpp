@@ -25,3 +25,25 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int findShortestSubArray(vector<int>& nums) {
+        unordered_map<int, int> n2t;
+        unordered_map<int, int> l, r;
+        for(int i = 0; i < nums.size(); i++){
+            n2t[nums[i]]++;
+            if(l.find(nums[i]) == l.end()) l[nums[i]] = i;
+            r[nums[i]] = i;
+        }
+        int maxval = nums.front();
+        for(auto p: n2t) if(p.second > n2t[maxval]) maxval = p.first;
+        int ans = nums.size();
+        for(auto p: n2t) if(p.second == n2t[maxval]){
+            int val = p.first;
+            ans = min(ans, r[val]-l[val]+1);
+        }
+        
+        return ans;
+    }
+};

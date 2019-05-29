@@ -19,3 +19,14 @@ private:
         return true;
     }
 };
+
+class Solution {
+public:
+    bool isMonotonic(vector<int>& A) {
+        if(A.size() <= 2) return true;
+        int i = 1, j = A.size()-2;
+        for(; i < A.size() && A[i-1] <= A[i]; i++);
+        for(; j >= 0 && A[j] >= A[j+1]; j--);
+        return i == A.size() || j == -1;
+    }
+};

@@ -15,3 +15,18 @@ public:
         return s;
     }
 };
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        string ans = "";
+        istringstream is(s);
+        string str = "";
+        while(getline(is, str, ' ')){
+            reverse(str.begin(), str.end());
+            ans += str + " ";
+        }
+        ans.pop_back();
+        return ans;
+    }
+};
