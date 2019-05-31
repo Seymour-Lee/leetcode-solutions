@@ -43,6 +43,37 @@ private:
 class Solution {
 public:
     vector<int> findMode(TreeNode* root) {
+        dfs(root);
+        vector<int> ans;
+        int maxval = 0;
+        for(auto p: n2t) maxval = max(maxval, p.second);
+        for(auto p: n2t) if(p.second == maxval) ans.push_back(p.first);
+        return ans;
+    }
+    
+private:
+    unordered_map<int, int> n2t;
+    
+    void dfs(TreeNode *root){
+        if(root == nullptr) return;
+        n2t[root->val]++;
+        dfs(root->left);
+        dfs(root->right);
+    }
+};
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> findMode(TreeNode* root) {
         vector<int> ans;
         dfs(root, ans);
         return ans;
