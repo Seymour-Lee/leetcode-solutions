@@ -19,3 +19,21 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int shortestDistance(vector<string>& words, string word1, string word2) {
+        int ans = INT_MAX;
+        int prev = -words.size()-1;
+        for(int i = 0; i < words.size(); i++){
+            if(words[i] == word1) prev = i;
+            if(words[i] == word2) ans = min(ans, i-prev);
+        }
+        prev = 2*(words.size()+1);
+        for(int i = words.size()-1; i >= 0; i--){
+            if(words[i] == word1) prev = i;
+            if(words[i] == word2) ans = min(ans, prev-i);
+        }
+        return ans;
+    }
+};

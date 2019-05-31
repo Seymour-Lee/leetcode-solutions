@@ -29,3 +29,33 @@ public:
         return result;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int getMinimumDifference(TreeNode* root) {
+        int ans = INT_MAX;
+        dfs(root, ans);
+        return ans;
+    }
+    
+private:
+    pair<int, int> dfs(TreeNode *root, int &ans){
+        if(root == nullptr) return {-1, -1};
+        auto l = dfs(root->left, ans);
+        auto r = dfs(root->right, ans);
+        int minval = (l.first == -1? root->val: l.first);
+        int maxval = (r.second == -1? root->val: r.second);
+        if(l.first != -1) ans = min(ans, abs(root->val-l.second));
+        if(r.first != -1) ans = min(ans, abs(root->val-r.first));
+        return {minval, maxval};
+    }
+};

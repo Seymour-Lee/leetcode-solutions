@@ -61,3 +61,26 @@ private:
         }
     }
 };
+
+class Solution {
+public:
+    vector<string> letterCasePermutation(string S) {
+        unordered_set<string> seen;
+        backtracking(seen, S, 0, "");
+        return vector<string>(seen.begin(), seen.end());
+    }
+    
+private:
+    void backtracking(unordered_set<string> &seen, string s, int pos, string cur){
+        if(pos == s.size()){
+            seen.insert(cur);
+            return;
+        }
+        if(isdigit(s[pos])) backtracking(seen, s, pos+1, cur+s[pos]);
+        else{
+            char c = tolower(s[pos]);
+            backtracking(seen, s, pos+1, cur+c);
+            backtracking(seen, s, pos+1, cur+(char)toupper(c));
+        }
+    }
+};

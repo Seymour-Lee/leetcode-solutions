@@ -11,3 +11,15 @@ public:
         return vector<string>(seen.begin(), seen.end());
     }
 };
+
+class Solution {
+public:
+    vector<string> generatePossibleNextMoves(string s) {
+        if(s.size() < 2) return {};
+        vector<string> ans;
+        for(int i = 0; i < s.size()-1; i++) if(s[i] == '+' && s[i+1] == '+'){
+            ans.push_back(s.substr(0, i)+"--"+s.substr(i+2));
+        }
+        return ans;
+    }
+};

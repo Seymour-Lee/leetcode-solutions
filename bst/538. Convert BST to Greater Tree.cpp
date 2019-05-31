@@ -34,3 +34,30 @@ public:
         return root;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* convertBST(TreeNode* root) {
+        int prev = 0;
+        dfs(root, prev);
+        return root;
+    }
+    
+private:
+    void dfs(TreeNode *root, int &prev){
+        if(root == nullptr) return;
+        dfs(root->right, prev);
+        root->val += prev;
+        prev = root->val;
+        dfs(root->left, prev);
+    }
+};
