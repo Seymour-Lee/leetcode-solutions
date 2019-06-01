@@ -29,3 +29,20 @@ public:
         return same.back() + diff.back();
     }
 };
+
+class Solution {
+public:
+    int numWays(int n, int k) {
+        if(n == 0 || k == 0 || (k == 1 && n > 2)) return 0;
+        if(n == 1) return k;
+        if(n == 2) return k*k;
+        vector<int> d(n, 0), s(n, 0);
+        d[0] = k, d[1] = (k-1)*k;
+        s[0] = k, s[1] = k;
+        for(int i = 2; i < n; i++){
+            s[i] = d[i-1];
+            d[i] = (k-1)*(d[i-1]+s[i-1]);
+        }
+        return d.back() + s.back();
+    }
+};

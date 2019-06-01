@@ -13,6 +13,8 @@
 
 [256. Paint House](#256. Paint House)
 
+[276. Paint Fence](#276. Paint Fence)
+
 [303. Range Sum Query - Immutable](#303. Range Sum Query - Immutable)
 
 [509. Fibonacci Number](#509. Fibonacci Number)
@@ -157,6 +159,18 @@ Similar to 740. Delete and Earn
 **type: member 1d**
 
 dp[i] = min cost with color[i]
+
+
+
+## 276. Paint Fence
+
+**type: member 1d**
+
+s[i] = the number of the ways if  [i] has the same color as [i-1]
+
+d[i] = the number of the ways if  [i] has a different color with [i-1]
+
+Answer will be s.back() + d.back()
 
 
 
