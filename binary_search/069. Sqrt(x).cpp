@@ -13,3 +13,24 @@ public:
         return right;
     }
 };
+
+class Solution {
+public:
+    int mySqrt(int x) {
+        return sqrt(x);
+    }
+};
+
+class Solution {
+public:
+    int mySqrt(int x) {
+        long long l = 0, r = (long long)x+1;
+        while(l < r){
+            long long m = l + (r - l) / 2;
+            if(m*m == x) return m;
+            if(m*m < x) l = m+1;
+            else r = m;
+        }
+        return l-1;
+    }
+};

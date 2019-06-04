@@ -62,3 +62,35 @@ private:
  * obj.add(number);
  * bool param_2 = obj.find(value);
  */
+
+class TwoSum {
+public:
+    /** Initialize your data structure here. */
+    TwoSum() {
+        
+    }
+    
+    /** Add the number to an internal data structure.. */
+    void add(int number) {
+        a2t[number]++;
+    }
+    
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    bool find(int value) {
+        for(auto p: a2t){
+            auto a = value-p.first;
+            if(a2t.find(a) != a2t.end() && (p.first != a || a2t[a] > 1)) return true;
+        }
+        return false;
+    }
+    
+private:
+    unordered_map<int, int> a2t;
+};
+
+/**
+ * Your TwoSum object will be instantiated and called as such:
+ * TwoSum* obj = new TwoSum();
+ * obj->add(number);
+ * bool param_2 = obj->find(value);
+ */
