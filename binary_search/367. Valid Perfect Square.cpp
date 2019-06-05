@@ -28,3 +28,18 @@ public:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        long l = 0, r = (long)num+1;
+        while(l < r){
+            long m = l + (r - l) / 2;
+            if(m*m == num) return true;
+            if(m*m < num) l = m+1;
+            else r = m;
+        }
+        
+        return false;
+    }
+};

@@ -32,3 +32,16 @@ public:
         return s;
     }
 };
+
+class Solution {
+public:
+    string reverseVowels(string s) {
+        unordered_set<char> v = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+        for(int i = 0, j = s.size(); i < j;){
+            if(v.find(s[i]) == v.end()) i++;
+            else if(v.find(s[j]) == v.end()) j--;
+            else swap(s[i++], s[j--]);
+        }
+        return s;
+    }
+};

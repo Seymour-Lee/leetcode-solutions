@@ -11,3 +11,11 @@ public:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool rotateString(string A, string B) {
+        A = A + A;
+        return A.size() == 2*B.size() && A.find(B) != string::npos;
+    }
+};

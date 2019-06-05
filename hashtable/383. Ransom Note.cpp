@@ -12,3 +12,13 @@ public:
         return true;
     }
 };
+
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        vector<int> p(26, 0);
+        for(auto c: magazine) p[c-'a']++;
+        for(auto c: ransomNote) if(--p[c-'a'] < 0) return false;
+        return true;
+    }
+};

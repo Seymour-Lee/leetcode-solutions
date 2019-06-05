@@ -14,3 +14,24 @@ public:
         return str != ori;
     }
 };
+
+class Solution {
+public:
+    bool confusingNumber(int N) {
+        string str = to_string(N);
+        unordered_map<char, char> a2b = {
+            {'0', '0'},
+            {'1', '1'},
+            {'6', '9'},
+            {'8', '8'},
+            {'9', '6'},
+        };
+        string rev = "";
+        for(auto c: str){
+            if(a2b.find(c) == a2b.end()) return false;
+            rev += a2b[c];
+        }
+        reverse(rev.begin(), rev.end());
+        return str != rev;
+    }
+};

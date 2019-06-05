@@ -21,3 +21,15 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        
+        vector<int> c(26, 0), p(26, s.size());
+        for(int i = 0; i < s.size(); i++) c[s[i]-'a']++, p[s[i]-'a'] = min(p[s[i]-'a'], i);
+        int ans = s.size();
+        for(int i = 0; i < c.size(); i++) if(c[i] == 1) ans = min(ans, p[i]);
+        return ans == s.size()? -1: ans;
+    }
+};

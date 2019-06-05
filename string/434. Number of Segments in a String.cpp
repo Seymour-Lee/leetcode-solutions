@@ -13,3 +13,14 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int countSegments(string s) {
+        istringstream is(s);
+        string str;
+        int ans = 0;
+        while(getline(is, str, ' ')) if(str.size()) ans++;
+        return ans;
+    }
+};
