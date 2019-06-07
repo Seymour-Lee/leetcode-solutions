@@ -36,3 +36,40 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int calPoints(vector<string>& ops) {
+        int score = 0;
+        vector<int> num;
+        int temp = 0;
+        int i;
+        
+        if(!ops.size()) return 0;
+        for(i = 0;i < ops.size();i++)
+        {
+            if(ops[i] == "+"){
+                temp = num[num.size()-1] + num[num.size()-2];
+                score += temp; 
+                num.push_back(temp);
+            }
+            else if(ops[i] == "D"){
+                temp = num[num.size()-1] * 2;
+                score +=  temp;
+                num.push_back(temp);
+            }
+            else if(ops[i] == "C"){
+                temp = num[num.size()-1];
+                score -= temp;
+                num.pop_back();
+            }
+            else{
+                temp = atoi(ops[i].c_str());
+                score += temp;
+                num.push_back(temp);
+            }
+        }
+        
+        return score;
+    }
+};
