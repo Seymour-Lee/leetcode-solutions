@@ -19,3 +19,25 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        stack<int> stk;
+        unordered_map<int, int> a2b;
+        vector<int> ans;
+        for(int i = 0; i < nums2.size(); i++){
+            while(stk.empty() == false && stk.top() < nums2[i]){
+                a2b[stk.top()] = nums2[i];
+                stk.pop();
+            }
+            stk.push(nums2[i]);
+        }
+        while(stk.empty() == false){
+            a2b[stk.top()] = -1;
+            stk.pop();
+        }
+        for(auto a: nums1) ans.push_back(a2b[a]);
+        return ans;
+    }
+};
