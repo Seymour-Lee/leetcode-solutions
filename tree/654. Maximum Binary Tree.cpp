@@ -31,3 +31,26 @@ private:
         return root;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        if(nums.size() == 0) return nullptr;
+        auto pos = max_element(nums.begin(), nums.end());
+        TreeNode *node = new TreeNode(*pos);
+        auto l = vector<int>(nums.begin(), pos);
+        auto r = vector<int>(pos+1, nums.end());
+        node->left = constructMaximumBinaryTree(l);
+        node->right = constructMaximumBinaryTree(r);
+        return node;
+    }
+};

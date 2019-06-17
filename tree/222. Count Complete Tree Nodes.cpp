@@ -27,3 +27,29 @@ public:
         return 1 + countNodes(root->left) + countNodes(root->right);
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        int ans = 0;
+        dfs(root, ans);
+        return ans;
+    }
+    
+private:
+    void dfs(TreeNode *root, int &ans){
+        if(root == nullptr) return;
+        ans++;
+        dfs(root->left, ans);
+        dfs(root->right, ans);
+    }
+};

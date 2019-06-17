@@ -27,3 +27,27 @@ private:
         return root;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* bstFromPreorder(vector<int>& p) {
+        if(p.size() == 0) return nullptr;
+        TreeNode *node = new TreeNode(p[0]);
+        int pos = 1;
+        while(pos < p.size() && p[pos] < node->val) pos++;
+        auto l = vector<int>(p.begin()+1, p.begin()+pos);
+        auto r = vector<int>(p.begin()+pos, p.end());
+        node->left = bstFromPreorder(l);
+        node->right = bstFromPreorder(r);
+        return node;
+    }
+};
