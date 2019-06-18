@@ -41,3 +41,34 @@ public:
         return root;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* str2tree(string s) {
+        if(s.size() == 0) return nullptr;
+        // cout<<s<<endl;
+        int i = 0;
+        while(i < s.size() && s[i] != '(') i++;
+        TreeNode *node = new TreeNode(stoi(s.substr(0, i)));
+        int j = i+1;
+        int counter = 1;
+        while(j < s.size()){
+            if(s[j] == '(') counter++;
+            if(s[j] == ')') counter--;
+            j++;
+            if(counter == 0) break;
+        }
+        if(i < s.size()) node->left = str2tree(s.substr(i+1, j-i-2));
+        if(j+1 < s.size()) node->right = str2tree(s.substr(j+1, s.size()-j-2));
+        return node;
+    }
+};

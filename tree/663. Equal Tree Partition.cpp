@@ -29,3 +29,31 @@ private:
         return sums.top();
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool checkEqualTree(TreeNode* root) {
+        unordered_set<int> sums;
+        int sum = dfs(root, sums);
+        return sum % 2 == 0 && sums.find(sum/2) != sums.end();
+    }
+    
+private:
+    int dfs(TreeNode *root, unordered_set<int> &sums){
+        if(root == nullptr) return 0;
+        int l = dfs(root->left, sums);
+        int r = dfs(root->right, sums);
+        if(root->left) sums.insert(l);
+        if(root->right) sums.insert(r);
+        return l + r + root->val;
+    }
+};
