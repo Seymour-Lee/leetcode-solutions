@@ -21,3 +21,21 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        if(digits.size() == 0) return {};
+        unordered_map<char, string> i2s = {
+            {'2', "abc"}, {'3', "def"}, {'4', "ghi"}, {'5', "jkl"},
+            {'6', "mno"}, {'7', "pqrs"}, {'8', "tuv"}, {'9', "wxyz"},
+        };
+        vector<string> ans = {""};
+        for(auto d: digits){
+            vector<string> prev = ans;
+            ans = {};
+            for(auto c: i2s[d]) for(auto str: prev) ans.push_back(str + c);
+        }
+        return ans;
+    }
+};
