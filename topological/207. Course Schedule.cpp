@@ -27,3 +27,21 @@ public:
         return courses == numCourses;
     }
 };
+
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<unordered_set<int>> a2b(numCourses);
+        vector<int> dgr(numCourses);
+        for(auto p: prerequisites) a2b[p[1]].insert(p[0]), dgr[p[0]]++;;
+        queue<int> q;
+        for(int i = 0; i < dgr.size(); i++) if(dgr[i] == 0) q.push(i);
+        while(q.empty() == false){
+            int node = q.front(); q.pop();
+            for(auto nei: a2b[node]){
+                if((--dgr[nei]) == 0) q.push(nei);
+            }
+        }
+        return count(dgr.begin(), dgr.end(), 0) == numCourses;
+    }
+};
