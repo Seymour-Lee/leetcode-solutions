@@ -46,3 +46,38 @@ private:
         return true;
     }
 };
+
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        for(auto r: board){
+            vector<bool> v = vector<bool>(10, false); v[0] = true;
+            for(auto c: r) if(c != '.'){
+                if(v[c-'0']) return false;
+                v[c-'0'] = true;
+            }
+        }
+        
+        for(int j = 0; j < 9; j++){
+            vector<bool> v = vector<bool>(10, false); v[0] = true;
+            for(int i = 0; i < 9; i++) if(board[i][j] != '.'){
+                char c = board[i][j];
+                if(v[c-'0']) return false;
+                v[c-'0'] = true;
+            }
+        }
+        
+        for(int i = 0; i < 9; i += 3){
+            for(int j = 0; j < 9; j += 3){
+                vector<bool> v = vector<bool>(10, false); v[0] = true;
+                for(int x = 0; x < 3; x++) for(int y = 0; y < 3; y++) if(board[i+x][j+y] != '.'){
+                    char c = board[i+x][j+y];
+                    if(v[c-'0']) return false;
+                    v[c-'0'] = true;
+                }
+            }
+        }
+        
+        return true;
+    }
+};

@@ -37,3 +37,18 @@ public:
         s = result == ""? "": result.substr(1);
     }
 };
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        vector<string> strs;
+        istringstream is(s);
+        string str;
+        while(getline(is, str, ' ')) if(str.size()) strs.push_back(str);
+        reverse(strs.begin(), strs.end());
+        string ans = "";
+        for(auto str: strs) ans += str + " ";
+        ans.pop_back();
+        return ans;
+    }
+};

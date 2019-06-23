@@ -33,3 +33,27 @@ private:
 // Your Solution object will be instantiated and called as such:
 // Solution solution;
 // solution.decode(solution.encode(url));
+
+class Solution {
+public:
+     hash<string> t;
+     map<string,string> h;
+
+    // Encodes a URL to a shortened URL.
+    string encode(string longUrl) {
+               
+        string l = to_string(t(longUrl));
+        h[l] = longUrl; 
+        
+        return "http://tinyurl.com/" + l; 
+    }
+
+    // Decodes a shortened URL to its original URL.
+    string decode(string shortUrl) {
+        
+        string m = "http://tinyurl.com/";
+       
+        
+        return h[shortUrl.substr(m.size())];
+    }
+};

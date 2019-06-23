@@ -46,3 +46,24 @@ private:
         if(xp != yp) p[xp] = yp;
     }
 };
+
+class Solution {
+public:
+    int countComponents(int n, vector<vector<int>>& edges) {
+        vector<int> p(n, -1);
+        for(auto e: edges) u(e[0], e[1], p);
+        return count(p.begin(), p.end(), -1);
+    }
+    
+private:
+    int f(int x, vector<int> &p){
+        if(p[x] == -1) return x;
+        return f(p[x], p);
+    }
+    
+    void u(int x, int y, vector<int> &p){
+        int xp = f(x, p);
+        int yp = f(y, p);
+        if(xp != yp) p[xp] = yp;
+    }
+};

@@ -47,3 +47,17 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        if(nums.size() <= 1) return;
+        int pos = nums.size()-2;
+        while(pos >= 0 && nums[pos] >= nums[pos+1]) pos--;
+        reverse(nums.begin()+pos+1, nums.end());
+        if(pos < 0) return;
+        int end = pos+1;
+        while(nums[pos] >= nums[end]) end++;
+        swap(nums[pos], nums[end]);
+    }
+};

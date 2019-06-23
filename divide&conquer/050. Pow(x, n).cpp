@@ -45,3 +45,22 @@ private:
         }
     }
 };
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(n == 0) return 1;
+        if(x == 0.0) return 0;
+        bool pos = n > 0;
+        long long nn = labs(n);
+        return pos? p(x, nn): 1 / p(x, nn);
+    }
+    
+private:
+    double p(double x, long n){
+        if(n == 0) return 1;
+        if(n == 1) return x;
+        double ans = p(x, n/2);
+        return n%2 == 1? ans*ans*x: ans*ans;
+    }
+};

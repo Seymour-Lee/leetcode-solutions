@@ -28,3 +28,14 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        int ans = 0; for(auto num: nums) ans ^= num;
+        int pos = 0; while(((ans >> pos) & 1) == 0) pos++;
+        int a = 0, b = 0;
+        for(auto num: nums) if((num>>pos) & 1) a ^= num; else b ^= num;
+        return {a, b};
+    }
+};

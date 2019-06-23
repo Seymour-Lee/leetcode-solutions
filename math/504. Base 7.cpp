@@ -13,3 +13,20 @@ public:
         return negative? "-"+result: result;
     }
 };
+
+class Solution {
+public:
+    string convertToBase7(int num) {
+        if(num == 0) return "0";
+        string ans = "";
+        bool neg = (num < 0);
+        num = abs(num);
+        while(num){
+            ans += to_string(num%7);
+            num /= 7;
+        }
+        if(neg) ans += "-";
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
