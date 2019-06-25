@@ -37,3 +37,16 @@ public:
         return ones;
     }
 };
+
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans = 0;
+        for(int i = 0; i < 32; i++){
+            int counter = 0;
+            for(auto num: nums) counter += (num >> i) & 1;
+            ans |= (counter % 3) << i;
+        }
+        return ans;
+    }
+};

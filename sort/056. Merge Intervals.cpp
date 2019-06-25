@@ -29,3 +29,19 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end());
+        vector<vector<int>> ans;
+        for(auto itv: intervals){
+            if(ans.size() && ans.back()[1] >= itv[0]){
+                vector<int> p = {ans.back()[0], max(itv[1],ans.back()[1])};
+                ans.pop_back(); ans.push_back(p);
+            }
+            else ans.push_back(itv);
+        }
+        return ans;
+    }
+};

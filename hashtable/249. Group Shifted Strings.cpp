@@ -18,3 +18,18 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<vector<string>> groupStrings(vector<string>& strings) {
+        vector<vector<string>> ans;
+        unordered_map<string, vector<string>> p2s;
+        for(auto str: strings){
+            string p = "";
+            for(int i = 1; i < str.size(); i++) p += (str[i]+26-str[i-1])%26;
+            p2s[p].push_back(str);
+        }
+        for(auto p: p2s) ans.push_back(p.second);
+        return ans;
+    }
+};

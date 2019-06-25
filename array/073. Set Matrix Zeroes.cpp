@@ -34,3 +34,16 @@ public:
         for(auto c: cols) for(int r = 0; r < matrix.size(); r++) matrix[r][c] = 0;
     }
 };
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& m) {
+        unordered_set<int> row, col;
+        for(int i = 0; i < m.size(); i++) for(int j = 0; j < m[i].size(); j++) if(m[i][j] == 0){
+            row.insert(i);
+            col.insert(j);
+        }
+        for(auto r: row) for(int j = 0; j < m[r].size(); j++) m[r][j] = 0;
+        for(auto c: col) for(int i = 0; i < m.size(); i++) m[i][c] = 0;
+    }
+};
