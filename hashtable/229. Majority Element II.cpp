@@ -9,3 +9,14 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        vector<int> ans;
+        unordered_map<int, int> a2t;
+        for(auto num: nums) a2t[num]++;
+        for(auto p: a2t) if(p.second > nums.size()/3) ans.push_back(p.first);
+        return ans;
+    }
+};
