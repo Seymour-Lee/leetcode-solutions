@@ -29,3 +29,22 @@ private:
         return true;
     }
 };
+
+class Solution {
+public:
+    bool isOneEditDistance(string s, string t) {
+        if(abs((int)s.size()-(int)t.size()) > 1) return false;
+        if(s.size() == t.size()){
+            int counter = 0;
+            for(int i = 0; i < s.size(); i++) if(s[i] != t[i]) counter++;
+            return counter == 1;
+        }
+        else{
+            if(s.size() > t.size()) swap(s, t);
+            int i = 0, j = 0;
+            while(i < s.size() && j < t.size()) if(s[i] == t[j++]) i++;
+            return i == s.size();
+        }
+        return true;
+    }
+};

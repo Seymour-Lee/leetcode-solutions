@@ -20,3 +20,20 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        if(s.size() < 10) return {};
+        string str = s.substr(0, 10);
+        unordered_map<string, int> strs;
+        vector<string> ans;
+        strs[str]++;
+        for(int i = 10; i < s.size(); i++){
+            str = str.substr(1) + s[i];
+            strs[str]++;
+        }
+        for(auto p: strs) if(p.second > 1) ans.push_back(p.first);
+        return ans;
+    }
+};

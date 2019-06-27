@@ -26,3 +26,25 @@ public:
         return stk.top();
     }
 };
+
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        unordered_map<string, int(*)(int, int)> a2b = {
+            {"+", [](int a, int b){return a+b;}},
+            {"-", [](int a, int b){return a-b;}},
+            {"*", [](int a, int b){return a*b;}},
+            {"/", [](int a, int b){return a/b;}},
+        };
+        stack<int> stk;
+        for(auto str: tokens){
+            if(a2b.find(str) == a2b.end()) stk.push(stoi(str));
+            else{
+                int b = stk.top(); stk.pop();
+                int a = stk.top(); stk.pop();
+                stk.push(a2b[str](a, b));
+            }
+        }
+        return stk.top();
+    }
+};
