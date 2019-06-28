@@ -29,3 +29,18 @@ public:
         return -1;
     }
 };
+
+// Forward declaration of the knows API.
+bool knows(int a, int b);
+
+class Solution {
+public:
+    int findCelebrity(int n) {
+        vector<int> ou(n, 0), in(n, 0);
+        for(int i = 0; i < n; i++) for(int j = 0; j < n; j++) if(i != j){
+            if(knows(i, j)) ou[i]++, in[j]++;
+        }
+        for(int i = 0; i < n; i++) if(ou[i] == 0 && in[i] == n-1) return i;
+        return -1;
+    }
+};

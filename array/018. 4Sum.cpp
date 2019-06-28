@@ -29,3 +29,25 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        set<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        for(int i = 0; i < nums.size(); i++) for(int j = i+1; j < nums.size(); j++) {
+            int x = j+1, y = nums.size()-1;
+            while(x < y){
+                if(nums[i]+nums[j]+nums[x]+nums[y] == target){
+                    ans.insert({nums[i], nums[j], nums[x], nums[y]});
+                    while(x+1 < nums.size() && nums[x] == nums[x+1]) x++;
+                    while(y-1 > j && nums[y] == nums[y-1]) y--;
+                    x++, y--;
+                }
+                else if(nums[i]+nums[j]+nums[x]+nums[y] < target) x++;
+                else y--;
+            }
+        }
+        return vector<vector<int>>(ans.begin(), ans.end());
+    }
+};

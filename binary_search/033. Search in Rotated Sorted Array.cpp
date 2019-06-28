@@ -47,3 +47,38 @@ public:
         return -1;
     }
 };
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int pos = pivot(nums);
+        int a = binary(nums, 0, pos+1, target);
+        if(a != -1) return a;
+        int b = binary(nums, pos+1, nums.size(), target);
+        return b;
+    }
+    
+private:
+    int binary(vector<int> &nums, int l, int r, int target){
+        while(l < r){
+            int m = l + (r - l) / 2;
+            if(nums[m] == target) return m;
+            if(nums[m] < target) l = m + 1;
+            else r = m;
+        }
+        return -1;
+    }
+    
+    int pivot(vector<int> &nums){
+        int l = 0, r = nums.size()-1;
+        while(l <= r){
+            int m = l + (r - l) / 2;
+            if(m-1 >= 0 && nums[m-1] < nums[m] && m+1 < nums.size() && nums[m] > nums[m+1]) return m;
+            if(m-1 < 0 && m+1 < nums.size() && nums[m] > nums[m+1]) return m;
+            if(m-1 >= 0 && nums[m-1] < nums[m] && m+1 >= nums.size()) return m;
+            if(nums[l] < nums[m]) l = m+1;
+            else r--;
+        }
+        return -1;
+    }
+};

@@ -25,3 +25,26 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int shortestWordDistance(vector<string>& words, string word1, string word2) {
+        unordered_map<string, vector<int>> str2pos;
+        for(int i = 0; i < words.size(); i++) str2pos[words[i]].push_back(i);
+        vector<int> &a = str2pos[word1];
+        vector<int> &b = str2pos[word2];
+        int ans = INT_MAX;
+        if(word1 == word2){
+            for(int i = 0; i < a.size()-1; i++) ans = min(ans, a[i+1]-a[i]);
+        }
+        else{
+            int i = 0, j = 0;
+            while(i < a.size() && j < b.size()){
+                ans = min(ans, abs(a[i]-b[j]));
+                if(a[i] < b[j]) i++;
+                else j++;
+            }
+        }
+        return ans;
+    }
+};
