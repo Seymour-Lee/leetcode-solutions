@@ -46,3 +46,18 @@ public:
         return 0;
     }
 };
+
+class Solution {
+public:
+    int compareVersion(string version1, string version2) {
+        vector<int> a, b;
+        istringstream is(version1);
+        string str;
+        while(getline(is, str, '.')) a.push_back(stoi(str));
+        is = istringstream(version2);
+        while(getline(is, str, '.')) b.push_back(stoi(str));
+        while(a.size() && a.back() == 0) a.pop_back();
+        while(b.size() && b.back() == 0) b.pop_back();
+        return a > b? 1: (a < b? -1: 0); 
+    }
+};

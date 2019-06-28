@@ -10,3 +10,15 @@ public:
         return stk.size();
     }
 };
+
+class Solution {
+public:
+    int minAddToMakeValid(string S) {
+        stack<char> stk;
+        for(auto c: S){
+            if(c == ')' && stk.size() && stk.top() == '(') stk.pop();
+            else stk.push(c);
+        }
+        return stk.size();
+    }
+};

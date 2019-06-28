@@ -43,3 +43,46 @@ private:
         return dummy->next;
     }
 };
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* plusOne(ListNode* head) {
+        head = reverse(head);
+        int c = 1;
+        ListNode *node = head;
+        while(node){
+            int val = node->val+c;
+            node->val = val % 10;
+            c = val / 10;
+            node = node->next;
+        }
+        head = reverse(head);
+        if(c){
+            node = new ListNode(1);
+            node->next = head;
+            head = node;
+        }
+        return head;
+    }
+    
+private:
+    ListNode *reverse(ListNode *head){
+        ListNode *dummy = new ListNode(-1);
+        while(head){
+            ListNode *node = head;
+            head = head->next;
+            node->next = dummy->next;
+            dummy->next = node;
+        }
+        
+        return dummy->next;
+    }
+};
