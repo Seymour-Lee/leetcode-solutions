@@ -19,3 +19,12 @@ public:
         return max(0, maxval-minval-2*K);
     }
 };
+
+class Solution {
+public:
+    int smallestRangeI(vector<int>& A, int K) {
+        int maxval = *max_element(A.begin(), A.end());
+        int minval = *min_element(A.begin(), A.end());
+        return maxval-minval > 2*K? maxval-minval-2*K: 0;
+    }
+};
