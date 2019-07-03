@@ -34,3 +34,31 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        if(intervals.size() < 2) return 0;
+        int ans = 0;
+        auto f = [](vector<int> a, vector<int> b){
+            return (a[0] < b[0]) || (a[0] == b[0] && a[1] < b[1]);
+        };
+        sort(intervals.begin(), intervals.end(), f);
+        auto prev = intervals[0];
+        for(int i = 1; i < intervals.size(); i++){
+            if(prev[0] == intervals[i][0]){
+                ans++;
+            }
+            else if(prev[1] > intervals[i][0]){
+                ans++;
+                if(intervals[i][1] <= prev[1]){
+                    prev = intervals[i];
+                }
+            }
+            else{
+                prev = intervals[i];
+            }
+        }
+        return ans;
+    }
+};
