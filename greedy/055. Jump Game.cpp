@@ -21,3 +21,12 @@ public:
         return result.back();
     }
 };
+
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int go = 0;
+        for(int i = 0; i < nums.size() && i <= go; i++) go = max(go, i+nums[i]);
+        return go >= nums.size()-1;
+    }
+};
