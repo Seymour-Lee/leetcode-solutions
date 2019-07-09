@@ -27,3 +27,15 @@ private:
         swap(str[prev], str[next]);
     }
 };
+
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        string ans = "";
+        vector<int> a;
+        for(int i = 1; i <= n; i++) a.push_back(i);
+        while(--k) next_permutation(a.begin(), a.end());
+        for(auto e: a) ans += char(e+'0');
+        return ans;
+    }
+};
