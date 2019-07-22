@@ -40,3 +40,21 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int arrayNesting(vector<int>& nums) {
+        vector<bool> seen(nums.size(), false);
+        int ans = 0;
+        for(int i = 0; i < nums.size(); i++) if(seen[i] == false) dfs(nums, i, seen, ans, 0);
+        return ans;
+    }
+    
+private:
+    void dfs(vector<int>& nums, int i, vector<bool> &seen, int &ans, int counter){
+        if(seen[i]) return;
+        ans = max(ans, ++counter);
+        seen[i] = true;
+        dfs(nums, nums[i], seen, ans, counter);
+    }
+};
