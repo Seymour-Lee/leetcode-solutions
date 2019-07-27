@@ -23,3 +23,25 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        vector<int> c2t(26, 0);
+        vector<bool> v(26, false);
+        for(auto c: s) c2t[c-'a']++;
+        string ans = "";
+        for(auto c: s){
+            c2t[c-'a']--;
+            if(v[c-'a'] == false){
+                while(ans.size() && c2t[ans.back()-'a'] > 0 && ans.back() >= c) {
+                    v[ans.back()-'a'] = false;
+                    ans.pop_back();
+                }
+                ans.push_back(c);
+                v[c-'a'] = true;
+            }
+        }
+        return ans;
+    }
+};
