@@ -30,3 +30,33 @@ private:
  * ZigzagIterator i(v1, v2);
  * while (i.hasNext()) cout << i.next();
  */
+
+class ZigzagIterator {
+public:
+    ZigzagIterator(vector<int>& v1, vector<int>& v2) {
+        int i = 0, j = 0;
+        while(i < v1.size() || j < v2.size()){
+            if(i < v1.size()) q.push(v1[i++]);
+            if(j < v2.size()) q.push(v2[j++]);
+        }
+    }
+
+    int next() {
+        int ans = q.front();
+        q.pop();
+        return ans;
+    }
+
+    bool hasNext() {
+        return q.empty() == false;
+    }
+    
+private:
+    queue<int> q;
+};
+
+/**
+ * Your ZigzagIterator object will be instantiated and called as such:
+ * ZigzagIterator i(v1, v2);
+ * while (i.hasNext()) cout << i.next();
+ */
