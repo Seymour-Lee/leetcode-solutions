@@ -17,3 +17,16 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int maxWidthRamp(vector<int>& A) {
+        int ans = 0;
+        stack<int> stk;
+        for(int i = 0; i < A.size(); i++) if(stk.empty() || A[stk.top()] > A[i]) stk.push(i);
+        for(int i = A.size()-1; i >= 0; i--){
+            while(stk.size() && A[stk.top()] <= A[i]) ans = max(ans, i-stk.top()), stk.pop();
+        }
+        return ans;
+    }
+};
