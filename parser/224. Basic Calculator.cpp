@@ -40,3 +40,37 @@ public:
         return stoi(unusedStrsStack.top());
     }
 };
+
+class Solution {
+public:
+    int calculate(string s) {
+        s = "(" + s + ")";
+        map<string, int(*)(int, int)> op2func = {
+            {"+", [](int a, int b){return a+b;}},
+            {"-", [](int a, int b){return a-b;}}};
+        stack<string> stk;
+        for(auto c: s) if(c != ' '){
+            if(c == '(' || c == '+' || c == '-') stk.push(string(1, c));
+            if(isdigit(c)) {
+                if(stk.top() == "(" || stk.top() == "+" || stk.top() == "-") stk.push(string(1, c));
+                else stk.top() += c;
+            }
+            if(c == ')'){
+                stack<string> a;
+                while(stk.empty() == false && stk.top() != "("){
+                    a.push(stk.top());
+                    stk.pop();
+                }
+                stk.pop();
+                while(a.size() >= 3){
+                    string aa = a.top(); a.pop();
+                    string op = a.top(); a.pop();
+                    string bb = a.top(); a.pop();
+                    a.push(to_string(op2func[op](stoi(aa), stoi(bb))));
+                }
+                stk.push(a.top());
+            }
+        }
+        return stoi(stk.top());
+    }
+};
