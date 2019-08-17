@@ -43,3 +43,20 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+        vector<vector<bool>> dp(s.size(), vector<bool>(s.size(), false));
+        for(int i = 0; i < s.size(); i++) dp[i][i] = true;
+        for(int i = 0; i < s.size()-1; i++) if(s[i] == s[i+1]) dp[i][i+1] = true;
+        for(int len = 3; len <= s.size(); len++){
+            for(int i = 0, j = i+len-1; j < s.size(); i++, j++){
+                if(s[i] == s[j] && dp[i+1][j-1]) dp[i][j] = true;
+            }
+        }
+        int ans = 0;
+        for(auto r: dp) for(auto e: r) if(e) ans++;
+        return ans;
+    }
+};
