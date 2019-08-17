@@ -26,3 +26,30 @@ private:
     }
 };
 
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int maxPathSum(TreeNode* root) {
+        dfs(root);
+        return ans;
+    }
+    
+private:
+    int ans = INT_MIN;
+    
+    int dfs(TreeNode *root){
+        if(root == nullptr) return 0;
+        int l = dfs(root->left);
+        int r = dfs(root->right);
+        ans = max({ans, root->val, root->val+l, root->val+r, root->val+l+r});
+        return max({root->val, root->val+l, root->val+r});
+    }
+};
