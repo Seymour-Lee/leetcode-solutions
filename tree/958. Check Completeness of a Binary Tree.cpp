@@ -65,3 +65,27 @@ public:
         return q.empty();
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isCompleteTree(TreeNode* root) {
+        queue<TreeNode *> q;
+        q.push(root);
+        while(q.empty() == false && q.front()){
+            auto node = q.front(); q.pop();
+            q.push(node->left);
+            q.push(node->right);
+        }
+        while(q.empty() == false && q.front() == nullptr) q.pop();
+        return q.empty();
+    }
+};

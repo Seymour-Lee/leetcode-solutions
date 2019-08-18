@@ -43,3 +43,14 @@ public:
         return seq.size();
     }
 };
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int> dp(nums.size(), 1);
+        for(int j = 0; j < nums.size(); j++) for(int i = 0; i < j; i++){
+            if(nums[j] > nums[i]) dp[j] = max(dp[j], dp[i]+1);
+        }
+        return dp.size()? *max_element(dp.begin(), dp.end()): 0;
+    }
+};

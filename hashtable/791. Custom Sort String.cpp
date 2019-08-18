@@ -14,3 +14,16 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    string customSortString(string S, string T) {
+        unordered_map<char, int> c2p;
+        for(int i = 0; i < S.size(); i++) c2p[S[i]] = i;
+        auto f = [&](char a, char b){
+            return c2p[a] < c2p[b];
+        };
+        sort(T.begin(), T.end(), f);
+        return T;
+    }
+};
