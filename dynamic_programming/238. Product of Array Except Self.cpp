@@ -33,3 +33,13 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        vector<int> ans(nums.size(), 1);
+        for(int i = 0, l = 1; i < nums.size(); i++) ans[i] = l, l = l*nums[i];
+        for(int i = nums.size()-1, r = 1; i >= 0; i--) ans[i] = r*ans[i], r = r*nums[i];
+        return ans;
+    }
+};

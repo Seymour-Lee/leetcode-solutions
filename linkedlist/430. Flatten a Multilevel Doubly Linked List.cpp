@@ -43,3 +43,49 @@ private:
         return head;
     }
 };
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* prev;
+    Node* next;
+    Node* child;
+
+    Node() {}
+
+    Node(int _val, Node* _prev, Node* _next, Node* _child) {
+        val = _val;
+        prev = _prev;
+        next = _next;
+        child = _child;
+    }
+};
+*/
+class Solution {
+public:
+    Node* flatten(Node* head) {
+        return dfs(head).first;
+    }
+    
+private:
+    pair<Node *, Node *> dfs(Node *node){
+        if(node == nullptr) return {nullptr, nullptr};
+        auto l = dfs(node->child);
+        auto r = dfs(node->next);
+        Node *lmost = node, *rmost = node;
+        node->prev = node->next = node->child = nullptr;
+        if(l.first){
+            rmost->next = l.first;
+            l.first->prev = rmost;
+            rmost = l.second;
+        }
+        if(r.first){
+            rmost->next = r.first;
+            r.first->prev = rmost;
+            rmost = r.second;
+        }
+        return {lmost, rmost};
+    }
+};
