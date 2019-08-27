@@ -77,3 +77,63 @@ private:
         }
     }
 };
+
+class Solution {
+public:
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_map<string, pair<int, vector<string>>> g;
+        unordered_set<string> dict(wordList.begin(), wordList.end());
+        vector<vector<string>> ans;
+        
+        deque<pair<string, int>> q;
+        g[beginWord] = {0, {""}};
+        q.push_back({beginWord, 1});
+
+        while(!q.empty()){
+            auto front = q.front(); q.pop_front();
+            string f = front.first;
+            int count = front.second;
+            
+            for(int i = 0; i < f.size(); ++i){
+                string temp = f;
+                for(char j = 'a'; j <= 'z'; ++j){
+                    temp[i] = j;
+                    if(dict.find(temp) != dict.end()){
+                        if(g.find(temp) == g.end()){
+                            q.push_back({temp, count+1});
+                        }
+                        if(g.find(temp) == g.end() || 
+                           g[temp].first >= count){
+                            g[temp].first = count;
+                            g[temp].second.push_back(f);
+                        }
+                    }
+                }
+            }
+        }
+        
+        vector<string> cur;        
+        getAllResults(g, endWord, cur, ans);
+        return ans;
+    }
+    
+private:
+    void getAllResults(unordered_map<string,pair<int,vector<string>>> &g,
+                       const string &word,
+                       vector<string> cur,
+                       vector<vector<string>> &ans){
+        if(word == ""){
+            if(cur.empty() == false){
+                reverse(cur.begin(),cur.end());
+                ans.push_back(cur);
+            }
+            return;
+        }
+        cur.push_back(word);
+        for(auto &w :g[word].second){
+            getAllResults(g, w, cur, ans);
+        }
+    }
+};
+
+
