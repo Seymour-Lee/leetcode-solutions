@@ -97,3 +97,34 @@ public:
 private:
     unordered_map<int, Node *> val2node;
 };
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+
+    Node() {}
+
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        if(node == nullptr) return nullptr;
+        if(a2b.find(node) != a2b.end()) return a2b[node];
+        Node *ans = new Node();
+        ans->val = node->val;
+        a2b[node] = ans;
+        for(auto nei: node->neighbors) ans->neighbors.push_back(cloneGraph(nei));
+        return ans;
+    }
+    
+private:
+    unordered_map<Node *, Node *> a2b;
+};
