@@ -123,3 +123,36 @@ private:
         if(xp != yp) p[xp] = yp, ans--;
     }
 };
+
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& g) {
+        if(g.size() == 0 || g[0].size() == 0) return 0;
+        int m = g.size(), n = g[0].size();
+        for(auto r: g) for(auto c: r) if(c == '1') ans++;
+        p = vector<int>(m*n, -1);
+        auto pos = [m, n](int r, int c){
+            return r*n + c;
+        };
+        for(int i = 0; i < m; i++) for(int j = 0; j < n; j++) if(g[i][j] == '1'){
+            if(i-1 >= 0 && g[i-1][j] == '1') u(pos(i-1, j), pos(i, j));
+            if(j-1 >= 0 && g[i][j-1] == '1') u(pos(i, j-1), pos(i, j));
+        }
+        return ans;
+    }
+    
+private:
+    int ans = 0;
+    vector<int> p;
+    
+    int f(int x){
+        if(p[x] == -1) return x;
+        return f(p[x]);
+    }
+    
+    void u(int x, int y){
+        int xp = f(x);
+        int yp = f(y);
+        if(xp != yp) p[xp] = yp, ans--;
+    }
+};
