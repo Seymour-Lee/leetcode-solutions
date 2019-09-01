@@ -39,3 +39,26 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<double> medianSlidingWindow(vector<int>& nums, int k) {
+        vector<double> ans;
+        multiset<long long> win(nums.begin(), nums.begin()+k);
+        auto itor = win.begin();
+        advance(itor, k/2);
+        if(k % 2 == 0) ans.push_back((*itor+*prev(itor))/2.0);
+        else ans.push_back(*itor);
+        // for(auto a: win) cout<<a<<" "; cout<<endl;
+        for(int i = k; i < nums.size(); i++){
+            win.erase(win.lower_bound(nums[i-k]));
+            win.insert(nums[i]);
+            // for(auto a: win) cout<<a<<" "; cout<<endl;
+            auto itor = win.begin();
+            advance(itor, k/2);
+            if(k % 2 == 0) ans.push_back((*itor+*prev(itor))/2.0);
+            else ans.push_back(*itor);
+        }
+        return ans;
+    }
+};

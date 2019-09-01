@@ -10,3 +10,12 @@ public:
         return n+1;
     }
 };
+
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        unordered_set<int> a(nums.begin(), nums.end());
+        for(int i = 1; i <= nums.size(); i++) if(a.find(i) == a.end()) return i;
+        return nums.size()+1;
+    }
+};

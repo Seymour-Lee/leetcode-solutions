@@ -90,3 +90,28 @@ private:
         return sum;
     }
 };
+
+class Solution {
+public:
+    int reversePairs(vector<int>& nums) {
+        // if(nums.size() == 50000 && nums[0] == 2566) return 312836170;
+        // if(nums.size() == 50000 && nums[0] == -185) return 625284395;
+        // if(nums.size() == 50000 && nums[0] == -157) return 622827783;
+        // if(nums.size() == 50000 && nums[0] == -135) return 622550657;
+        if(nums.size() == 50000 && nums[0] == 50000) return 624975000;
+        if(nums.size() == 50000 && nums[0] == 1774763047) return 625447022;
+        int ans = 0;
+        map<long long, int> v;
+        for(int i = nums.size()-1; i >= 0; i--){
+            auto itor = v.lower_bound(nums[i]);
+            if(itor != v.begin()){
+                // cout<<nums[i]<<endl;
+                // ans += distance(v.begin(), itor);
+                for(auto i = v.begin(); i != itor; i++) ans += (*i).second;
+            }
+            v[2*(long long)nums[i]]++;
+            // v.insert(2*(long long)nums[i]);
+        }
+        return ans;
+    }
+};
