@@ -107,3 +107,32 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        if(n == 1) return {0};
+        vector<set<int>> adj(n, set<int>());
+        for(auto e: edges) {
+            adj[e[0]].insert(e[1]);
+            adj[e[1]].insert(e[0]);
+        }
+        queue<int> q;
+        for(int i = 0; i < adj.size(); i++) if(adj[i].size() == 1) q.push(i);        
+        int remain = n;
+        while(remain > 2){
+            int size = q.size();
+            remain -= size;
+            while(size--){
+                int node = q.front(); q.pop();
+                for(auto nei: adj[node]){
+                    adj[nei].erase(node);
+                    if(adj[nei].size() == 1) q.push(nei);
+                }
+            }
+        }
+        vector<int> ans;
+        while(q.empty() == false){ans.push_back(q.front()); q.pop();}
+        return ans;
+    }
+};
