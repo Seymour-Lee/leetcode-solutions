@@ -20,3 +20,24 @@ private:
         return time <= H;
     }
 };
+
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int H) {
+        int l = 1, r = *max_element(piles.begin(), piles.end());
+        while(l < r){
+            int k = l + (r - l) / 2;
+            int h = hours(piles, k);
+            if(h > H) l = k+1;
+            else r = k;
+        }
+        return l;
+    }
+    
+private:
+    int hours(vector<int> &p, double k){
+        int ans = 0;
+        for(auto a: p) ans += ceil(a/k);
+        return ans;
+    }
+};

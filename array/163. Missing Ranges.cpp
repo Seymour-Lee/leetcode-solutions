@@ -21,3 +21,25 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<string> findMissingRanges(vector<int>& nums, int lower, int upper) {
+        vector<string> ans;
+        vector<long> as(nums.begin(), nums.end());
+        as.push_back((long)upper+1);
+        long prev = (long)lower-1;
+        for(int i = 0; i < as.size(); prev = as[i++]){
+            string str = gen(prev+1, as[i]-1);
+            if(str.size()) ans.push_back(str);
+        }
+        return ans;
+    }
+    
+private:
+    string gen(long a, long b){
+        if(a > b) return "";
+        if(a == b) return to_string(a);
+        return to_string(a) + "->" + to_string(b);
+    }
+};

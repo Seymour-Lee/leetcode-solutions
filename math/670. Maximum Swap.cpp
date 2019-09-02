@@ -16,3 +16,21 @@ public:
         return num;
     }
 };
+
+class Solution {
+public:
+    int maximumSwap(int a) {
+        string num = to_string(a);
+        vector<int> pos(10, -1);
+        for(int i = 0; i < num.size(); i++) pos[num[i]-'0'] = i;
+        for(int i = 0; i < num.size(); i++){
+            for(int d = 9; d > num[i]-'0'; d--){
+                if(pos[d] > i){
+                    swap(num[i], num[pos[d]]);
+                    return stoi(num);
+                }
+            }
+        }
+        return a;
+    }
+};

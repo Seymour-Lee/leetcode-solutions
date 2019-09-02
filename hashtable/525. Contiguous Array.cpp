@@ -17,3 +17,17 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int findMaxLength(vector<int>& nums) {
+        unordered_map<int, int> a2p = {{0, 0}};
+        int ans = 0;
+        for(int i = 0, sum = 0; i < nums.size(); i++){
+            sum += (nums[i] == 0? -1: 1);
+            if(a2p.find(sum) != a2p.end()) ans = max(ans, i-a2p[sum]+1);
+            else a2p[sum] = i+1;
+        }
+        return ans;
+    }
+};

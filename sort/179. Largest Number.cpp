@@ -28,3 +28,18 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        vector<string> strs;
+        for(auto num: nums) strs.push_back(to_string(num));
+        auto f = [](string a, string b){
+            return a+b > b+a;
+        };
+        sort(strs.begin(), strs.end(), f);
+        string ans = "";
+        for(auto str: strs) ans += str;
+        return strs[0] == "0"? "0": ans;
+    }
+};

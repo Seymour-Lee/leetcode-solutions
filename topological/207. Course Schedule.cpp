@@ -45,3 +45,22 @@ public:
         return count(dgr.begin(), dgr.end(), 0) == numCourses;
     }
 };
+
+class Solution {
+public:
+    bool canFinish(int n, vector<vector<int>>& pre) {
+        vector<vector<int>> a2b(n);
+        vector<int> in(n, 0);
+        for(auto p: pre) a2b[p[1]].push_back(p[0]), in[p[0]]++;
+        queue<int> q;
+        for(int i = 0; i < in.size(); i++) if(in[i] == 0) q.push(i);
+        while(q.empty() == false){
+            int size = q.size();
+            while(size--){
+                auto a = q.front(); q.pop();
+                for(auto nei: a2b[a]) if(--in[nei] == 0) q.push(nei);
+            }
+        }
+        return accumulate(in.begin(), in.end(), 0) == 0;
+    }
+};

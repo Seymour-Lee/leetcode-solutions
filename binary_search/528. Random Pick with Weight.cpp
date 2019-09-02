@@ -36,3 +36,37 @@ private:
  * Solution obj = new Solution(w);
  * int param_1 = obj.pickIndex();
  */
+
+class Solution {
+public:
+    Solution(vector<int>& w) {
+        sum = accumulate(w.begin(), w.end(), 0);
+        for(auto a: w) nums.push_back(nums.back()+a);
+    }
+    
+    int pickIndex() {
+        int target = rand()%sum+1;
+        return binary(target)-1;
+    }
+    
+private:
+    int sum;
+    vector<int> nums = {0};
+    
+    int binary(int val){
+        int l = 0, r = nums.size();
+        while(l < r){
+            int m = l + (r - l) / 2;
+            if(val > nums[m]) l = m+1;
+            else r = m;
+        }
+        // cout<<val<<" "<<l<<endl;
+        return l;
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(w);
+ * int param_1 = obj->pickIndex();
+ */
