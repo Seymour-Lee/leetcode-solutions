@@ -25,4 +25,17 @@ private:
     }
 };
 
-
+class Solution {
+public:
+    int longestArithSeqLength(vector<int>& A) {
+        vector<unordered_map<int, int>> dp(A.size());
+        int ans = 1;
+        for(int j = 0; j < A.size(); j++) for(int i = 0; i < j; i++){
+            int diff = A[j] - A[i];
+            if(dp[i].find(diff) != dp[i].end()) dp[j][diff] = max(dp[j][diff], dp[i][diff]+1);
+            else dp[j][diff] = 2;
+            ans = max(ans, dp[j][diff]);
+        }
+        return ans;
+    }
+};

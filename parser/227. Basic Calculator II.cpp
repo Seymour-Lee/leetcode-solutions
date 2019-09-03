@@ -53,3 +53,44 @@ private:
         return ans;
     }
 };  
+
+class Solution {
+public:
+    int calculate(string s) {
+        stack<string> stk;
+        unordered_map<string, int(*)(int,int)> op2func = {
+            {"+", [](int a, int b){return a+b;}},
+            {"-", [](int a, int b){return a-b;}},
+            {"*", [](int a, int b){return a*b;}},
+            {"/", [](int a, int b){return a/b;}},
+        };
+        for(int i = 0; i < s.size(); i++) if(s[i] != ' '){
+            if(isdigit(s[i])){
+                if(stk.size() && isdigit(stk.top()[0])) stk.top() += s[i];
+                else stk.push(string(1, s[i]));
+            }
+            else if(s[i] == '+' || s[i] == '-'){
+                stk.push(string(1, s[i]));
+            }
+            else{
+                int a = stoi(stk.top()); stk.pop();
+                string op = string(1, s[i]);
+                string str = "";
+                i++;
+                while(i < s.size() && (isdigit(s[i]) || s[i] == ' ')) str += s[i++];
+                i--;
+                int b = stoi(str);
+                stk.push(to_string(op2func[op](a, b)));
+            }
+        }
+        stack<string> ss;
+        while(stk.empty() == false) ss.push(stk.top()), stk.pop();
+        while(ss.size() > 1){
+            int a = stoi(ss.top()); ss.pop();
+            string op = ss.top(); ss.pop();
+            int b = stoi(ss.top()); ss.pop();
+            ss.push(to_string(op2func[op](a, b)));
+        }
+        return stoi(ss.top());
+    }
+};

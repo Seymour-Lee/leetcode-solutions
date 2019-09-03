@@ -36,3 +36,20 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int ans = 0;
+        vector<int> counter(26, 0);
+        for(auto t: tasks) counter[t-'A']++;
+        sort(counter.rbegin(), counter.rend());
+        while(counter.front() > 0){
+            for(int i = 0; i <= n && counter.front() > 0; i++, ans++){
+                if(i < 26 && counter[i] > 0) counter[i]--;
+            }
+            sort(counter.rbegin(), counter.rend());
+        }
+        return ans;
+    }
+};

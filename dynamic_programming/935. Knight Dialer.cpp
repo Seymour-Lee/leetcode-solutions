@@ -56,3 +56,25 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int knightDialer(int N) {
+        int mod = 1e9+7;
+        vector<vector<int>> b2a = {
+            {4,6},{6,8},{7,9},{4,8},{3,9,0},
+            {},{1,7,0},{2,6},{1,3},{2,4}
+        };
+        vector<int> cur(10, 1);
+        while(--N){
+            vector<int> prev = cur;
+            cur = vector<int>(10, 0);
+            for(int i = 0; i < 10; i++){
+                for(auto a: b2a[i]) cur[i] = (cur[i] + prev[a]) % mod;
+            }
+        }
+        int ans = 0;
+        for(auto a: cur) ans = (ans + a) % mod;
+        return ans;
+    }
+};

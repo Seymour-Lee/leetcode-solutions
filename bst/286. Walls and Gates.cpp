@@ -35,3 +35,35 @@ private:
         }
     }
 };
+
+class Solution {
+public:
+    void wallsAndGates(vector<vector<int>>& g) {
+        vector<vector<int>> dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        for(int i = 0; i < g.size(); i++) for(int j = 0; j < g[i].size(); j++) if(g[i][j] == 0){
+            queue<pair<int, int>> q;
+            unordered_set<string> v;
+            q.push({i, j});
+            int dis = 0;
+            while(q.empty() == false){
+                int size = q.size();
+                while(size--){
+                    auto p = q.front(); q.pop();
+                    int x = p.first, y = p.second;
+                    v.insert(to_string(x)+","+to_string(y));
+                    g[x][y] = min(g[x][y], dis);
+                    for(auto dir: dirs){
+                        int xx = x+dir[0];
+                        int yy = y+dir[1];
+                        string str = to_string(xx)+","+to_string(yy);
+                        if(xx >= 0 && xx < g.size() && 
+                           yy >= 0 && yy < g[0].size() &&
+                           v.find(str) == v.end() &&
+                           g[xx][yy] > 0) q.push({xx, yy});
+                    }
+                }
+                dis++;
+            }
+        }
+    }
+};

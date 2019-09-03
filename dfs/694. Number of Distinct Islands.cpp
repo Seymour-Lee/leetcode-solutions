@@ -29,3 +29,34 @@ private:
         }
     }
 };
+
+class Solution {
+public:
+    int numDistinctIslands(vector<vector<int>>& g) {
+        set<set<string>> ans;
+        for(int i = 0; i < g.size(); i++) for(int j = 0; j < g[i].size(); j++){
+            if(g[i][j]){
+                set<string> cur = {};
+                dfs(g, i, j, i, j, cur);
+                ans.insert(cur);
+            }
+        }
+        return ans.size();
+    }
+
+private:
+    vector<vector<int>> dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+    
+    void dfs(vector<vector<int>> &g, int i, int j, int i0, int j0, set<string> &cur){
+        if(i < 0 || i >= g.size() || j < 0 || j >= g[i].size()) return;
+        if(g[i][j] == 0) return;
+        string str = to_string(i-i0)+","+to_string(j-j0);
+        if(cur.find(str) != cur.end()) return;
+        cur.insert(str);
+        g[i][j] = 0;
+        for(auto dir: dirs){
+            int ii = i+dir[0], jj = j+dir[1];
+            dfs(g, ii, jj, i0, j0, cur);
+        }
+    }
+};

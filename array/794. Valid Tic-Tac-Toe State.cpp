@@ -29,3 +29,25 @@ private:
             || (b[2][0] == c && b[1][1] == c && b[0][2] == c);
     }
 };
+
+class Solution {
+public:
+    bool validTicTacToe(vector<string>& board) {
+        int x = 0, o = 0;
+        for(auto r: board) for(auto e: r){
+            if(e == 'X') x++;
+            if(e == 'O') o++;
+        }
+        if(!(x == o+1 || x == o)) return false;
+        bool xw = win(board, 'X'), ow = win(board, 'O');
+        return xw && !ow && x > o || !xw && ow && x == o || !xw && !ow;
+    }
+    
+private:
+    bool win(vector<string> &b, char c){
+        for(auto r: b) if(r == string(3, c)) return true;
+        for(int j = 0; j < 3; j++) if(b[0][j] == c && b[1][j] == c && b[2][j] == c) return true;
+        return b[0][0] == c && b[1][1] == c && b[2][2] == c
+            || b[0][2] == c && b[1][1] == c && b[2][0] == c;
+    }
+};
