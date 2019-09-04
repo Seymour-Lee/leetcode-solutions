@@ -14,3 +14,15 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int l = 0, r = 0;
+        while(l <= r && r < nums.size()){
+            if(l-2 >= 0 && nums[l-2] == nums[r]) r++;
+            else nums[l++] = nums[r++];
+        }
+        return l;
+    }
+};

@@ -26,3 +26,24 @@ private:
         backtracking(st, nums, pos+1, cur);
     }
 };
+
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        set<vector<int>> ans;
+        backtracking(nums, ans, 0, {});
+        return vector<vector<int>>(ans.begin(), ans.end());
+    }
+    
+private:
+    void backtracking(vector<int> &nums, set<vector<int>> &ans, int pos, vector<int> cur){
+        if(pos == nums.size()){
+            ans.insert(cur);
+            return;
+        }
+        backtracking(nums, ans, pos+1, cur);
+        cur.push_back(nums[pos]);
+        backtracking(nums, ans, pos+1, cur);
+    }
+};

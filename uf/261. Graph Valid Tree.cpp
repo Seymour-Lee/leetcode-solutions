@@ -58,3 +58,30 @@ private:
         return true;
     }
 };
+
+class Solution {
+public:
+    bool validTree(int n, vector<vector<int>>& edges) {
+        p = vector<int>(n, -1);
+        for(auto e: edges){
+            if(u(e[0], e[1]) == false) return false;
+        }
+        return count(p.begin(), p.end(), -1) == 1;
+    }
+    
+private:
+    vector<int> p;
+    
+    int f(int x){
+        if(p[x] == -1) return x;
+        return f(p[x]);
+    }
+    
+    bool u(int x, int y){
+        int xp = f(x);
+        int yp = f(y);
+        if(xp == yp) return false;
+        p[xp] = yp;
+        return true;
+    }
+};

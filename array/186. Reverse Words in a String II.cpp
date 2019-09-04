@@ -12,3 +12,19 @@ public:
         reverse(str.begin()+start, str.end());
     }
 };
+
+class Solution {
+public:
+    void reverseWords(vector<char>& s) {
+        reverse(s.begin(), s.end());
+        int l = 0, r = 0;
+        while(l <= r && r < s.size()){
+            if(s[r] != ' ') r++;
+            else{
+                reverse(s.begin()+l, s.begin()+r);
+                l = r+1, r++;
+            }
+        }
+        reverse(s.begin()+l, s.end());
+    }
+};

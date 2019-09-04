@@ -17,3 +17,21 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        if(nums.size() == 0) return {};
+        vector<vector<int>> g = {{nums[0]}};
+        for(int i = 1; i < nums.size(); i++){
+            if(g.back().back()+1 == nums[i]) g.back().push_back(nums[i]);
+            else g.push_back({nums[i]});
+        }
+        vector<string> ans;
+        for(auto r: g){
+            if(r.size() == 1) ans.push_back(to_string(r[0]));
+            else ans.push_back(to_string(r[0]) + "->" + to_string(r.back()));
+        }
+        return ans;
+    }
+};

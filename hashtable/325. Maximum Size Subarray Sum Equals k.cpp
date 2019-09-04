@@ -15,3 +15,18 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int maxSubArrayLen(vector<int>& nums, int k) {
+        if(nums.size() == 0) return 0;
+        for(int i = 1; i < nums.size(); i++) nums[i] += nums[i-1];
+        unordered_map<int, int> s2i = {{0, -1}};
+        int ans = 0;
+        for(int i = 0; i < nums.size(); i++){
+            if(s2i.find(nums[i]-k) != s2i.end()) ans = max(ans, i-s2i[nums[i]-k]);
+            if(s2i.find(nums[i]) == s2i.end()) s2i[nums[i]] = i;
+        }
+        return ans;
+    }
+};
