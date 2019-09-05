@@ -26,3 +26,24 @@ public:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& m, int target) {
+        if(m.size() == false || m[0].size() == 0) return false;
+        int rl = 0, rr = m.size();
+        while(rl < rr){
+            int rm = rl + (rr - rl) / 2;
+            if(m[rm].back() < target) rl = rm + 1;
+            else rr = rm;
+        }
+        if(rl == m.size()) return false;
+        int cl = 0, cr = m[rl].size();
+        while(cl < cr){
+            int cm = cl + (cr - cl) / 2;
+            if(m[rl][cm] < target) cl = cm + 1;
+            else cr = cm;
+        }
+        return cl < m[rl].size() && m[rl][cl] == target;
+    }
+};

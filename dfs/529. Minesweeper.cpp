@@ -40,3 +40,40 @@ private:
         dfs(board, i+1, j+1, m, n);
     }
 };
+
+class Solution {
+public:
+    vector<vector<char>> updateBoard(vector<vector<char>>& b, vector<int>& click) {
+        v = vector<vector<bool>>(b.size(), vector<bool>(b[0].size(), false));
+        dfs(b, click[0], click[1]);
+        return b;
+    }
+    
+private:
+    vector<vector<int>> dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0},
+                                {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
+    
+    vector<vector<bool>> v;
+    
+    void dfs(vector<vector<char>> &b, int i, int j){
+        if(i < 0 || i >= b.size() || j < 0 || j >= b[i].size() || v[i][j]) return;
+        v[i][j] = true;
+        if(b[i][j] != 'M' && b[i][j] != 'E') return;
+        if(b[i][j] == 'M'){
+            b[i][j] = 'X';
+            return;
+        }
+        int counter = 0;
+        for(int r = i-1; r <= i+1; r++) for(int c = j-1; c <= j+1; c++){
+            if(!(r < 0 || r >= b.size() || c < 0 || c >= b[i].size())){
+                if(b[r][c] == 'M') counter++;
+            }
+        }
+        if(counter != 0){
+            b[i][j] = '0'+counter;
+            return;
+        }
+        b[i][j] = 'B';
+        for(auto dir: dirs) dfs(b, i+dir[0], j+dir[1]);
+    }
+};

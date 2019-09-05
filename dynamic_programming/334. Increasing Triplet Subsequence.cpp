@@ -14,3 +14,17 @@ public:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool increasingTriplet(vector<int>& nums) {
+        int a = INT_MAX;
+        int b = INT_MAX;
+        for(auto num: nums){
+            if(num < a) a = num;
+            else if(a < num && num < b) b = num;
+            else if(b < num) return true;
+        }
+        return false;
+    }
+};
