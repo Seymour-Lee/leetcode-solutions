@@ -59,3 +59,29 @@ private:
     
     
 };
+
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string str) {
+        if(str.size() == 0) return {};
+        vector<int> ans;
+        if(str.find('+') == string::npos &&
+           str.find('-') == string::npos &&
+           str.find('*') == string::npos) return {stoi(str)};
+        for(int i = 0; i < str.size(); i++){
+            if(str[i] == '+' || str[i] == '-' || str[i] == '*'){
+                auto l = diffWaysToCompute(str.substr(0, i));
+                auto r = diffWaysToCompute(str.substr(i+1));
+                for(auto a: l) for(auto b: r) ans.push_back(op2func[str[i]](a, b));
+            }
+        }
+        return ans;
+    }
+    
+private:
+    unordered_map<char, int(*)(int, int)> op2func = {
+        {'+', [](int a, int b){return a+b;}},
+        {'-', [](int a, int b){return a-b;}},
+        {'*', [](int a, int b){return a*b;}},
+    };
+};

@@ -79,3 +79,20 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int countCornerRectangles(vector<vector<int>>& grid) {
+        int ans = 0;
+        unordered_map<int, int> s2c;
+        for(auto r: grid){
+            for(int c1 = 0; c1 < r.size(); c1++) if(r[c1]){
+                for(int c2 = c1+1; c2 < r.size(); c2++) if(r[c2]){
+                    s2c[c1*200+c2]++;
+                }
+            }
+        }
+        for(auto p: s2c) ans += (p.second-1)*p.second/2;
+        return ans;
+    }
+};

@@ -30,3 +30,20 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        int ans = nums[0];
+        int maxval = nums[0];
+        int minval = nums[0];
+        for(int i = 1; i < nums.size(); i++){
+            int maxprev = maxval, minprev = minval;
+            maxval = max({nums[i], minprev*nums[i], maxprev*nums[i]});
+            minval = min({nums[i], minprev*nums[i], maxprev*nums[i]});
+            ans = max(ans, maxval);
+        }
+        return ans;
+    }
+};

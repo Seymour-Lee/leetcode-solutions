@@ -50,3 +50,56 @@ public:
         return -1;
     }
 };
+
+class Solution {
+public:
+    int cutOffTree(vector<vector<int>>& forest) {
+        vector<vector<int>> pos;
+        for(int i = 0; i < forest.size(); i++) for(int j = 0; j < forest[i].size(); j++){
+            if(forest[i][j] > 1) pos.push_back({forest[i][j], i, j});
+        }
+        sort(pos.begin(), pos.end());
+        int previ = 0, prevj = 0;
+        int ans = 0;
+        for(auto p: pos){
+            int steps = bfs(forest, previ, prevj, p[1], p[2]);
+            // cout<<p[0]<<" "<<p[1]<<" "<<p[2]<<" "<<steps<<endl;
+            if(steps == -1) return -1;
+            ans += steps;
+            previ = p[1], prevj = p[2];
+        }
+        return ans;
+    }
+    
+private:
+    vector<vector<int>> dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    
+    int bfs(vector<vector<int>> &g, int si, int sj, int ei, int ej){
+        int m = g.size(), n = g[0].size();
+        if(si == ei && sj == ej) return 0;
+        int ans = 1;
+        queue<pair<int, int>> q;
+        q.push({si, sj});
+        vector<vector<bool>> v(g.size(), vector<bool>(g[0].size(), false));
+        v[si][sj] = true;
+        while(q.empty() == false){
+            int size = q.size();
+            while(size--){
+                auto node = q.front(); q.pop();
+                int i = node.first, j = node.second;
+                // cout<<i<<" "<<j<<endl;
+                for(auto &dir: dirs){
+                    int ii = i+dir[0], jj = j+dir[1];
+                    if(0 <= ii && ii < g.size() && 0 <= jj && jj < g[0].size() && 
+                       g[ii][jj] != 0 && v[ii][jj] == false){
+                        if(ii == ei && jj == ej) return ans;
+                        v[ii][jj] = true;
+                        q.push({ii, jj});
+                    }
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+};
