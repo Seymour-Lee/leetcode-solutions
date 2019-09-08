@@ -27,3 +27,31 @@ public:
         return dis.size() == N? max_element(dis.begin(), dis.end(), f)->second: -1; 
     }
 };
+
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int N, int K) {
+        unordered_map<int, vector<pair<int, int>>> a2b;
+        unordered_map<int, int> dis;
+        for(auto t: times) a2b[t[0]].push_back({t[1], t[2]});
+        queue<pair<int, int>> q;
+        q.push({K, 0});
+        while(q.empty() == false){
+            auto p = q.front(); q.pop();
+            int u = p.first, w = p.second;
+            if(dis.find(u) == dis.end() || dis[u] > w){
+                dis[u] = w;
+                for(auto nei: a2b[u]){
+                    int v = nei.first, ww = nei.second;
+                    if(dis.find(v) == dis.end() || dis[v] > w+ww){
+                        q.push({v, w+ww});
+                    }
+                }
+            }
+        }
+        if(dis.size() != N) return -1;
+        int ans = 0;
+        for(auto p: dis) ans = max(ans, p.second);
+        return ans;
+    }
+};
