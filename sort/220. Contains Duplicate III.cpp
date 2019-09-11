@@ -12,3 +12,17 @@ public:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+        set<long> s;
+        for(int i = 0; i < nums.size(); i++){
+            if(i > k) s.erase(nums[i-k-1]);
+            auto itor = s.lower_bound((long)nums[i]-(long)t);
+            if(itor != s.end() && labs(long(nums[i]) - (long)*itor) <= t) return true;
+            s.insert(nums[i]);
+        }
+        return false;
+    }
+};
