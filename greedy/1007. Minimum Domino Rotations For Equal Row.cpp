@@ -32,3 +32,22 @@ public:
         return ans == INT_MAX? -1: ans;
     }
 };
+
+class Solution {
+public:
+    int minDominoRotations(vector<int>& A, vector<int>& B) {
+        int n = A.size();
+        auto f = [&](int target){
+            int ra = 0, rb = 0;
+            for(int i = 0; i < A.size(); i++){
+                if(A[i] != target && B[i] != target) return -1;
+                if(A[i] != target) ra++;
+                if(B[i] != target) rb++;
+            }
+            return min(ra, rb);
+        };
+        int ans = f(A[0]);
+        if(ans != -1 || A[0] == B[0]) return ans;
+        return f(B[0]);
+    }
+};

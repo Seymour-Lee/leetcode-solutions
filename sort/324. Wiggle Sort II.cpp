@@ -20,3 +20,21 @@ public:
         }
     }
 };
+
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<int> ans;
+        int i = (nums.size()-1) / 2;
+        int j = nums.size()-1;
+        bool ii = true;
+        for(int k = 0; k < nums.size(); k++){
+            if(ii) ans.push_back(nums[i--]);
+            else ans.push_back(nums[j--]);
+            ii = !ii;
+        }
+        nums = ans;
+    }
+};
+
