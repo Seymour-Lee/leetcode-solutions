@@ -72,3 +72,47 @@ public:
         return ans;
     }
 };
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+class Solution {
+public:
+    Node* connect(Node* root) {
+        Node *node = root;
+        Node *dummy = new Node(-1);
+        while(node){
+            dummy->next = nullptr;
+            Node *cur = dummy;
+            while(node){
+                if(node->left){
+                    cur->next = node->left;
+                    cur = cur->next;
+                }
+                if(node->right){
+                    cur->next = node->right;
+                    cur = cur->next;
+                }
+                node = node->next;
+            }
+            node = dummy->next;
+        }
+        return root;
+    }
+};

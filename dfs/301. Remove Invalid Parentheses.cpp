@@ -92,3 +92,41 @@ private:
         }
     }
 };
+
+class Solution {
+public:
+    vector<string> removeInvalidParentheses(string s) {
+        set<string> ans;
+        int left = 0;
+        int right = 0;
+        for(auto c: s){
+            if(c == '(') left++;
+            if(c == ')'){
+                if(left != 0) left--;
+                else right++;
+            }
+        }
+        dfs(s, 0, left, right, 0, "", ans);
+        return vector<string>(ans.begin(), ans.end());
+    }
+    
+private:
+    void dfs(string s, int idx, int l, int r, int p, string path, set<string> &ans){
+        if(idx == s.size()){
+            if(l == 0 && r == 0 && p == 0) ans.insert(path);
+            return;
+        }
+        if(s[idx] != '(' && s[idx] != ')') dfs(s, idx+1, l, r, p, path+s[idx], ans);
+        else{
+            if(s[idx] == '('){
+                if(l > 0) dfs(s, idx+1, l-1, r, p, path, ans);
+                dfs(s, idx+1, l, r, p+1, path+s[idx], ans);
+            }
+            if(s[idx] == ')'){
+                if(r > 0) dfs(s, idx+1, l, r-1, p, path, ans);
+                if(p > 0) dfs(s, idx+1, l, r, p-1, path+s[idx], ans);
+            }
+        }
+    }
+};
+
