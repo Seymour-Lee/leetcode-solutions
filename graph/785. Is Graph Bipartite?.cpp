@@ -42,3 +42,22 @@ private:
         return true;
     }
 };
+
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& g) {
+        c = vector<int>(g.size(), 0);
+        for(int i = 0; i < g.size(); i++) if(c[i] == 0 && dfs(g, i, 1) == false) return false;
+        return true;
+    }
+    
+private:
+    vector<int> c;
+    
+    bool dfs(vector<vector<int>> &g, int node, int color){
+        if(c[node] != 0) return c[node] == color;
+        c[node] = color;
+        for(auto nei: g[node]) if(dfs(g, nei, -color) == false) return false;
+        return true;
+    }
+};
