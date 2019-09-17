@@ -100,3 +100,45 @@ private:
         }
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
+        dfs(root, nullptr);
+        deque<int> q;
+        q.push_back(target->val);
+        unordered_set<int> v = {target->val};
+        while(K-- && q.empty() == false){
+            int size = q.size();
+            while(size--){
+                auto node = q.front(); q.pop_front();
+                for(auto nei: g[node]) if(v.find(nei) == v.end()){
+                    v.insert(nei);
+                    q.push_back(nei);
+                }
+            }
+        }
+        return vector<int>(q.begin(), q.end());
+    }
+    
+private:
+    unordered_map<int, unordered_set<int>> g;
+    
+    void dfs(TreeNode *root, TreeNode *p){
+        if(root == nullptr) return;
+        if(p) g[root->val].insert(p->val);
+        if(root->left) g[root->val].insert(root->left->val);
+        if(root->right) g[root->val].insert(root->right->val);
+        dfs(root->left, root);
+        dfs(root->right, root);
+    }
+};
