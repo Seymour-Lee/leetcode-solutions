@@ -37,3 +37,18 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int numSubarraysWithSum(vector<int>& A, int S) {
+        vector<int> counter(1, 0);
+        for(auto a: A) counter.push_back(counter.back()+a);
+        unordered_map<int, int> a2c;
+        int ans = 0;
+        for(auto c: counter){
+            ans += a2c[c];
+            a2c[c+S]++;
+        }
+        return ans;
+    }
+};

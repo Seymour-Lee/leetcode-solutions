@@ -49,3 +49,15 @@ public:
         return max(inc, dec);
     }
 };
+
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& A) {
+        vector<int> up(A.size(), 1), dw(A.size(), 1);
+        for(int j = 0; j < A.size(); j++) for(int i = 0; i < j; i++){
+            if(A[i] < A[j]) up[j] = max(up[j], dw[i]+1);
+            if(A[i] > A[j]) dw[j] = max(dw[j], up[i]+1);
+        }
+        return A.size()? max(*max_element(up.begin(), up.end()), *max_element(dw.begin(), dw.end())): 0;
+    }
+};
