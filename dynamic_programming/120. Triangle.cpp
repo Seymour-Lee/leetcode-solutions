@@ -26,3 +26,17 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& t) {
+        for(int i = 1; i < t.size(); i++){
+            for(int j = 0; j < t[i].size(); j++){
+                int l = j-1 >= 0? t[i-1][j-1]: INT_MAX;
+                int r = j < t[i-1].size()? t[i-1][j]: INT_MAX;
+                t[i][j] += min(l, r);
+            }
+        }
+        return *min_element(t.back().begin(), t.back().end());
+    }
+};

@@ -61,3 +61,36 @@ public:
         return -1;
     }
 };
+
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+        unordered_set<string> v(deadends.begin(), deadends.end());
+        if(v.find("0000") != v.end()) return -1;
+        int ans = 0;
+        queue<string> q;
+        q.push("0000");
+        v.insert("0000");
+        while(q.empty() == false){
+            int size = q.size();
+            while(size--){
+                auto str = q.front(); q.pop();
+                if(target == str) return ans;
+                for(auto &c: str){
+                    for(int i = -1; i <= 1; i += 2){
+                        int a = c-'0';
+                        int b = (a+i+10)%10;
+                        c = b+'0';
+                        if(v.find(str) == v.end()){
+                            v.insert(str);
+                            q.push(str);
+                        }
+                        c = a+'0';
+                    }
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+};
