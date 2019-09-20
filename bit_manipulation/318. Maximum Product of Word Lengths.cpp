@@ -21,3 +21,20 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int maxProduct(vector<string>& words) {
+        vector<int> nums;
+        for(auto str: words){
+            int num = 0;
+            for(auto c: str) num |= (1 << (c-'a'));
+            nums.push_back(num);
+        }
+        int ans = 0;
+        for(int i = 0; i < nums.size(); i++) for(int j = 0; j < i; j++){
+            if((nums[i] & nums[j]) == 0) ans = max(ans, (int)words[i].size()*(int)words[j].size());
+        }
+        return ans;
+    }
+};
