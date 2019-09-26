@@ -57,3 +57,29 @@ public:
         return h[shortUrl.substr(m.size())];
     }
 };
+
+class Solution {
+public:
+
+    // Encodes a URL to a shortened URL.
+    string encode(string longUrl) {
+        string ans = "";
+        for(int i = 0; i < len; i++) ans += code[rand()%code.size()];
+        s2l[ans] = longUrl;
+        return ans;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    string decode(string shortUrl) {
+        return s2l[shortUrl];
+    }
+    
+private:
+    string code = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    unordered_map<string, string> s2l;    
+    int len = 6;
+};
+
+// Your Solution object will be instantiated and called as such:
+// Solution solution;
+// solution.decode(solution.encode(url));
