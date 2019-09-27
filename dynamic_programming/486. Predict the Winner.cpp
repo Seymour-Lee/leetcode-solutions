@@ -59,3 +59,22 @@ public:
         return dp.front().back() >= 0;
     }
 };
+
+class Solution {
+public:
+    bool PredictTheWinner(vector<int>& nums) {
+        memo = vector<vector<int>>(nums.size(), vector<int>(nums.size(), INT_MAX));
+        return dp(nums, 0, nums.size()-1) >= 0;
+    }
+    
+private:
+    vector<vector<int>> memo;
+    
+    int dp(vector<int> &nums, int i, int j){
+        if(i == j) return nums[i];
+        if(memo[i][j] != INT_MAX) return memo[i][j];
+        int pick_s = nums[i] - dp(nums, i+1, j);
+        int pick_e = nums[j] - dp(nums, i, j-1);
+        return memo[i][j] = max(pick_s, pick_e);
+    }
+};
