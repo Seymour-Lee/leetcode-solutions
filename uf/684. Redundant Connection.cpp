@@ -67,3 +67,29 @@ private:
         return true;
     }
 };
+
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        p = vector<int>(edges.size(), -1);
+        for(auto e: edges){
+            if(u(e[0]-1, e[1]-1) == false) return e;
+        }
+        return {-1, -1};
+    }
+    
+private:
+    vector<int> p;
+    
+    int f(int x){
+        if(p[x] == -1) return x;
+        return p[x] = f(p[x]);
+    }
+    
+    bool u(int x, int y){
+        int px = f(x), py = f(y);
+        if(px == py) return false;
+        p[px] = py;
+        return true;
+    }
+};
