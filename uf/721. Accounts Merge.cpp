@@ -174,3 +174,47 @@ private:
         if(xp != yp) p[xp] = yp;
     }
 };
+
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        vector<vector<string>> ans;
+        p = vector<int>(accounts.size(), -1);
+        unordered_map<string, int> e2g;
+        for(int i = 0; i < accounts.size(); i++){
+            for(int j = 1; j < accounts[i].size(); j++){
+                if(e2g.find(accounts[i][j]) == e2g.end()){
+                    e2g[accounts[i][j]] = i;
+                }
+                else{
+                    u(i, e2g[accounts[i][j]]);
+                }
+            }
+        }
+        unordered_map<int, set<string>> g2e;
+        for(int i = 0; i < accounts.size(); i++){
+            int root = f(i);
+            g2e[root].insert(accounts[i].begin()+1, accounts[i].end());
+        }
+        for(auto g: g2e){
+            vector<string> cur = {accounts[g.first][0]};
+            for(auto e: g.second) cur.push_back(e);
+            ans.push_back(cur);
+        }
+        return ans;
+    }
+    
+private:
+    vector<int> p;
+    
+    int f(int x){
+        if(p[x] == -1) return x;
+        return f(p[x]);
+    }
+    
+    void u(int x, int y){
+        int xp = f(x);
+        int yp = f(y);
+        if(xp != yp) p[xp] = yp;
+    }
+};
