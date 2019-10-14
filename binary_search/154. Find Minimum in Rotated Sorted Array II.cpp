@@ -27,3 +27,20 @@ public:
         return nums[l];
     }
 };
+
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int l = 0, r = nums.size();
+        while(l < nums.size() && nums[l] == nums.back()) l++;
+        if(l == nums.size()) return nums[0];
+        int target = nums[l];
+        if(nums[l] < nums.back()) return nums[l];
+        while(l < r){
+            int m = l + (r - l) / 2;
+            if(nums[m] >= target) l++;
+            else r = m;
+        }
+        return nums[l];
+    }
+};
