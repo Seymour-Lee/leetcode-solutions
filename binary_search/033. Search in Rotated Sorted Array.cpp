@@ -82,3 +82,31 @@ private:
         return -1;
     }
 };
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int l = 0, r = nums.size();
+        while(l < r){
+            int m = l + (r - l) / 2;
+            if(nums[m] >= nums[0]) l++;
+            else r = m;
+            //cout<<l<<" "<<r<<endl;
+        }
+        //cout<<l<<endl;
+        int l1 = 0, r1 = l, l2 = l, r2 = nums.size();
+        while(l1 < r1){
+            int m = l1 + (r1 - l1) / 2;
+            if(nums[m] == target) return m;
+            if(nums[m] < target) l1 = m+1;
+            else r1 = m;
+        }
+        while(l2 < r2){
+            int m = l2 + (r2 - l2) / 2;
+            if(nums[m] == target) return m;
+            if(nums[m] < target) l2 = m+1;
+            else r2 = m;
+        }
+        return -1;
+    }
+};
