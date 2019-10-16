@@ -48,3 +48,22 @@ private:
         return l;
     }
 };
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l1 = 0, r1 = nums.size();
+        while(l1 < r1){
+            int m = l1 + (r1 - l1) / 2;
+            if(nums[m] < target) l1 = m+1;
+            else r1 = m;
+        }
+        int l2 = 0, r2 = nums.size();
+        while(l2 < r2){
+            int m = l2 + (r2 - l2) / 2;
+            if(nums[m] <= target) l2 = m+1;
+            else r2 = m;
+        }
+        return l1 == l2? vector<int>{-1, -1}: vector<int>{l1, l2-1};
+    }
+};
