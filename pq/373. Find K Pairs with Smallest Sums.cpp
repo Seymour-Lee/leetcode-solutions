@@ -45,3 +45,21 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        vector<vector<int>> ans;
+        using ii = pair<int, int>;
+        auto f = [](ii a, ii b){
+            return a.first+a.second > b.first+b.second;
+        };
+        priority_queue<ii, vector<ii>, function<bool(ii, ii)>> pq(f);
+        for(int i = 0; i < nums1.size(); i++) for(int j = 0; j < nums2.size(); j++) pq.push({nums1[i], nums2[j]});
+        while(k-- && pq.empty() == false){
+            auto p = pq.top(); pq.pop();
+            ans.push_back({p.first, p.second});
+        }
+        return ans;
+    }
+};
