@@ -23,3 +23,18 @@ public:
     }
 };
 
+class Solution {
+public:
+    vector<int> findRightInterval(vector<vector<int>>& intervals) {
+        map<int, int> s2idx;
+        vector<int> ans;
+        for(int i = 0; i < intervals.size(); i++) s2idx[intervals[i][0]] = i;
+        for(auto in: intervals){
+            auto itor = s2idx.lower_bound(in[1]);
+            if(itor == s2idx.end()) ans.push_back(-1);
+            else ans.push_back(itor->second);
+        }
+        return ans;
+    }
+};
+
