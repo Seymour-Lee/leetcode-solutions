@@ -82,3 +82,33 @@ private:
  * Solution obj = new Solution(N, blacklist);
  * int param_1 = obj.pick();
  */
+
+class Solution {
+public:
+    Solution(int N, vector<int> blacklist) {
+        wlen = N - blacklist.size();
+        unordered_set<int> whitelist;
+        for(int i = wlen; i < N; i++) whitelist.insert(i);
+        for(auto b: blacklist) whitelist.erase(b);
+        auto itor = whitelist.begin();
+        for(auto x: blacklist){
+            if(x < wlen)
+                idx2white[x] = *itor++;
+        }
+    }
+    
+    int pick() {
+        int k = rand() % wlen;
+        return idx2white.find(k) != idx2white.end()? idx2white[k]: k;
+    }
+    
+private:
+    unordered_map<int, int> idx2white;
+    int wlen;
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(N, blacklist);
+ * int param_1 = obj.pick();
+ */
