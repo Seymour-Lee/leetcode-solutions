@@ -70,3 +70,34 @@ private:
  * Solution* obj = new Solution(w);
  * int param_1 = obj->pickIndex();
  */
+
+class Solution {
+public:
+    Solution(vector<int>& w) {
+        for(auto a: w) nums.push_back(nums.back()+a);
+    }
+    
+    int pickIndex() {
+        int t = rand()%nums.back();
+        return binary(t)-1;
+    }
+    
+private:
+    vector<int> nums = {0};
+    
+    int binary(int target){
+        int l = 0, r = nums.size();
+        while(l < r){
+            int m = l + (r - l) / 2;
+            if(nums[m] <= target) l = m + 1;
+            else r = m;
+        }
+        return l;
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(w);
+ * int param_1 = obj->pickIndex();
+ */
