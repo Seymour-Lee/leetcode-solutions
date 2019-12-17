@@ -1,6 +1,5 @@
 # References to solutions
 
-
 ## Topics
 
 - [ ] Segment Tree
