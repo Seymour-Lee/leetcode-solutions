@@ -67,3 +67,18 @@ public:
         return sell.back();
     }
 };
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        int have = -prices[0];
+        int none = 0;
+        for(int i = 1; i < prices.size(); i++){
+            int p = prices[i];
+            int nh = max(have, none-p);
+            int nn = max(none, have+p-fee);
+            have = nh, none = nn;
+        }
+        return none;
+    }
+};

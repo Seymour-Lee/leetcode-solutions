@@ -33,3 +33,21 @@ public:
         return *max_element(sell.begin(), sell.end());
     }
 };
+
+class Solution {
+public:
+    int maxProfit(vector<int>& p) {
+        if(p.size() <= 1) return 0;
+        int n = p.size();
+        vector<int> hold(n, 0);
+        vector<int> sold(n, 0);
+        hold[0] = -p[0];
+        hold[1] = max(-p[0], -p[1]);
+        sold[1] = max(0, p[1]-p[0]);
+        for(int i = 2; i < p.size(); i++){
+            hold[i] = max(hold[i-1], sold[i-2]-p[i]);
+            sold[i] = max(sold[i-1], hold[i-1]+p[i]);
+        }
+        return sold[n-1];
+    }
+};
