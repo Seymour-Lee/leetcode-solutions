@@ -51,3 +51,19 @@ public:
         return sold[n-1];
     }
 };
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int hold = INT_MIN;
+        int sold = 0;
+        int cool = 0;
+        for(auto p: prices){
+            int nh = max(hold, sold-p);
+            int ns = max({sold, cool});
+            int nc = hold+p;
+            hold = nh, sold = ns, cool = nc;
+        }
+        return max(sold, cool);
+    }
+};
