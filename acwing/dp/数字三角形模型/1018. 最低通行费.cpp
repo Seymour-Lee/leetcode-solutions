@@ -22,3 +22,23 @@ int main(){
     cout<<g[N-1][N-1];
     return 0;
 }
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main(){
+    int n;
+    cin >> n;
+    vector<vector<int>> g(n, vector<int>(n, 0));
+    for(int i = 0; i < n; i++) for(int j = 0; j < n; j++) cin >> g[i][j];
+    for(int i = 1; i < n; i++) g[i][0] += g[i-1][0], g[0][i] += g[0][i-1];
+    for(int i = 1; i < n; i++) for(int j = 1; j < n; j++) g[i][j] += min(g[i-1][j], g[i][j-1]);
+    // for(int i = 0; i < n; i++){
+    //     for(int j = 0; j < n; j++) cout<<g[i][j]<<" ";
+    //     cout<<endl;
+    // }
+    cout<<g[n-1][n-1]<<endl;
+    return 0;
+}
