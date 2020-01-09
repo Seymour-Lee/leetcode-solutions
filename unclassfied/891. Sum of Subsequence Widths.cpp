@@ -31,3 +31,18 @@ public:
         return (int)ans;
     }
 };
+
+class Solution {
+public:
+    int sumSubseqWidths(vector<int>& A) {
+        const int mod = 1e9+7;
+        sort(A.begin(), A.end());
+        long long ans = 0;
+        int n = A.size();
+        long long c = 1;
+        for(int i = 0; i < n; i++, c = (c << 1) % mod){
+            ans = (ans + (A[i]*c - A[n-i-1]*c) % mod) % mod;
+        }
+        return (ans + mod) % mod;
+    }
+};
