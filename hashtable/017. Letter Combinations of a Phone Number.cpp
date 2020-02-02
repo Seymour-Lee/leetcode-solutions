@@ -39,3 +39,32 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> ans;
+        backtracking(ans, digits, 0, "");
+        return ans;
+    }
+    
+private:
+    unordered_map<char, string> c2s = {
+        {'2', "abc"},
+        {'3', "def"},
+        {'4', "ghi"},
+        {'5', "jkl"},
+        {'6', "mno"},
+        {'7', "pqrs"},
+        {'8', "tuv"},
+        {'9', "wxyz"},
+    };
+    
+    void backtracking(vector<string> &ans, string str, int i, string cur){
+        if(i == str.size()){
+            if(cur.size()) ans.push_back(cur);
+            return;
+        }
+        for(auto c: c2s[str[i]]) backtracking(ans, str, i+1, cur+c);
+    }
+};
