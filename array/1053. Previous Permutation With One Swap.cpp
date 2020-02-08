@@ -38,3 +38,21 @@ private:
         return true;
     }
 };
+
+class Solution {
+public:
+    vector<int> prevPermOpt1(vector<int>& A) {
+        if(is_sorted(A.begin(), A.end())) return A;
+        int i;
+        for(i = A.size()-2; i >= 0; i--) if(A[i] > A[i+1]) break;
+        for(int j = A.size()-1; j > i; j--) {
+            if(A[j] < A[i] && A[j] != A[j-1]) {
+                A[i] = A[i]+A[j];
+                A[j] = A[i]-A[j];
+                A[i] = A[i]-A[j]; 
+                break;
+            }
+        }
+        return A;
+    }
+};
