@@ -80,3 +80,20 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int ans = 0;
+        set<int> as(nums.begin(), nums.end());
+        int prev = INT_MIN;
+        int cur = 0;
+        for(auto a: as){
+            if(a == prev+1) cur++;
+            else cur = 1;
+            prev = a;
+            ans = max(ans, cur);
+        }
+        return ans;
+    }
+};
