@@ -36,3 +36,23 @@ public:
         return dp[0];
     }
 };
+
+class Solution {
+public:
+    int tallestBillboard(vector<int>& rods) {
+        // dp[i] = the tallest height if the abs-diff is i
+        // for each rod, we can update each item in dp_prev,
+        // dp[abs(i+r)] and dp[abs(i-r)]
+        unordered_map<int, int> dp;
+        dp[0] = 0;
+        for(auto r: rods){
+             auto prev = dp;
+            for(auto p: prev){
+                int l = p.first;
+                dp[abs(l+r)] = max(dp[abs(l+r)], prev[l]);
+                dp[abs(l-r)] = max(dp[abs(l-r)], prev[l]+min(r, l));
+            }
+        }
+        return dp[0];
+    }
+};
