@@ -83,3 +83,55 @@ private:
 // "ASGTCU"
 // "YPLTJVLSUTEWJMXNUCATGWKFHHUOMWVSNBMWSNYVWBFOCIWFOQPRTYABPKJOBZZNGRUCXEAMVNKAGAWYAVQTDGDTUGJIWFDPMUCAIOZZDIEUQUULDEIABBGVIRKLSBXWTU"
 // "UOUNLRFGMSJAEEIKKZLWCKYTBBIFESJLMREJDPXHBJFQXCJMKJNDDRPPKZZKDPDWPNBJKXVEFUSMZUCCZCGXHBMADMRQJOPZSWVGNCLHISYFNGLDCWAQOYVGDPMIGUBZGTEDGOMLREDTPESMUVNQPVKPPUVGRTHAKWXKKBQEITZEMSJWWZPCZCQBCHEBJAY"
+
+class Solution {
+public:
+    int minimumDistance(string word) {
+        vector<vector<vector<int>>> dp(26, vector<vector<int>>(26, vector<int>(word.size()+1, 0)));
+        int ans = INT_MAX;
+        for(int k = word.size()-1; k >= 0; k--){
+            // cout<<z<<endl;
+            for(int i = 0; i < 26; i++){
+                for(int j = 0; j < 26; j++){
+                    // cout<<x<<" "<<y<<endl;
+                    dp[i][j][k] = min(cost(i, word[k]-'A') + dp[word[k]-'A'][j][k+1],
+                                      cost(j, word[k]-'A') + dp[i][word[k]-'A'][k+1]);
+                    if(k == 0) ans = min(ans, dp[i][j][k]);
+                }
+            }
+        }
+        return ans;
+    }
+    
+private:
+        vector<vector<char>> keyboard = {
+            {'A', 'B', 'C', 'D', 'E', 'F'},
+            {'G', 'H', 'I', 'J', 'K', 'L'},
+            {'M', 'N', 'O', 'P', 'Q', 'R'},
+            {'S', 'T', 'U', 'V', 'W', 'X'},
+            {'Y', 'Z'}
+        };
+        
+        unordered_map<char, pair<int, int>> index;
+    
+    int diff(char cx, char cy){
+        pair<int, int> &posx = index[cx];
+        pair<int, int> &posy = index[cy];
+        return abs(posx.first - posy.first) + abs(posx.second - posy.second);
+    }
+    
+    int cost(int x, int y){
+        return abs(x/6-y/6) + abs(x%6-y%6);
+    }
+};
+
+// "CAKE"
+// "HAPPY"
+// "NEW"
+// "YEAR"
+// "ABZ"
+// "ABXZ"
+// "ASBTCU"
+// "ASGTCU"
+// "YPLTJVLSUTEWJMXNUCATGWKFHHUOMWVSNBMWSNYVWBFOCIWFOQPRTYABPKJOBZZNGRUCXEAMVNKAGAWYAVQTDGDTUGJIWFDPMUCAIOZZDIEUQUULDEIABBGVIRKLSBXWTU"
+// "UOUNLRFGMSJAEEIKKZLWCKYTBBIFESJLMREJDPXHBJFQXCJMKJNDDRPPKZZKDPDWPNBJKXVEFUSMZUCCZCGXHBMADMRQJOPZSWVGNCLHISYFNGLDCWAQOYVGDPMIGUBZGTEDGOMLREDTPESMUVNQPVKPPUVGRTHAKWXKKBQEITZEMSJWWZPCZCQBCHEBJAY"
